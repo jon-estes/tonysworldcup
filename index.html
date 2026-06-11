@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 World Cup Pool — Live Bracket &amp; Leaderboard</title>
 <meta name="description" content="2026 World Cup pool hub — auto-scored leaderboard, live knockout bracket, and the points ladder. 113 points on the table.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
@@ -122,8 +125,6 @@
   .pulse{width:9px;height:9px;border-radius:50%;background:var(--red);animation:pulse 1.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,38,44,.55)}50%{box-shadow:0 0 0 7px rgba(201,38,44,0)}}
   .deadline .when{font-weight:600}
-  .deadline .form-link{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-dim);text-decoration:underline;text-underline-offset:3px}
-  .deadline .form-link:hover{color:var(--chalk)}
   .clock{display:flex;gap:10px}
   .clock .unit{text-align:center;min-width:56px;background:rgba(255,255,255,.85);border:1px solid rgba(201,38,44,.3);border-radius:8px;padding:6px 8px}
   .clock .v{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:20px;line-height:1.1;color:var(--chalk)}
@@ -372,9 +373,9 @@
 <nav>
   <div class="wrap">
     <span class="brand">WC26 Pool</span>
+    <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#leaderboard">Leaderboard</a>
     <a class="nl" href="#groups">Groups</a>
-    <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#bracket">Bracket</a>
   </div>
 </nav>
@@ -417,52 +418,8 @@
       <div class="unit"><div class="v" id="cd-m">–</div><div class="u">Min</div></div>
       <div class="unit"><div class="v" id="cd-s">–</div><div class="u">Sec</div></div>
     </div>
-    <a class="form-link" id="form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfnAvMsSEx3fAJ0cYz-OhPDpqjabcC1VMAIcvxMq7lBTpSgUQ/viewform" target="_blank" rel="noopener">Picks form →</a>
   </div>
 </div>
-
-<!-- ════════ LEADERBOARD ════════ -->
-<section class="board-sec" id="leaderboard">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">Pool Standings · Auto-Scored</div>
-      <h2 class="display">Live Leaderboard</h2>
-      <p>Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.</p>
-    </div>
-    <div class="board-meta">
-      <span class="live-dot">Live</span>
-      <span class="entry-count" id="entry-count"></span>
-      <span id="board-updated">Waiting for first sync…</span>
-      <button class="refresh-btn" id="refresh-board" type="button">↻ Refresh</button>
-    </div>
-    <div class="board"><div class="board-scroll" id="board">
-      <div class="empty">
-        <div class="big">Connecting to the pool…</div>
-        Entries appear here automatically once the picks sheet is linked.
-      </div>
-    </div></div>
-  </div>
-</section>
-
-<!-- ════════ THE GROUPS ════════ -->
-<section id="groups">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">Round of 48 · Your First 24 Picks</div>
-      <h2 class="display">The Twelve Groups</h2>
-      <p>Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.</p>
-    </div>
-    <div class="groups-grid" id="groups-grid"></div>
-
-    <div class="wildcard">
-      <div class="big8">8</div>
-      <div>
-        <h3>The third-place wildcards</h3>
-        <p>The 8 best third-place teams also advance to the Round of 32 — but they're <strong style="color:var(--chalk)">not worth points here</strong>. You'll account for them when you pick the Round of 32 matchups, so don't sweat them in this round. Top-two picks only.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ════════ POINTS LADDER ════════ -->
 <section class="ladder-sec" id="how">
@@ -516,6 +473,51 @@
       <div class="pts">+1</div>
       <div class="txt"><strong>Third-place game.</strong> A single bonus point for picking the winner of the consolation match — small, but pools have been won by less.</div>
     </div>
+
+    <div class="wildcard">
+      <div class="big8">8</div>
+      <div>
+        <h3>The third-place wildcards</h3>
+        <p>The 8 best third-place teams also advance to the Round of 32 — but they're <strong style="color:var(--chalk)">not worth points here</strong>. You'll account for them when you pick the Round of 32 matchups, so don't sweat them in this round. Top-two picks only.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ LEADERBOARD ════════ -->
+<section class="board-sec" id="leaderboard">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Pool Standings · Auto-Scored</div>
+      <h2 class="display">Live Leaderboard</h2>
+      <p>Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.</p>
+    </div>
+    <div class="board-meta">
+      <span class="live-dot">Live</span>
+      <span class="entry-count" id="entry-count"></span>
+      <span id="board-updated">Waiting for first sync…</span>
+      <button class="refresh-btn" id="refresh-board" type="button">↻ Refresh</button>
+    </div>
+    <div class="board"><div class="board-scroll" id="board">
+      <div class="empty">
+        <div class="big">Connecting to the pool…</div>
+        Entries appear here automatically once the picks sheet is linked.
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ════════ THE GROUPS ════════ -->
+<section id="groups">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Round of 48 · Your First 24 Picks</div>
+      <h2 class="display">The Twelve Groups</h2>
+      <p>Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.</p>
+    </div>
+    <div class="groups-grid" id="groups-grid"></div>
+
+    
   </div>
 </section>
 
@@ -681,8 +683,6 @@ function tick(){
   if (diff <= 0){
     document.getElementById('clock').innerHTML =
       '<span class="mono" style="font-weight:800;color:var(--red);letter-spacing:.14em;">PICKS ARE LOCKED</span>';
-    const fl = document.getElementById('form-link');
-    if (fl) fl.remove();
     clearInterval(timer);
     return;
   }
