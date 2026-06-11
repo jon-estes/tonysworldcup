@@ -81,8 +81,7 @@
   }
   .eyebrow::before,.eyebrow::after{content:"";width:34px;height:1px;background:var(--grass);opacity:.5}
   .hero-trophy{
-    width:132px;height:auto;display:block;margin:0 auto 22px;
-    filter:drop-shadow(0 10px 22px rgba(20,30,60,.16));
+    width:min(440px,82vw);height:auto;display:block;margin:0 auto 6px;
   }
   .hero h1{font-size:clamp(48px,8.5vw,110px);line-height:.95;margin-bottom:8px}
   .hero h1 .gold{color:var(--gold)}
@@ -374,9 +373,9 @@
   <div class="wrap">
     <span class="brand">WC26 Pool</span>
     <a class="nl" href="#leaderboard">Leaderboard</a>
-    <a class="nl" href="#bracket">Bracket</a>
-    <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#groups">Groups</a>
+    <a class="nl" href="#how">Scoring</a>
+    <a class="nl" href="#bracket">Bracket</a>
   </div>
 </nav>
 
@@ -397,24 +396,7 @@
   </svg>
   <div class="wrap">
     <div class="eyebrow">FIFA World Cup 2026 · USA · Mexico · Canada</div>
-    <svg class="hero-trophy" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="World Cup 2026 trophy">
-      <!-- ball-shaped cup wrapped by three host-nation ribbons -->
-      <circle cx="100" cy="72" r="56" fill="#FFFFFF" stroke="rgba(20,30,60,.15)" stroke-width="2"/>
-      <path d="M52,48 A56,56 0 0 1 148,48" fill="none" stroke="#1B2A5E" stroke-width="17" stroke-linecap="round"/>
-      <path d="M45,85 A56,56 0 0 0 96,127" fill="none" stroke="#1E7A43" stroke-width="17" stroke-linecap="round"/>
-      <path d="M155,85 A56,56 0 0 1 104,127" fill="none" stroke="#C9262C" stroke-width="17" stroke-linecap="round"/>
-      <circle cx="100" cy="84" r="22" fill="#FFFFFF"/>
-      <path d="M100,70 l4.4,8.9 9.8,1.4 -7.1,6.9 1.7,9.8 -8.8,-4.6 -8.8,4.6 1.7,-9.8 -7.1,-6.9 9.8,-1.4 Z" fill="#C8901F"/>
-      <!-- stem -->
-      <path d="M88,128 C92,140 92,148 86,160 L114,160 C108,148 108,140 112,128 Z" fill="#1B2A5E"/>
-      <!-- flared trophy base -->
-      <path d="M86,160 C76,176 64,188 52,196 L148,196 C136,188 124,176 114,160 Z" fill="#C9262C"/>
-      <path d="M86,160 C76,176 64,188 52,196 L100,196 L100,160 Z" fill="#A91E24" opacity=".55"/>
-      <!-- plinth with year -->
-      <rect x="44" y="200" width="112" height="32" rx="9" fill="#1B2A5E"/>
-      <text x="100" y="223" text-anchor="middle" font-family="Anton, sans-serif" font-size="21" letter-spacing="4" fill="#FFFFFF">2026</text>
-    </svg>
-    <h1 class="display">The Bracket.<br>The Ladder.<br><span class="gold">The Glory.</span></h1>
+    <img class="hero-trophy" src="trophy.png" alt="2026 FIFA World Cup — United States, Canada, Mexico" width="1900" height="1333">
     <p class="sub">48 teams. 104 matches. One pool. Picks are scored automatically and the bracket fills in live — <strong>points climb every round you survive.</strong></p>
     <div><span class="host-line">⚽ Hosted by <strong>Tony Gutierrez Castro</strong></span></div>
     <div class="perfect">
@@ -462,24 +444,23 @@
   </div>
 </section>
 
-<!-- ════════ BRACKET ════════ -->
-<section id="bracket">
+<!-- ════════ THE GROUPS ════════ -->
+<section id="groups">
   <div class="wrap">
     <div class="sec-head">
-      <div class="kicker">Knockout Stage · Jun 28 – Jul 19</div>
-      <h2 class="display">The Live Bracket</h2>
-      <p>All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.</p>
+      <div class="kicker">Round of 48 · Your First 24 Picks</div>
+      <h2 class="display">The Twelve Groups</h2>
+      <p>Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.</p>
     </div>
+    <div class="groups-grid" id="groups-grid"></div>
 
-    <div class="champion-banner" id="champion-banner">
-      <div class="cb-label">2026 World Champions</div>
-      <div class="cb-team" id="champion-team"></div>
+    <div class="wildcard">
+      <div class="big8">8</div>
+      <div>
+        <h3>The third-place wildcards</h3>
+        <p>The 8 best third-place teams also advance to the Round of 32 — but they're <strong style="color:var(--chalk)">not worth points here</strong>. You'll account for them when you pick the Round of 32 matchups, so don't sweat them in this round. Top-two picks only.</p>
+      </div>
     </div>
-
-    <div class="bracket-scroll">
-      <div class="bracket" id="bracket-grid" aria-label="Knockout bracket"></div>
-    </div>
-    <div class="bracket-note" id="bracket-updated">All dates and venues are official — team names replace the slot paths as the tournament unfolds.</div>
   </div>
 </section>
 
@@ -538,23 +519,24 @@
   </div>
 </section>
 
-<!-- ════════ THE GROUPS ════════ -->
-<section id="groups">
+<!-- ════════ BRACKET ════════ -->
+<section id="bracket">
   <div class="wrap">
     <div class="sec-head">
-      <div class="kicker">Round of 48 · Your First 24 Picks</div>
-      <h2 class="display">The Twelve Groups</h2>
-      <p>Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.</p>
+      <div class="kicker">Knockout Stage · Jun 28 – Jul 19</div>
+      <h2 class="display">The Live Bracket</h2>
+      <p>All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.</p>
     </div>
-    <div class="groups-grid" id="groups-grid"></div>
 
-    <div class="wildcard">
-      <div class="big8">8</div>
-      <div>
-        <h3>The third-place wildcards</h3>
-        <p>The 8 best third-place teams also advance to the Round of 32 — but they're <strong style="color:var(--chalk)">not worth points here</strong>. You'll account for them when you pick the Round of 32 matchups, so don't sweat them in this round. Top-two picks only.</p>
-      </div>
+    <div class="champion-banner" id="champion-banner">
+      <div class="cb-label">2026 World Champions</div>
+      <div class="cb-team" id="champion-team"></div>
     </div>
+
+    <div class="bracket-scroll">
+      <div class="bracket" id="bracket-grid" aria-label="Knockout bracket"></div>
+    </div>
+    <div class="bracket-note" id="bracket-updated">All dates and venues are official — team names replace the slot paths as the tournament unfolds.</div>
   </div>
 </section>
 
