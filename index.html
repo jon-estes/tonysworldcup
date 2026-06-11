@@ -678,12 +678,13 @@ renderGroups();
 /* ── countdown ── */
 const deadline = new Date(2026, 5, 10, 23, 59, 59).getTime();
 const cd = {d:document.getElementById('cd-d'),h:document.getElementById('cd-h'),m:document.getElementById('cd-m'),s:document.getElementById('cd-s')};
+let timer = null;
 function tick(){
   let diff = deadline - Date.now();
   if (diff <= 0){
     document.getElementById('clock').innerHTML =
       '<span class="mono" style="font-weight:800;color:var(--red);letter-spacing:.14em;">PICKS ARE LOCKED</span>';
-    clearInterval(timer);
+    if (timer){ clearInterval(timer); timer = null; }
     return;
   }
   cd.d.textContent = Math.floor(diff/864e5);
@@ -692,7 +693,7 @@ function tick(){
   cd.s.textContent = String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
 }
 tick();
-const timer = setInterval(tick, 1000);
+if (deadline > Date.now()) timer = setInterval(tick, 1000);
 
 /* ── CSV helpers ── */
 function parseCSV(text){
