@@ -544,7 +544,7 @@
 </section>
 
 <footer>
-  <div class="wrap">2026 World Cup Pool · Picks due Jun 10 · Kickoff Jun 11 · Final Jul 19</div>
+  <div class="wrap">2026 World Cup Pool · Picks due Jun 10 · Kickoff Jun 11 · Final Jul 19 · <span style="color:var(--gold)">v6</span></div>
 </footer>
 
 <div class="tricolor" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -980,4 +980,14 @@ async function loadLeaderboard(){
 
 /* ── boot + auto-refresh ── */
 async function syncAll(){
-  await loadResults();      // results first so scoring uses fresh winner
+  await loadResults();      // results first so scoring uses fresh winners
+  await loadLeaderboard();
+}
+renderBracket();            // immediate TBD skeleton
+syncAll();
+setInterval(syncAll, AUTO_REFRESH_MS);
+document.getElementById('refresh-board').addEventListener('click', syncAll);
+</script>
+
+</body>
+</html>
