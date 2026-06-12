@@ -375,6 +375,7 @@
     <span class="brand">WC26 Pool</span>
     <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#leaderboard">Leaderboard</a>
+    <a class="nl" href="/picks/">Picks</a>
     <a class="nl" href="#groups">Groups</a>
     <a class="nl" href="#bracket">Bracket</a>
   </div>
@@ -577,7 +578,7 @@
                       fill teams when matchups are set, then
                       scores + Winner as games finish
    ═══════════════════════════════════════════════════════════════ */
-const RESPONSES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWSBA3ph1bL3WpZb47heJiW_EnTOjGIt0ZVGrBQWLP6Ul-bfzOuaKCugVuc0cuSJalS81prbXOsjXm/pub?gid=1722771324&single=true&output=csv";  // Form Responses 1
+const RESPONSES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWSBA3ph1bL3WpZb47heJiW_EnTOjGIt0ZVGrBQWLP6Ul-bfzOuaKCugVuc0cuSJalS81prbXOsjXm/pub?gid=1437944328&single=true&output=csv";  // Form Responses 1
 const RESULTS_CSV_URL   = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWSBA3ph1bL3WpZb47heJiW_EnTOjGIt0ZVGrBQWLP6Ul-bfzOuaKCugVuc0cuSJalS81prbXOsjXm/pub?gid=2133030220&single=true&output=csv";  // Results tab
 
 /* Later rounds: when you send out the Round of 32 form (etc.),
@@ -854,8 +855,9 @@ function renderBracket(){
 
 /* ── AUTO-SCORING ENGINE ── */
 function findNameCol(headers){
-  let i = headers.findIndex(h => /name|nickname/i.test(h));
-  return i === -1 ? 1 : i;   // fall back to column after Timestamp
+  let i = headers.findIndex(h => /name|nickname|player/i.test(h));
+  if (i === -1) i = /timestamp|date/i.test(headers[0]||'') ? 1 : 0;
+  return i;
 }
 /* group picks: every entry, graded vs groupResults */
 function parseGroupEntries(rows){
@@ -978,14 +980,4 @@ async function loadLeaderboard(){
 
 /* ── boot + auto-refresh ── */
 async function syncAll(){
-  await loadResults();      // results first so scoring uses fresh winners
-  await loadLeaderboard();
-}
-renderBracket();            // immediate TBD skeleton
-syncAll();
-setInterval(syncAll, AUTO_REFRESH_MS);
-document.getElementById('refresh-board').addEventListener('click', syncAll);
-</script>
-
-</body>
-</html>
+  await loadResults();      // results first so scoring uses fresh winner
