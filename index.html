@@ -77,7 +77,6 @@
     transition:transform .15s,box-shadow .15s;
   }
   #lang-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,30,60,.36)}
-  #lang-btn:active{transform:translateY(0)}
 
   /* ── audio player ── */
   .audio-wrap{
@@ -93,8 +92,7 @@
     width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
     background:var(--grass);color:#fff;
     display:flex;align-items:center;justify-content:center;
-    flex:none;
-    transition:background .15s, transform .15s;
+    flex:none;transition:background .15s,transform .15s;
   }
   .audio-play-btn:hover{background:#12763b;transform:scale(1.07)}
   .audio-play-btn svg{width:16px;height:16px;fill:currentColor}
@@ -105,13 +103,12 @@
   }
   .audio-sub{
     font-family:'JetBrains Mono',monospace;font-size:9px;
-    letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-faint);
-    margin-top:1px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-faint);margin-top:1px;
   }
   .audio-progress{
     width:110px;height:3px;background:rgba(20,30,60,.12);border-radius:2px;overflow:hidden;
   }
-  .audio-progress-bar{height:100%;width:0%;background:var(--grass);border-radius:2px;transition:width .25s linear}
+  .audio-bar{height:100%;width:0%;background:var(--grass);border-radius:2px;transition:width .25s linear}
 
   .hero{
     position:relative;
@@ -454,8 +451,6 @@
       <span class="num">113</span>
       <span class="lbl" data-i18n="perfect-lbl">points · perfect bracket</span>
     </div>
-
-    <!-- ── TONY'S AUDIO MESSAGE ── -->
     <div class="audio-wrap" id="audio-wrap" style="display:none">
       <button class="audio-play-btn" id="audio-play" aria-label="Play message">
         <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -464,7 +459,7 @@
       <div class="audio-meta">
         <div class="audio-title" data-i18n="audio-title">Message from Tony</div>
         <div class="audio-sub" id="audio-time">Tap to play</div>
-        <div class="audio-progress"><div class="audio-progress-bar" id="audio-bar"></div></div>
+        <div class="audio-progress"><div class="audio-bar" id="audio-bar"></div></div>
       </div>
     </div>
     <audio id="tony-audio" preload="none"></audio>
@@ -532,12 +527,10 @@
         <div class="detail" data-i18n="rung6-detail">July 19 · MetLife Stadium. Call the champion.</div>
       </div>
     </div>
-
     <div class="bronze-step">
       <div class="pts">+1</div>
       <div class="txt"><strong data-i18n="bronze-title">Third-place game.</strong> <span data-i18n="bronze-detail">A single bonus point for picking the winner of the consolation match — small, but pools have been won by less.</span></div>
     </div>
-
     <div class="wildcard">
       <div class="big8">8</div>
       <div>
@@ -593,12 +586,10 @@
       <h2 class="display" data-i18n="h2-bracket">The Live Bracket</h2>
       <p data-i18n="p-bracket">All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.</p>
     </div>
-
     <div class="champion-banner" id="champion-banner">
       <div class="cb-label" data-i18n="champion-label">2026 World Champions</div>
       <div class="cb-team" id="champion-team"></div>
     </div>
-
     <div class="bracket-scroll">
       <div class="bracket" id="bracket-grid" aria-label="Knockout bracket"></div>
     </div>
@@ -613,6 +604,8 @@
 <div class="tricolor" aria-hidden="true"><span></span><span></span><span></span></div>
 
 <button id="lang-btn" aria-label="Toggle language">🇲🇽 ES</button>
+
+<script>
 /* ═══════════════════════════════════════════════════════════════
    SETUP — two links, then everything is automatic.
 
@@ -1050,193 +1043,114 @@ renderBracket();            // immediate TBD skeleton
 syncAll();
 setInterval(syncAll, AUTO_REFRESH_MS);
 document.getElementById('refresh-board').addEventListener('click', syncAll);
-</script>
-
-<script>
-/* ══ SPANISH TOGGLE — touches NOTHING in the existing render logic ══ */
-const ES = {
-  'eyebrow':         'Copa Mundial FIFA 2026 · EE.UU. · México · Canadá',
-  'hero-strong':     'los puntos suben cada ronda que sobrevives.',
-  'hosted-by':       'Organizado por',
-  'perfect-lbl':     'puntos · bracket perfecto',
-  'picks-lock':      'Cierre de Picks',
-  'picks-when':      'Miércoles 10 de junio — el arranque es el jueves en el Estadio Azteca',
-  'days':            'Días',
-  'hrs':             'Hrs',
-  'mins':            'Min',
-  'secs':            'Seg',
-  'kicker-scoring':  'Sistema de Puntuación',
-  'h2-scoring':      'Cada ronda vale más que la anterior',
-  'p-scoring':       'Un pick correcto en la fase de grupos vale un punto. Ese mismo acierto en la final vale seis. Avanza lejos y la escalera te recompensa.',
-  'pt-each':         'pt c/u',
-  'pts-each':        'pts c/u',
-  'pts-only':        'pts',
-  'rung1-name':      'Ronda de 48 — Grupos',
-  'rung1-detail':    'Elige los 2 clasificados de cada uno de los 12 grupos. 24 picks en total.',
-  'rung2-name':      'Ronda de 32',
-  'rung2-detail':    'Comienza la eliminación directa. Elige a los 16 ganadores.',
-  'rung3-name':      'Ronda de 16',
-  'rung3-detail':    '8 partidos. Ganas o te vas a casa.',
-  'rung4-name':      'Cuartos de Final',
-  'rung4-detail':    '4 partidos. Los contendientes se separan.',
-  'rung5-name':      'Semifinales',
-  'rung5-detail':    '2 partidos. Un paso de la gloria.',
-  'rung6-name':      'La Final',
-  'rung6-detail':    '19 de julio · MetLife Stadium. Elige al campeón.',
-  'bronze-title':    'Tercer lugar.',
-  'bronze-detail':   'Un punto extra por acertar al ganador del partido de consolación — poco, pero quinielas se han ganado por menos.',
-  'wildcard-title':  'Los wildcards del tercer lugar',
-  'wildcard-detail': 'Los 8 mejores terceros lugares también avanzan a la Ronda de 32 — pero no valen puntos aquí. Los tomarás en cuenta cuando elijas los cruces de la Ronda de 32, así que no te preocupes por ellos en esta ronda. Solo elige a los dos primeros.',
-  'kicker-board':    'Tabla del Grupo · Puntuación Automática',
-  'h2-board':        'Tabla en Vivo',
-  'p-board':         'Cada entrada se toma directo del formulario y se califica automáticamente contra los resultados reales — sin conteo manual, sin hojas de cálculo para discutir.',
-  'live-dot':        'En Vivo',
-  'refresh-btn':     '↻ Actualizar',
-  'kicker-groups':   'Ronda de 48 · Tus Primeros 24 Picks',
-  'h2-groups':       'Los Doce Grupos',
-  'p-groups':        'Elige los dos equipos que terminen 1° y 2° en cada grupo — un punto por equipo correcto. Una vez decididos los grupos, los clasificados se marcan aquí mismo.',
-  'kicker-bracket':  'Fase Eliminatoria · 28 Jun – 19 Jul',
-  'h2-bracket':      'El Bracket en Vivo',
-  'p-bracket':       'Los 31 partidos eliminatorios, desde la Ronda de 32 hasta la final en el MetLife Stadium. Los ganadores se iluminan en dorado conforme llegan los resultados. Los cruces de la Ronda de 32 se definen al terminar la fase de grupos.',
-  'champion-label':  'Campeones del Mundo 2026',
-  'bracket-note':    'Fechas y sedes son oficiales — los nombres de equipos reemplazan las rutas conforme avanza el torneo.',
-  'audio-title':     'Mensaje de Tony',
-};
-
-const EN = {
-  'eyebrow':         'FIFA World Cup 2026 · USA · Mexico · Canada',
-  'hero-strong':     'points climb every round you survive.',
-  'hosted-by':       'Hosted by',
-  'perfect-lbl':     'points · perfect bracket',
-  'picks-lock':      'Picks Lock',
-  'picks-when':      'Wednesday, June 10 — kickoff is Thursday at Estadio Azteca',
-  'days':            'Days',
-  'hrs':             'Hrs',
-  'mins':            'Min',
-  'secs':            'Sec',
-  'kicker-scoring':  'Scoring System',
-  'h2-scoring':      'Every round is worth more than the last',
-  'p-scoring':       'One correct pick in the group stage earns a single point. That same instinct in the final is worth six. Survive deep and the ladder pays.',
-  'pt-each':         'pt each',
-  'pts-each':        'pts each',
-  'pts-only':        'pts',
-  'rung1-name':      'Round of 48 — Groups',
-  'rung1-detail':    'Pick the top 2 finishers in all 12 groups. 24 picks total.',
-  'rung2-name':      'Round of 32',
-  'rung2-detail':    'Single elimination begins. Pick all 16 winners.',
-  'rung3-name':      'Round of 16',
-  'rung3-detail':    '8 matches. Win or go home.',
-  'rung4-name':      'Quarterfinals',
-  'rung4-detail':    '4 matches. The contenders separate.',
-  'rung5-name':      'Semifinals',
-  'rung5-detail':    '2 matches. One step from glory.',
-  'rung6-name':      'The Final',
-  'rung6-detail':    'July 19 · MetLife Stadium. Call the champion.',
-  'bronze-title':    'Third-place game.',
-  'bronze-detail':   'A single bonus point for picking the winner of the consolation match — small, but pools have been won by less.',
-  'wildcard-title':  'The third-place wildcards',
-  'wildcard-detail': "The 8 best third-place teams also advance to the Round of 32 — but they're not worth points here. You'll account for them when you pick the Round of 32 matchups, so don't sweat them in this round. Top-two picks only.",
-  'kicker-board':    'Pool Standings · Auto-Scored',
-  'h2-board':        'Live Leaderboard',
-  'p-board':         "Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.",
-  'live-dot':        'Live',
-  'refresh-btn':     '↻ Refresh',
-  'kicker-groups':   'Round of 48 · Your First 24 Picks',
-  'h2-groups':       'The Twelve Groups',
-  'p-groups':        'Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.',
-  'kicker-bracket':  'Knockout Stage · Jun 28 – Jul 19',
-  'h2-bracket':      'The Live Bracket',
-  'p-bracket':       'All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.',
-  'champion-label':  '2026 World Champions',
-  'bracket-note':    'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
-  'audio-title':     'Message from Tony',
-};
-
-let lang = 'en';
-const btn = document.getElementById('lang-btn');
-
-function applyLang(strings) {
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (strings[key] !== undefined) el.textContent = strings[key];
-  });
-  // hero-sub has a child <strong data-i18n="hero-strong"> so just swap the text node before it
-  const heroSub = document.querySelector('.hero .sub');
-  if (heroSub) {
-    const tn = heroSub.childNodes[0];
-    if (tn && tn.nodeType === 3) {
-      tn.textContent = lang === 'es'
-        ? '48 equipos. 104 partidos. Una quiniela. Los picks se califican automáticamente y el bracket se llena en vivo — '
-        : '48 teams. 104 matches. One pool. Picks are scored automatically and the bracket fills in live — ';
-    }
-  }
-  // nav links
-  const navLabels = lang === 'es'
-    ? { '#how':'Puntuación', '#leaderboard':'Tabla', '/picks/':'Picks', '#groups':'Grupos', '#bracket':'Bracket' }
-    : { '#how':'Scoring',    '#leaderboard':'Leaderboard', '/picks/':'Picks', '#groups':'Groups', '#bracket':'Bracket' };
-  document.querySelectorAll('nav a.nl').forEach(a => {
-    const lbl = navLabels[a.getAttribute('href')];
-    if (lbl) a.textContent = lbl;
-  });
-  btn.textContent = lang === 'es' ? '🇺🇸 EN' : '🇲🇽 ES';
-}
-
-btn.addEventListener('click', () => {
-  lang = lang === 'en' ? 'es' : 'en';
-  applyLang(lang === 'es' ? ES : EN);
-});
 
 /* ══ AUDIO PLAYER ══ */
 (function(){
-  const AUDIO_FILE = 'tony-message.mp3';
-  const wrap = document.getElementById('audio-wrap');
+  const wrap  = document.getElementById('audio-wrap');
   const audio = document.getElementById('tony-audio');
-  const playBtn = document.getElementById('audio-play');
-  const iconPlay = document.getElementById('icon-play');
+  const playBtn  = document.getElementById('audio-play');
+  const iconPlay  = document.getElementById('icon-play');
   const iconPause = document.getElementById('icon-pause');
   const timeEl = document.getElementById('audio-time');
-  const bar = document.getElementById('audio-bar');
-
-  // Only show the player if the file actually exists
-  fetch(AUDIO_FILE, {method:'HEAD'}).then(r => {
-    if (!r.ok) return; // file not uploaded yet — stay hidden
-    audio.src = AUDIO_FILE;
-    audio.preload = 'metadata';
-    wrap.style.display = '';
-  }).catch(() => {}); // silently hide if fetch fails
-
-  function fmt(s){
-    const m = Math.floor(s/60), sec = Math.floor(s%60);
-    return m + ':' + String(sec).padStart(2,'0');
-  }
-  function updateTime(){
-    if (!audio.duration) return;
-    const pct = (audio.currentTime / audio.duration) * 100;
-    bar.style.width = pct + '%';
-    timeEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
-  }
-  playBtn.addEventListener('click', () => {
-    if (audio.paused){
-      audio.play();
-      iconPlay.style.display = 'none';
-      iconPause.style.display = '';
-    } else {
-      audio.pause();
-      iconPlay.style.display = '';
-      iconPause.style.display = 'none';
-    }
+  const bar    = document.getElementById('audio-bar');
+  function fmt(s){ const m=Math.floor(s/60),sc=Math.floor(s%60); return m+':'+String(sc).padStart(2,'0'); }
+  fetch('tony-message.mp3',{method:'HEAD'}).then(r=>{
+    if(!r.ok) return;
+    audio.src='tony-message.mp3'; audio.preload='metadata';
+    wrap.style.display='';
+  }).catch(()=>{});
+  playBtn.addEventListener('click',()=>{
+    if(audio.paused){ audio.play(); iconPlay.style.display='none'; iconPause.style.display=''; }
+    else { audio.pause(); iconPlay.style.display=''; iconPause.style.display='none'; }
   });
-  audio.addEventListener('timeupdate', updateTime);
-  audio.addEventListener('ended', () => {
-    iconPlay.style.display = '';
-    iconPause.style.display = 'none';
-    bar.style.width = '0%';
-    timeEl.textContent = 'Tap to play';
+  audio.addEventListener('timeupdate',()=>{
+    if(!audio.duration) return;
+    bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+    timeEl.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);
   });
-  audio.addEventListener('loadedmetadata', () => {
-    timeEl.textContent = fmt(audio.duration);
-  });
+  audio.addEventListener('ended',()=>{ iconPlay.style.display=''; iconPause.style.display='none'; bar.style.width='0%'; timeEl.textContent='Tap to play'; });
+  audio.addEventListener('loadedmetadata',()=>{ timeEl.textContent=fmt(audio.duration); });
 })();
+
+/* ══ SPANISH TOGGLE ══ */
+const ES={
+  'eyebrow':'Copa Mundial FIFA 2026 · EE.UU. · México · Canadá',
+  'hero-strong':'los puntos suben cada ronda que sobrevives.',
+  'hosted-by':'Organizado por',
+  'perfect-lbl':'puntos · bracket perfecto',
+  'audio-title':'Mensaje de Tony',
+  'picks-lock':'Cierre de Picks',
+  'picks-when':'Miércoles 10 de junio — el arranque es el jueves en el Estadio Azteca',
+  'days':'Días','hrs':'Hrs','mins':'Min','secs':'Seg',
+  'kicker-scoring':'Sistema de Puntuación',
+  'h2-scoring':'Cada ronda vale más que la anterior',
+  'p-scoring':'Un pick correcto en la fase de grupos vale un punto. Ese mismo acierto en la final vale seis. Avanza lejos y la escalera te recompensa.',
+  'pt-each':'pt c/u','pts-each':'pts c/u','pts-only':'pts',
+  'rung1-name':'Ronda de 48 — Grupos','rung1-detail':'Elige los 2 clasificados de cada uno de los 12 grupos. 24 picks en total.',
+  'rung2-name':'Ronda de 32','rung2-detail':'Comienza la eliminación directa. Elige a los 16 ganadores.',
+  'rung3-name':'Ronda de 16','rung3-detail':'8 partidos. Ganas o te vas a casa.',
+  'rung4-name':'Cuartos de Final','rung4-detail':'4 partidos. Los contendientes se separan.',
+  'rung5-name':'Semifinales','rung5-detail':'2 partidos. Un paso de la gloria.',
+  'rung6-name':'La Final','rung6-detail':'19 de julio · MetLife Stadium. Elige al campeón.',
+  'bronze-title':'Tercer lugar.','bronze-detail':'Un punto extra por acertar al ganador del partido de consolación — poco, pero quinielas se han ganado por menos.',
+  'wildcard-title':'Los wildcards del tercer lugar',
+  'wildcard-detail':"Los 8 mejores terceros lugares también avanzan a la Ronda de 32 — pero no valen puntos aquí. Los tomarás en cuenta cuando elijas los cruces de la Ronda de 32, así que no te preocupes por ellos en esta ronda. Solo elige a los dos primeros.",
+  'kicker-board':'Tabla del Grupo · Puntuación Automática','h2-board':'Tabla en Vivo',
+  'p-board':'Cada entrada se toma directo del formulario y se califica automáticamente contra los resultados reales — sin conteo manual.',
+  'live-dot':'En Vivo','refresh-btn':'↻ Actualizar',
+  'kicker-groups':'Ronda de 48 · Tus Primeros 24 Picks','h2-groups':'Los Doce Grupos',
+  'p-groups':'Elige los dos equipos que terminen 1° y 2° en cada grupo — un punto por equipo correcto. Una vez decididos los grupos, los clasificados se marcan aquí mismo.',
+  'kicker-bracket':'Fase Eliminatoria · 28 Jun – 19 Jul','h2-bracket':'El Bracket en Vivo',
+  'p-bracket':'Los 31 partidos eliminatorios, desde la Ronda de 32 hasta la final en el MetLife Stadium. Los ganadores se iluminan en dorado conforme llegan los resultados.',
+  'champion-label':'Campeones del Mundo 2026',
+  'bracket-note':'Fechas y sedes son oficiales — los nombres de equipos reemplazan las rutas conforme avanza el torneo.',
+};
+const EN={
+  'eyebrow':'FIFA World Cup 2026 · USA · Mexico · Canada',
+  'hero-strong':'points climb every round you survive.',
+  'hosted-by':'Hosted by','perfect-lbl':'points · perfect bracket',
+  'audio-title':'Message from Tony',
+  'picks-lock':'Picks Lock','picks-when':'Wednesday, June 10 — kickoff is Thursday at Estadio Azteca',
+  'days':'Days','hrs':'Hrs','mins':'Min','secs':'Sec',
+  'kicker-scoring':'Scoring System','h2-scoring':'Every round is worth more than the last',
+  'p-scoring':'One correct pick in the group stage earns a single point. That same instinct in the final is worth six. Survive deep and the ladder pays.',
+  'pt-each':'pt each','pts-each':'pts each','pts-only':'pts',
+  'rung1-name':'Round of 48 — Groups','rung1-detail':'Pick the top 2 finishers in all 12 groups. 24 picks total.',
+  'rung2-name':'Round of 32','rung2-detail':'Single elimination begins. Pick all 16 winners.',
+  'rung3-name':'Round of 16','rung3-detail':'8 matches. Win or go home.',
+  'rung4-name':'Quarterfinals','rung4-detail':'4 matches. The contenders separate.',
+  'rung5-name':'Semifinals','rung5-detail':'2 matches. One step from glory.',
+  'rung6-name':'The Final','rung6-detail':'July 19 · MetLife Stadium. Call the champion.',
+  'bronze-title':'Third-place game.','bronze-detail':'A single bonus point for picking the winner of the consolation match — small, but pools have been won by less.',
+  'wildcard-title':'The third-place wildcards',
+  'wildcard-detail':"The 8 best third-place teams also advance to the Round of 32 — but they're not worth points here. You'll account for them when you pick the Round of 32 matchups, so don't sweat them in this round. Top-two picks only.",
+  'kicker-board':'Pool Standings · Auto-Scored','h2-board':'Live Leaderboard',
+  'p-board':"Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.",
+  'live-dot':'Live','refresh-btn':'↻ Refresh',
+  'kicker-groups':'Round of 48 · Your First 24 Picks','h2-groups':'The Twelve Groups',
+  'p-groups':'Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.',
+  'kicker-bracket':'Knockout Stage · Jun 28 – Jul 19','h2-bracket':'The Live Bracket',
+  'p-bracket':'All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.',
+  'champion-label':'2026 World Champions',
+  'bracket-note':'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
+};
+const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks','#groups':'Groups','#bracket':'Bracket'};
+const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Picks','#groups':'Grupos','#bracket':'Bracket'};
+let lang='en';
+const langBtn=document.getElementById('lang-btn');
+function applyLang(T,navT){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(T[k]!==undefined) el.textContent=T[k];
+  });
+  const sub=document.querySelector('.hero .sub');
+  if(sub){ const tn=sub.childNodes[0]; if(tn&&tn.nodeType===3) tn.textContent=lang==='es'
+    ?'48 equipos. 104 partidos. Una quiniela. Los picks se califican automáticamente y el bracket se llena en vivo — '
+    :'48 teams. 104 matches. One pool. Picks are scored automatically and the bracket fills in live — '; }
+  document.querySelectorAll('nav a.nl').forEach(a=>{ const l=navT[a.getAttribute('href')]; if(l) a.textContent=l; });
+  langBtn.textContent=lang==='es'?'🇺🇸 EN':'🇲🇽 ES';
+}
+langBtn.addEventListener('click',()=>{ lang=lang==='en'?'es':'en'; applyLang(lang==='es'?ES:EN, lang==='es'?NAV_ES:NAV_EN); });
 </script>
 
 </body>
