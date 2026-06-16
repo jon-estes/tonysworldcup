@@ -447,9 +447,8 @@
     <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#leaderboard">Leaderboard</a>
     <a class="nl" href="/picks/">Picks</a>
-    <a class="nl" href="#groups">Groups</a>
-    <a class="nl" href="#bracket">Bracket</a>
     <a class="nl" href="#groups">Standings</a>
+    <a class="nl" href="#bracket">Bracket</a>
   </div>
 </nav>
 
@@ -580,9 +579,9 @@
 <section id="groups">
   <div class="wrap">
     <div class="sec-head">
-      <div class="kicker">Group Stage · Live Standings</div>
-      <h2 class="display">How Every Group Looks Right Now</h2>
-      <p>Sorted by points, goal difference, and goals scored. Green = on track to advance.</p>
+      <div class="kicker" data-i18n="kicker-groups">Group Stage · Live Standings</div>
+      <h2 class="display" data-i18n="h2-groups">How Every Group Looks Right Now</h2>
+      <p data-i18n="p-groups">Sorted by points, goal difference, and goals scored. Green = on track to advance.</p>
     </div>
     <div class="standings-meta" style="justify-content:flex-start;padding:0 0 24px">
       <span class="s-live-dot">Live</span>
@@ -1074,8 +1073,8 @@ const ES={
   'kicker-board':'Tabla del Grupo · Puntuación Automática','h2-board':'Tabla en Vivo',
   'p-board':'Cada entrada se toma directo del formulario y se califica automáticamente contra los resultados reales — sin conteo manual.',
   'live-dot':'En Vivo','refresh-btn':'↻ Actualizar',
-  'kicker-groups':'Ronda de 48 · Tus Primeros 24 Picks','h2-groups':'Los Doce Grupos',
-  'p-groups':'Elige los dos equipos que terminen 1° y 2° en cada grupo — un punto por equipo correcto. Una vez decididos los grupos, los clasificados se marcan aquí mismo.',
+  'kicker-groups':'Fase de Grupos · Tabla en Vivo','h2-groups':'Así Va Cada Grupo Ahora Mismo',
+  'p-groups':'Ordenado por puntos, diferencia de goles y goles marcados. Verde = en camino a clasificar.',
   'kicker-bracket':'Fase Eliminatoria · 28 Jun – 19 Jul','h2-bracket':'El Bracket en Vivo',
   'p-bracket':'Los 31 partidos eliminatorios, desde la Ronda de 32 hasta la final en el MetLife Stadium. Los ganadores se iluminan en dorado conforme llegan los resultados.',
   'champion-label':'Campeones del Mundo 2026',
@@ -1103,15 +1102,15 @@ const EN={
   'kicker-board':'Pool Standings · Auto-Scored','h2-board':'Live Leaderboard',
   'p-board':"Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.",
   'live-dot':'Live','refresh-btn':'↻ Refresh',
-  'kicker-groups':'Round of 48 · Your First 24 Picks','h2-groups':'The Twelve Groups',
-  'p-groups':'Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.',
+  'kicker-groups':'Group Stage · Live Standings','h2-groups':'How Every Group Looks Right Now',
+  'p-groups':'Sorted by points, goal difference, and goals scored. Green = on track to advance.',
   'kicker-bracket':'Knockout Stage · Jun 28 – Jul 19','h2-bracket':'The Live Bracket',
   'p-bracket':'All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.',
   'champion-label':'2026 World Champions',
   'bracket-note':'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
 };
-const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks','#groups':'Groups','#bracket':'Bracket'};
-const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Picks','#groups':'Grupos','#bracket':'Bracket'};
+const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks','#groups':'Standings','#bracket':'Bracket'};
+const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Picks','#groups':'Tabla Grupos','#bracket':'Bracket'};
 let lang='en';
 const langBtn=document.getElementById('lang-btn');
 function applyLang(T,navT){
