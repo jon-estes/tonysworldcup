@@ -155,26 +155,7 @@
   .perfect .num{font-family:'Anton',sans-serif;font-size:34px;color:var(--gold);line-height:1}
   .perfect .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-faint)}
 
-  .deadline{
-    background:linear-gradient(90deg, rgba(201,38,44,.16), rgba(201,38,44,.06));
-    border-bottom:1px solid rgba(201,38,44,.35);
-  }
-  .deadline .wrap{
-    display:flex;align-items:center;justify-content:center;gap:24px;
-    flex-wrap:wrap;padding:16px 24px;
-  }
-  .deadline .tag{
-    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:800;
-    letter-spacing:.2em;text-transform:uppercase;color:var(--red);
-    display:flex;align-items:center;gap:9px;
-  }
-  .pulse{width:9px;height:9px;border-radius:50%;background:var(--red);animation:pulse 1.4s ease-in-out infinite}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,38,44,.55)}50%{box-shadow:0 0 0 7px rgba(201,38,44,0)}}
-  .deadline .when{font-weight:600}
-  .clock{display:flex;gap:10px}
-  .clock .unit{text-align:center;min-width:56px;background:rgba(255,255,255,.85);border:1px solid rgba(201,38,44,.3);border-radius:8px;padding:6px 8px}
-  .clock .v{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:20px;line-height:1.1;color:var(--chalk)}
-  .clock .u{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-faint)}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,138,69,.55)}50%{box-shadow:0 0 0 6px rgba(22,138,69,0)}}
 
   section{padding:80px 0}
   .sec-head{margin-bottom:44px}
@@ -402,7 +383,6 @@
     section{padding:58px 0}
     .ladder{grid-template-columns:repeat(2,1fr)}
     .wildcard{grid-template-columns:1fr;gap:10px}
-    .clock .unit{min-width:48px}
     .board td{padding:11px 10px;font-size:14px}
     .board th{padding:11px 10px}
   }
@@ -465,20 +445,6 @@
     <audio id="tony-audio" preload="none"></audio>
   </div>
 </header>
-
-<!-- ════════ DEADLINE ════════ -->
-<div class="deadline" role="alert">
-  <div class="wrap">
-    <span class="tag"><span class="pulse"></span> <span data-i18n="picks-lock">Picks Lock</span></span>
-    <span class="when" data-i18n="picks-when">Wednesday, June 10 — kickoff is Thursday at Estadio Azteca</span>
-    <div class="clock" id="clock" aria-label="Countdown to picks deadline">
-      <div class="unit"><div class="v" id="cd-d">–</div><div class="u" data-i18n="days">Days</div></div>
-      <div class="unit"><div class="v" id="cd-h">–</div><div class="u" data-i18n="hrs">Hrs</div></div>
-      <div class="unit"><div class="v" id="cd-m">–</div><div class="u" data-i18n="mins">Min</div></div>
-      <div class="unit"><div class="v" id="cd-s">–</div><div class="u" data-i18n="secs">Sec</div></div>
-    </div>
-  </div>
-</div>
 
 <!-- ════════ POINTS LADDER ════════ -->
 <section class="ladder-sec" id="how">
@@ -731,26 +697,6 @@ function renderGroups(){
     </div>`).join('');
 }
 renderGroups();
-
-/* ── countdown ── */
-const deadline = new Date(2026, 5, 10, 23, 59, 59).getTime();
-const cd = {d:document.getElementById('cd-d'),h:document.getElementById('cd-h'),m:document.getElementById('cd-m'),s:document.getElementById('cd-s')};
-let timer = null;
-function tick(){
-  let diff = deadline - Date.now();
-  if (diff <= 0){
-    document.getElementById('clock').innerHTML =
-      '<span class="mono" style="font-weight:800;color:var(--red);letter-spacing:.14em;">PICKS ARE LOCKED</span>';
-    if (timer){ clearInterval(timer); timer = null; }
-    return;
-  }
-  cd.d.textContent = Math.floor(diff/864e5);
-  cd.h.textContent = String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
-  cd.m.textContent = String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
-  cd.s.textContent = String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
-}
-tick();
-if (deadline > Date.now()) timer = setInterval(tick, 1000);
 
 /* ── CSV helpers ── */
 function parseCSV(text){
