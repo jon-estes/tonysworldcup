@@ -63,13 +63,55 @@
     color:var(--chalk-dim);text-decoration:none;padding:7px 12px;border-radius:8px;white-space:nowrap;
   }
   nav a.nl:hover{color:var(--chalk);background:rgba(20,30,60,.06)}
+
+  /* ── floating lang button ── */
   #lang-btn{
-    cursor:pointer;border:1px solid var(--line);background:transparent;
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
-    letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-dim);
-    border-radius:8px;padding:6px 12px;white-space:nowrap;
+    position:fixed;bottom:22px;right:22px;z-index:100;
+    cursor:pointer;
+    background:var(--chalk);color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
+    letter-spacing:.16em;text-transform:uppercase;
+    border:none;border-radius:999px;
+    padding:10px 18px;
+    box-shadow:0 4px 18px rgba(20,30,60,.28);
+    transition:transform .15s,box-shadow .15s;
   }
-  #lang-btn:hover{color:var(--chalk);border-color:var(--chalk-faint);background:rgba(20,30,60,.06)}
+  #lang-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,30,60,.36)}
+  #lang-btn:active{transform:translateY(0)}
+
+  /* ── audio player ── */
+  .audio-wrap{
+    margin-top:28px;
+    display:inline-flex;align-items:center;gap:14px;
+    background:rgba(255,255,255,.7);
+    border:1px solid var(--line);border-radius:999px;
+    padding:10px 20px 10px 12px;
+    backdrop-filter:blur(6px);
+    box-shadow:0 2px 12px rgba(20,30,60,.08);
+  }
+  .audio-play-btn{
+    width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--grass);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+    transition:background .15s, transform .15s;
+  }
+  .audio-play-btn:hover{background:#12763b;transform:scale(1.07)}
+  .audio-play-btn svg{width:16px;height:16px;fill:currentColor}
+  .audio-meta{text-align:left}
+  .audio-title{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--chalk);
+  }
+  .audio-sub{
+    font-family:'JetBrains Mono',monospace;font-size:9px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-faint);
+    margin-top:1px;
+  }
+  .audio-progress{
+    width:110px;height:3px;background:rgba(20,30,60,.12);border-radius:2px;overflow:hidden;
+  }
+  .audio-progress-bar{height:100%;width:0%;background:var(--grass);border-radius:2px;transition:width .25s linear}
 
   .hero{
     position:relative;
@@ -385,7 +427,6 @@
     <a class="nl" href="/picks/">Picks</a>
     <a class="nl" href="#groups">Groups</a>
     <a class="nl" href="#bracket">Bracket</a>
-    <button id="lang-btn">🇲🇽 ES</button>
   </div>
 </nav>
 
@@ -413,6 +454,20 @@
       <span class="num">113</span>
       <span class="lbl" data-i18n="perfect-lbl">points · perfect bracket</span>
     </div>
+
+    <!-- ── TONY'S AUDIO MESSAGE ── -->
+    <div class="audio-wrap" id="audio-wrap">
+      <button class="audio-play-btn" id="audio-play" aria-label="Play message">
+        <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <div class="audio-meta">
+        <div class="audio-title" data-i18n="audio-title">Message from Tony</div>
+        <div class="audio-sub" id="audio-time">Tap to play</div>
+        <div class="audio-progress"><div class="audio-progress-bar" id="audio-bar"></div></div>
+      </div>
+    </div>
+    <audio id="tony-audio" src="tony-message.mp3" preload="metadata"></audio>
   </div>
 </header>
 
@@ -557,7 +612,7 @@
 
 <div class="tricolor" aria-hidden="true"><span></span><span></span><span></span></div>
 
-<script>
+<button id="lang-btn" aria-label="Toggle language">🇲🇽 ES</button>
 /* ═══════════════════════════════════════════════════════════════
    SETUP — two links, then everything is automatic.
 
@@ -1045,6 +1100,7 @@ const ES = {
   'p-bracket':       'Los 31 partidos eliminatorios, desde la Ronda de 32 hasta la final en el MetLife Stadium. Los ganadores se iluminan en dorado conforme llegan los resultados. Los cruces de la Ronda de 32 se definen al terminar la fase de grupos.',
   'champion-label':  'Campeones del Mundo 2026',
   'bracket-note':    'Fechas y sedes son oficiales — los nombres de equipos reemplazan las rutas conforme avanza el torneo.',
+  'audio-title':     'Mensaje de Tony',
 };
 
 const EN = {
@@ -1093,6 +1149,7 @@ const EN = {
   'p-bracket':       'All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.',
   'champion-label':  '2026 World Champions',
   'bracket-note':    'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
+  'audio-title':     'Message from Tony',
 };
 
 let lang = 'en';
@@ -1128,6 +1185,48 @@ btn.addEventListener('click', () => {
   lang = lang === 'en' ? 'es' : 'en';
   applyLang(lang === 'es' ? ES : EN);
 });
+
+/* ══ AUDIO PLAYER ══ */
+(function(){
+  const audio = document.getElementById('tony-audio');
+  const playBtn = document.getElementById('audio-play');
+  const iconPlay = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+  const timeEl = document.getElementById('audio-time');
+  const bar = document.getElementById('audio-bar');
+
+  function fmt(s){
+    const m = Math.floor(s/60), sec = Math.floor(s%60);
+    return m + ':' + String(sec).padStart(2,'0');
+  }
+  function updateTime(){
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    bar.style.width = pct + '%';
+    timeEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
+  }
+  playBtn.addEventListener('click', () => {
+    if (audio.paused){
+      audio.play();
+      iconPlay.style.display = 'none';
+      iconPause.style.display = '';
+    } else {
+      audio.pause();
+      iconPlay.style.display = '';
+      iconPause.style.display = 'none';
+    }
+  });
+  audio.addEventListener('timeupdate', updateTime);
+  audio.addEventListener('ended', () => {
+    iconPlay.style.display = '';
+    iconPause.style.display = 'none';
+    bar.style.width = '0%';
+    timeEl.textContent = 'Tap to play';
+  });
+  audio.addEventListener('loadedmetadata', () => {
+    timeEl.textContent = fmt(audio.duration);
+  });
+})();
 </script>
 
 </body>
