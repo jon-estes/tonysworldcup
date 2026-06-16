@@ -733,20 +733,6 @@ const GROUPS = [
   ["L","",["England","Croatia","Ghana","Panama"]]
 ];
 let groupResults = {};   // { A:Set(canonical x2), ... }
-function renderGroups(){
-  document.getElementById('groups-grid').innerHTML = GROUPS.map(([letter,tag,teams]) => `
-    <div class="group-card"><span class="letter">${letter}</span>
-      <div class="g-label">Group ${letter}${tag}</div>
-      ${teams.map((t,i)=>{
-        const adv = groupResults[letter] && groupResults[letter].has(canon(t));
-        return `<div class="team${adv?' advanced':''}">${flagImg(t)} ${esc(t)} ${
-          adv ? '<span class="adv">Through</span>' :
-          (i===0 ? '<span class="seed">Seed</span>' : '')}</div>`;
-      }).join('')}
-      <div class="pick-note">${groupResults[letter] ? 'Group decided' : 'Pick 2 to advance'}</div>
-    </div>`).join('');
-}
-renderGroups();
 
 /* ── CSV helpers ── */
 function parseCSV(text){
@@ -778,7 +764,7 @@ let bracketData = {};        // { "R32-1": {t1,s1,t2,s2,w}, ... }
 let roundWinners = {};       // { R32:Set, R16:Set, QF:Set, SF:Set, '3P':Set, F:Set }
 async function loadResults(){
   groupResults = {}; bracketData = {}; roundWinners = {};
-  if (!RESULTS_CSV_URL){ renderGroups(); renderBracket(); return; }
+  if (!RESULTS_CSV_URL){ renderBracket(); return; }
   const note = document.getElementById('bracket-updated');
   try{
     const rows = await fetchCSV(RESULTS_CSV_URL);
@@ -791,22 +777,16 @@ async function loadResults(){
       if (!round || !match) return;
       if (round === 'GROUP'){
         const t1 = canon(r[i1]), t2 = canon(r[i2]);
-        if (t1 || t2){
-          groupResults[match] = new Set([t1, t2].filter(Boolean));
-        }
+        if (t1 || t2){ groupResults[match] = new Set([t1, t2].filter(Boolean)); }
       } else {
         bracketData[round + '-' + match] = { t1:r[i1], s1:r[iS1], t2:r[i2], s2:r[iS2], w:r[iW] };
         const w = canon(r[iW]);
-        if (w){
-          (roundWinners[round] = roundWinners[round] || new Set()).add(w);
-        }
+        if (w){ (roundWinners[round] = roundWinners[round] || new Set()).add(w); }
       }
     });
-    renderGroups();
     renderBracket();
     note.textContent = 'Results synced ' + new Date().toLocaleTimeString() + ' — updates automatically.';
   }catch(e){
-    renderGroups();
     renderBracket();
     note.textContent = 'Results sync failed — showing last known state.';
   }
