@@ -185,18 +185,10 @@
     .picker select{min-width:140px;font-size:16px}
   }
 
-  /* ── STANDINGS SECTION ── */
-  .standings-section{padding:0 0 72px}
-  .standings-header{
-    text-align:center;padding:48px 0 32px;
-    border-top:1px solid var(--line);
-  }
-  .standings-header .eyebrow{margin-bottom:12px}
-  .standings-header h2{font-size:clamp(30px,5vw,52px);line-height:1;margin-bottom:10px}
-  .standings-header p{color:var(--chalk-dim);max-width:480px;margin:0 auto}
-  .standings-meta{
-    display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
-    padding:0 24px 24px;
+  /* ── MERGED GRID ── */
+  .merged-meta{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:0 0 20px;
     font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--chalk-faint);
   }
@@ -204,64 +196,97 @@
   .s-live-dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--grass);animation:pulse 1.8s ease-in-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,138,69,.55)}50%{box-shadow:0 0 0 5px rgba(22,138,69,0)}}
 
-  .standings-grid{
+  .merged-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
     gap:18px;
   }
-  .s-card{
+
+  /* merged card */
+  .m-card{
     background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    overflow:hidden;
+    overflow:hidden;position:relative;
   }
-  .s-card-head{
+  .m-card-head{
     display:flex;align-items:center;justify-content:space-between;
-    padding:11px 16px;border-bottom:1px solid var(--line);
-    background:rgba(20,30,60,.025);
-    position:relative;overflow:hidden;
+    padding:12px 16px;border-bottom:1px solid var(--line);
+    background:rgba(20,30,60,.025);position:relative;overflow:hidden;
   }
-  .s-card-head .ghost{
-    position:absolute;right:-4px;top:-28px;
+  .m-ghost{
+    position:absolute;right:-4px;top:-26px;
     font-family:'Anton',sans-serif;font-size:100px;line-height:1;
     color:rgba(20,30,60,.045);pointer-events:none;
   }
-  .s-group-label{
+  .m-group-label{
     font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
     letter-spacing:.22em;text-transform:uppercase;color:var(--gold);position:relative;z-index:1;
   }
-  .s-table{width:100%;border-collapse:collapse}
-  .s-table th{
+  .m-pick-badge{
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold-deep);background:rgba(200,144,31,.12);
+    border:1px solid rgba(200,144,31,.35);border-radius:6px;
+    padding:3px 8px;position:relative;z-index:1;
+  }
+  .m-pick-badge.all-hit{color:var(--grass);background:rgba(22,138,69,.1);border-color:rgba(22,138,69,.35)}
+
+  /* standings table inside card */
+  .m-table{width:100%;border-collapse:collapse}
+  .m-table th{
     font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;
     text-transform:uppercase;color:var(--chalk-faint);
     padding:6px 8px;text-align:right;background:rgba(20,30,60,.02);
     border-bottom:1px solid var(--line);
   }
-  .s-table th:nth-child(1){width:20px;text-align:center}
-  .s-table th:nth-child(2){text-align:left;padding-left:10px}
-  .s-table td{
+  .m-table th:nth-child(1){width:20px;text-align:center}
+  .m-table th:nth-child(2){text-align:left;padding-left:10px}
+  .m-table td{
     padding:9px 8px;font-size:13px;font-weight:500;
     border-bottom:1px solid rgba(20,30,60,.055);text-align:right;
   }
-  .s-table tr:last-child td{border-bottom:none}
-  .s-table td.s-pos{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
-    text-align:center;color:var(--chalk-faint);
+  .m-table tr:last-child td{border-bottom:none}
+  .m-table td.m-pos{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;text-align:center;color:var(--chalk-faint)}
+  .m-table td.m-team{text-align:left;padding-left:10px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .m-table td.m-pts{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;color:var(--grass)}
+  .m-table td.m-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-dim)}
+  .m-table td.m-gd{font-family:'JetBrains Mono',monospace;font-size:12px}
+  .m-table td.m-gd.pos{color:var(--grass)}
+  .m-table td.m-gd.neg{color:var(--red)}
+
+  /* row highlight states */
+  .m-table tr.m-cut td{border-top:2px dashed rgba(22,138,69,.35) !important}
+
+  /* picked + still playing */
+  .m-table tr.m-pick{background:rgba(200,144,31,.09)}
+  .m-table tr.m-pick td.m-pos{color:var(--gold)}
+  .m-table tr.m-pick td.m-team{color:var(--gold-deep);font-weight:700}
+
+  /* picked + advanced */
+  .m-table tr.m-hit{background:rgba(22,138,69,.1)}
+  .m-table tr.m-hit td.m-pos{color:var(--grass)}
+  .m-table tr.m-hit td.m-team{color:var(--grass);font-weight:700}
+
+  /* picked + eliminated */
+  .m-table tr.m-miss{background:rgba(201,38,44,.07)}
+  .m-table tr.m-miss td.m-pos{color:var(--red)}
+  .m-table tr.m-miss td.m-team{color:var(--red);opacity:.75}
+  .m-table tr.m-miss td.m-team span.tname{text-decoration:line-through;text-decoration-thickness:1.5px}
+
+  /* advanced but not picked */
+  .m-table tr.m-adv{background:rgba(22,138,69,.04)}
+  .m-table tr.m-adv td.m-pos{color:var(--grass)}
+
+  .m-pick-icon{
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 6px;border-radius:4px;flex:none;
   }
-  .s-table td.s-team{text-align:left;padding-left:10px;font-weight:600}
-  .s-table td.s-pts{
-    font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;color:var(--grass);
-  }
-  .s-table td.s-num{
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-dim);
-  }
-  .s-table td.s-gd{font-family:'JetBrains Mono',monospace;font-size:12px}
-  .s-table td.s-gd.pos{color:var(--grass)}
-  .s-table td.s-gd.neg{color:var(--red)}
-  .s-table tr.adv{background:rgba(22,138,69,.06)}
-  .s-table tr.adv td.s-pos{color:var(--grass)}
-  .s-table tr.adv td.s-team{color:var(--grass)}
-  .s-table tr.cut td{border-top:2px dashed rgba(22,138,69,.35) !important}
-  .s-flag{width:20px;height:14px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(20,30,60,.12);vertical-align:middle;margin-right:6px}
-  .s-loading{text-align:center;padding:40px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint);letter-spacing:.08em;grid-column:1/-1}
+  .m-pick-icon.pick{color:var(--gold-deep);background:rgba(200,144,31,.15);border:1px solid rgba(200,144,31,.4)}
+  .m-pick-icon.hit{color:var(--grass);background:rgba(22,138,69,.15);border:1px solid rgba(22,138,69,.4)}
+  .m-pick-icon.miss{color:var(--red);background:rgba(201,38,44,.1);border:1px solid rgba(201,38,44,.35)}
+  .m-pct{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--chalk-faint);flex:none}
+  .m-flag{width:20px;height:14px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(20,30,60,.12);flex:none}
+  .m-loading{text-align:center;padding:40px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint);letter-spacing:.08em;grid-column:1/-1}
 </style>
 </head>
 <body>
@@ -296,10 +321,14 @@
 
 <section>
   <div class="wrap">
-    <div class="groups-grid" id="groups-grid">
+    <div class="merged-meta">
+      <span class="s-live-dot">Live</span>
+      <span id="s-stamp">Loading…</span>
+    </div>
+    <div class="merged-grid" id="merged-grid">
       <div class="empty-state" style="grid-column:1/-1">
-        <div class="big">Loading picks…</div>
-        Pulling everyone's entries from the pool.
+        <div class="big">Loading…</div>
+        Fetching picks and standings.
       </div>
     </div>
     <div class="legend" id="legend" style="display:none">
@@ -310,26 +339,6 @@
     </div>
   </div>
 </section>
-
-<!-- ══ LIVE STANDINGS ══ -->
-<div class="standings-section">
-  <div class="standings-header">
-    <div class="wrap">
-      <div class="eyebrow">Group Stage · Live Standings</div>
-      <h2 class="display">How Every Group Looks Right Now</h2>
-      <p>See where every team stands — sorted by points, goal difference, and goals scored. Green = on track to advance.</p>
-    </div>
-  </div>
-  <div class="standings-meta">
-    <span class="s-live-dot">Live</span>
-    <span id="s-stamp">Loading…</span>
-  </div>
-  <div class="wrap">
-    <div class="standings-grid" id="standings-grid">
-      <div class="s-loading">Loading standings…</div>
-    </div>
-  </div>
-</div>
 
 <footer>
   <div class="wrap">2026 World Cup Pool · <a href="/">Back to the leaderboard &amp; bracket</a></div>
@@ -467,43 +476,106 @@ function tallyPickCounts(){
   });
 }
 
-function render(){
-  const grid = document.getElementById('groups-grid');
+const STANDINGS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWSBA3ph1bL3WpZb47heJiW_EnTOjGIt0ZVGrBQWLP6Ul-bfzOuaKCugVuc0cuSJalS81prbXOsjXm/pub?gid=318523542&single=true&output=csv";
+const GROUP_ORDER = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+
+let standingsData = {}; // { A: [{team,w,d,l,gf,ga,pts,gd}, ...sorted], ... }
+
+function flagImgM(team){
+  const code = FLAG_CODES[canon(team)];
+  return code ? `<img class="m-flag" src="https://flagcdn.com/w40/${code}.png" alt="">` : '';
+}
+
+function renderMerged(){
+  const grid = document.getElementById('merged-grid');
   const legend = document.getElementById('legend');
   const summary = document.getElementById('summary');
-  if (!current){ return; }
+  if (!current){ grid.innerHTML = '<div class="m-loading">Select a player above to see their picks.</div>'; return; }
+
   const total = entries.length || 1;
   let hits = 0, misses = 0, decided = 0;
 
-  grid.innerHTML = GROUPS.map(([letter, teams]) => {
+  grid.innerHTML = GROUP_ORDER.map(letter => {
     const myPicks = new Set(current.picks[letter] || []);
-    const result = groupResults[letter];
-    return `<div class="group-card"><span class="letter">${letter}</span>
-      <div class="g-label">Group ${letter}</div>
-      ${teams.map(t => {
-        const c = canon(t);
-        const picked = myPicks.has(c);
-        const through = result && result.has(c);
-        const out = result && picked && !through;
-        if (result && picked && through) hits++;
-        if (out) misses++;
-        const pct = Math.round(100 * (pickCounts[c]||0) / total);
-        let cls = 'team', badge = '';
-        if (picked && through){ cls += ' pick hit'; badge = '<span class="badge">✓ +1 pt</span>'; }
-        else if (out){ cls += ' pick miss'; badge = '<span class="badge">✗ out</span>'; }
-        else if (picked){ cls += ' pick'; badge = '<span class="badge">Pick</span>'; }
-        else if (through){ cls += ' thru-only'; badge = '<span class="badge">thru</span>'; }
-        return `<div class="${cls}">${flagImg(t)} <span class="t-name">${esc(t)}</span> ${badge} <span class="pct">${pct}%</span></div>`;
-      }).join('')}
+    const result = groupResults[letter]; // Set of canon names that advanced
+    const sRows = standingsData[letter] || [];
+    if (result) decided++;
+
+    // count hits/misses for summary
+    myPicks.forEach(c => {
+      if (result){
+        if (result.has(c)) hits++;
+        else misses++;
+      }
+    });
+
+    // header badge
+    let badgeHits = 0;
+    myPicks.forEach(c => { if (result && result.has(c)) badgeHits++; });
+    const pickedCount = myPicks.size;
+    const badgeText = pickedCount === 0 ? 'No picks' :
+      result ? `${badgeHits}/${pickedCount} ✓` : `${pickedCount} picked`;
+    const badgeCls = badgeHits === pickedCount && pickedCount > 0 && result ? 'all-hit' : '';
+
+    // build rows — if we have standings data use it, else fall back to GROUPS list
+    const teamList = sRows.length > 0
+      ? sRows.map(r => r.team)
+      : (GROUPS.find(([l]) => l === letter) || [letter,[]])[1];
+
+    const rows = (sRows.length > 0 ? sRows : teamList.map(t => ({team:t,w:0,d:0,l:0,gf:0,ga:0,pts:0,gd:0}))).map((r, i) => {
+      const c = canon(r.team);
+      const picked = myPicks.has(c);
+      const through = result && result.has(c);
+      const out = result && picked && !through;
+      const pct = Math.round(100 * (pickCounts[c]||0) / total);
+      const gdStr = r.gd > 0 ? '+'+r.gd : String(r.gd);
+      const gdClass = r.gd > 0 ? 'pos' : r.gd < 0 ? 'neg' : '';
+
+      let rowCls = i === 2 ? 'm-cut' : '';
+      let iconHtml = '';
+      if (picked && through){ rowCls += ' m-hit'; iconHtml = '<span class="m-pick-icon hit">✓ +1</span>'; }
+      else if (out){ rowCls += ' m-miss'; iconHtml = '<span class="m-pick-icon miss">✗ out</span>'; }
+      else if (picked){ rowCls += ' m-pick'; iconHtml = '<span class="m-pick-icon pick">Pick</span>'; }
+      else if (through){ rowCls += ' m-adv'; }
+
+      const teamCell = `<td class="m-team">${flagImgM(r.team)}<span class="tname">${esc(r.team)}</span>${iconHtml}<span class="m-pct">${pct}%</span></td>`;
+
+      return `<tr class="${rowCls.trim()}">
+        <td class="m-pos">${i+1}</td>
+        ${teamCell}
+        <td class="m-num">${r.w+r.d+r.l}</td>
+        <td class="m-num">${r.w}</td><td class="m-num">${r.d}</td><td class="m-num">${r.l}</td>
+        <td class="m-num">${r.gf}</td><td class="m-num">${r.ga}</td>
+        <td class="m-gd ${gdClass}">${gdStr}</td>
+        <td class="m-pts">${r.pts}</td>
+      </tr>`;
+    }).join('');
+
+    return `<div class="m-card">
+      <div class="m-card-head">
+        <span class="m-group-label">Group ${letter}</span>
+        <span class="m-pick-badge ${badgeCls}">${badgeText}</span>
+        <span class="m-ghost">${letter}</span>
+      </div>
+      <table class="m-table">
+        <thead><tr>
+          <th>#</th><th style="text-align:left;padding-left:10px">Team</th>
+          <th>MP</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>`;
   }).join('');
 
-  Object.keys(groupResults).forEach(() => decided++);
+  legend.style.display = '';
   summary.innerHTML = `
     <span class="chip gold"><b>${Object.values(current.picks).flat().length}</b> picks made</span>
     <span class="chip"><b>${hits}</b> through · ${hits} pts</span>
-    ${misses ? `<span class="chip" style="color:var(--red)"><b style="color:var(--red)">${misses}</b> eliminated</span>` : ''}
-    ${decided ? `<span class="chip"><b>${decided}</b>/12 groups decided</span>` : ''}`;
+    <span class="chip"><b>${misses}</b> eliminated</span>
+    <span class="chip"><b>${decided}</b>/12 groups decided</span>`;
+}
+
+function render(){ renderMerged(); }
   legend.style.display = 'flex';
 }
 
@@ -526,17 +598,24 @@ function populateSelect(){
 }
 
 async function loadAll(){
+  const stamp = document.getElementById('s-stamp');
   try{
-    const rows = await fetchCSV(RESPONSES_CSV_URL);
-    entries = parseEntries(rows);
-    tallyPickCounts();
-    if (!entries.length){
-      document.getElementById('groups-grid').innerHTML =
-        '<div class="empty-state" style="grid-column:1/-1"><div class="big">No entries found</div>Picks will appear here once the pool sheet syncs.</div>';
-      return;
+    // load picks + results + standings in parallel
+    const [picksRows, resultsRows, standingsRows] = await Promise.allSettled([
+      fetchCSV(RESPONSES_CSV_URL),
+      fetchCSV(RESULTS_CSV_URL),
+      fetchCSV(STANDINGS_CSV_URL)
+    ]);
+
+    // parse picks
+    if (picksRows.status === 'fulfilled'){
+      entries = parseEntries(picksRows.value);
+      tallyPickCounts();
     }
-    try{
-      const rRows = await fetchCSV(RESULTS_CSV_URL);
+
+    // parse results
+    if (resultsRows.status === 'fulfilled'){
+      const rRows = resultsRows.value;
       const h = rRows[0].map(x => x.trim().toLowerCase());
       const iR=h.indexOf('round'), iM=h.indexOf('match'), i1=h.indexOf('team1'), i2=h.indexOf('team2');
       groupResults = {};
@@ -546,99 +625,50 @@ async function loadAll(){
         const t1 = canon(r[i1]), t2 = canon(r[i2]);
         if (g && (t1 || t2)) groupResults[g] = new Set([t1,t2].filter(Boolean));
       });
-    }catch(e){ /* results optional */ }
+    }
+
+    // parse standings
+    if (standingsRows.status === 'fulfilled'){
+      const sRows = standingsRows.value;
+      if (sRows.length >= 2){
+        const h = sRows[0].map(x => x.trim().toLowerCase());
+        const iG=h.indexOf('group'),iT=h.indexOf('team'),
+              iW=h.indexOf('w'),iD=h.indexOf('d'),iL=h.indexOf('l'),
+              iGF=h.indexOf('gf'),iGA=h.indexOf('ga');
+        const raw = {};
+        sRows.slice(1).forEach(r => {
+          const g = (r[iG]||'').trim().toUpperCase();
+          if (!g) return;
+          if (!raw[g]) raw[g] = [];
+          const w=parseInt(r[iW])||0,d=parseInt(r[iD])||0,l=parseInt(r[iL])||0,
+                gf=parseInt(r[iGF])||0,ga=parseInt(r[iGA])||0;
+          raw[g].push({team:(r[iT]||'').trim(),w,d,l,gf,ga,pts:w*3+d,gd:gf-ga});
+        });
+        standingsData = {};
+        Object.keys(raw).forEach(g => {
+          standingsData[g] = raw[g].sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.team.localeCompare(b.team));
+        });
+      }
+    }
+
+    if (!entries.length){
+      document.getElementById('merged-grid').innerHTML =
+        '<div class="m-loading"><div style="font-family:Anton,sans-serif;font-size:26px;text-transform:uppercase;margin-bottom:8px">No entries found</div>Picks will appear once the pool sheet syncs.</div>';
+      stamp.textContent = 'No picks yet';
+      return;
+    }
+
     populateSelect();
     render();
+    stamp.textContent = 'Synced ' + new Date().toLocaleTimeString() + ' · auto-refreshes every 5 min';
   }catch(e){
-    document.getElementById('groups-grid').innerHTML =
-      '<div class="empty-state" style="grid-column:1/-1"><div class="big">Couldn\'t load picks</div>Refresh to retry — the pool sheet may be syncing.</div>';
+    document.getElementById('merged-grid').innerHTML =
+      '<div class="m-loading"><div style="font-family:Anton,sans-serif;font-size:26px;text-transform:uppercase;margin-bottom:8px">Couldn\'t load</div>Refresh to retry.</div>';
+    stamp.textContent = 'Sync failed — retrying';
   }
 }
 loadAll();
 setInterval(loadAll, AUTO_REFRESH_MS);
-
-/* ══ LIVE STANDINGS ══ */
-const STANDINGS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWSBA3ph1bL3WpZb47heJiW_EnTOjGIt0ZVGrBQWLP6Ul-bfzOuaKCugVuc0cuSJalS81prbXOsjXm/pub?gid=318523542&single=true&output=csv";
-
-const GROUP_ORDER = ['A','B','C','D','E','F','G','H','I','J','K','L'];
-
-function flagImgS(team){
-  const code = FLAG_CODES[canon(team)];
-  return code ? `<img class="s-flag" src="https://flagcdn.com/w40/${code}.png" alt="">` : '';
-}
-
-async function loadStandings(){
-  const grid = document.getElementById('standings-grid');
-  const stamp = document.getElementById('s-stamp');
-  try {
-    const rows = await fetchCSV(STANDINGS_CSV_URL);
-    if (rows.length < 2){ stamp.textContent = 'No data yet'; return; }
-    const h = rows[0].map(x => x.trim().toLowerCase());
-    const iG=h.indexOf('group'), iT=h.indexOf('team'),
-          iW=h.indexOf('w'), iD=h.indexOf('d'), iL=h.indexOf('l'),
-          iGF=h.indexOf('gf'), iGA=h.indexOf('ga');
-
-    // group rows by letter
-    const groups = {};
-    rows.slice(1).forEach(r => {
-      const g = (r[iG]||'').trim().toUpperCase();
-      if (!g) return;
-      if (!groups[g]) groups[g] = [];
-      const w=parseInt(r[iW])||0, d=parseInt(r[iD])||0, l=parseInt(r[iL])||0,
-            gf=parseInt(r[iGF])||0, ga=parseInt(r[iGA])||0;
-      groups[g].push({ team:(r[iT]||'').trim(), w, d, l, gf, ga, pts: w*3+d, gd: gf-ga });
-    });
-
-    // sort each group
-    Object.keys(groups).forEach(g => {
-      groups[g].sort((a,b) =>
-        b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.team.localeCompare(b.team)
-      );
-    });
-
-    grid.innerHTML = GROUP_ORDER.filter(g => groups[g]).map(g => {
-      const teams = groups[g];
-      const rows = teams.map((t, i) => {
-        const isAdv = i < 2;
-        const gdStr = t.gd > 0 ? '+'+t.gd : String(t.gd);
-        const gdClass = t.gd > 0 ? 'pos' : t.gd < 0 ? 'neg' : '';
-        return `<tr class="${isAdv ? 'adv' : ''}${i===2?' cut':''}">
-          <td class="s-pos">${i+1}</td>
-          <td class="s-team">${flagImgS(t.team)}${t.team}</td>
-          <td class="s-num">${t.w+t.d+t.l}</td>
-          <td class="s-num">${t.w}</td>
-          <td class="s-num">${t.d}</td>
-          <td class="s-num">${t.l}</td>
-          <td class="s-num">${t.gf}</td>
-          <td class="s-num">${t.ga}</td>
-          <td class="s-gd ${gdClass}">${gdStr}</td>
-          <td class="s-pts">${t.pts}</td>
-        </tr>`;
-      }).join('');
-      return `<div class="s-card">
-        <div class="s-card-head">
-          <span class="s-group-label">Group ${g}</span>
-          <span class="ghost">${g}</span>
-        </div>
-        <table class="s-table">
-          <thead><tr>
-            <th>#</th><th style="text-align:left;padding-left:10px">Team</th>
-            <th>MP</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
-          </tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>`;
-    }).join('');
-
-    stamp.textContent = 'Synced ' + new Date().toLocaleTimeString() + ' · auto-refreshes every 5 min';
-  } catch(e) {
-    stamp.textContent = 'Could not load standings';
-    grid.innerHTML = '<div class="s-loading">Standings unavailable — refresh to retry.</div>';
-  }
-}
-
-loadStandings();
-setInterval(loadStandings, AUTO_REFRESH_MS);
 
 /* ══════════════════════════════════════════════════════════
    SPANISH TRANSLATION TOGGLE
