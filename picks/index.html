@@ -58,6 +58,14 @@
   }
   nav a.nl:hover{color:var(--chalk);background:rgba(20,30,60,.06)}
   nav a.nl.active{color:var(--gold);background:rgba(200,144,31,.1)}
+  .lang-btn{
+    cursor:pointer;border:1px solid var(--line);background:transparent;
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-dim);
+    border-radius:8px;padding:6px 12px;white-space:nowrap;
+    transition:color .15s,border-color .15s,background .15s;
+  }
+  .lang-btn:hover{color:var(--chalk);border-color:var(--chalk-faint);background:rgba(20,30,60,.06)}
 
   header.page{
     padding:56px 0 36px;text-align:center;
@@ -188,6 +196,7 @@
     <a class="nl" href="/#leaderboard">Leaderboard</a>
     <a class="nl active" href="/picks/">Picks</a>
     <a class="nl" href="/#bracket">Bracket</a>
+    <button class="lang-btn" id="lang-btn" aria-label="Toggle language">🇲🇽 ES</button>
   </div>
 </nav>
 
@@ -449,6 +458,203 @@ async function loadAll(){
 }
 loadAll();
 setInterval(loadAll, AUTO_REFRESH_MS);
+
+/* ══════════════════════════════════════════════════════════
+   SPANISH TRANSLATION TOGGLE
+   ══════════════════════════════════════════════════════════ */
+const TRANSLATIONS = {
+  en: {
+    // nav
+    'Leaderboard':              'Leaderboard',
+    'Picks':                    'Picks',
+    'Bracket':                  'Bracket',
+    // header
+    'Round of 48 · Everyone\'s Cards on the Table': 'Round of 48 · Everyone\'s Cards on the Table',
+    'Player Picks':             'Player Picks',
+    'Picks are locked, so it\'s all out in the open. Choose a player to see the two teams they backed in every group — and how it\'s going.':
+      'Picks are locked, so it\'s all out in the open. Choose a player to see the two teams they backed in every group — and how it\'s going.',
+    // controls
+    'Player':                   'Player',
+    // loading / empty
+    'Loading picks…':           'Loading picks…',
+    'Pulling everyone\'s entries from the pool.': 'Pulling everyone\'s entries from the pool.',
+    'No entries found':         'No entries found',
+    'Picks will appear here once the pool sheet syncs.': 'Picks will appear here once the pool sheet syncs.',
+    'Couldn\'t load picks':     'Couldn\'t load picks',
+    'Refresh to retry — the pool sheet may be syncing.': 'Refresh to retry — the pool sheet may be syncing.',
+    // legend
+    'Their pick':               'Their pick',
+    'Pick advanced ✓':          'Pick advanced ✓',
+    'Pick eliminated ✗':        'Pick eliminated ✗',
+    '% = share of pool that picked the team': '% = share of pool that picked the team',
+    // badges
+    '✓ +1 pt':                  '✓ +1 pt',
+    '✗ out':                    '✗ out',
+    'Pick':                     'Pick',
+    'thru':                     'thru',
+    // summary chips
+    'picks made':               'picks made',
+    'through · ':               'through · ',
+    'pts':                      'pts',
+    'eliminated':               'eliminated',
+    'groups decided':           'groups decided',
+    // footer
+    'Back to the leaderboard & bracket': 'Back to the leaderboard & bracket',
+    '2026 World Cup Pool':      '2026 World Cup Pool',
+    // lang button
+    '🇲🇽 ES':                  '🇺🇸 EN',
+  },
+  es: {
+    // nav
+    'Leaderboard':              'Tabla',
+    'Picks':                    'Selecciones',
+    'Bracket':                  'Bracket',
+    // header
+    'Round of 48 · Everyone\'s Cards on the Table': 'Ronda de 48 · Todo al Descubierto',
+    'Player Picks':             'Selecciones de Jugadores',
+    'Picks are locked, so it\'s all out in the open. Choose a player to see the two teams they backed in every group — and how it\'s going.':
+      'Las selecciones ya están cerradas. Elige un jugador para ver los dos equipos que apostó en cada grupo — y cómo le va.',
+    // controls
+    'Player':                   'Jugador',
+    // loading / empty
+    'Loading picks…':           'Cargando selecciones…',
+    'Pulling everyone\'s entries from the pool.': 'Obteniendo entradas de todos en el grupo.',
+    'No entries found':         'Sin entradas',
+    'Picks will appear here once the pool sheet syncs.': 'Las selecciones aparecerán aquí cuando se sincronice la hoja.',
+    'Couldn\'t load picks':     'No se pudieron cargar las selecciones',
+    'Refresh to retry — the pool sheet may be syncing.': 'Recarga para reintentar — la hoja puede estar sincronizando.',
+    // legend
+    'Their pick':               'Su elección',
+    'Pick advanced ✓':          'Equipo clasificado ✓',
+    'Pick eliminated ✗':        'Equipo eliminado ✗',
+    '% = share of pool that picked the team': '% = porcentaje del grupo que eligió al equipo',
+    // badges
+    '✓ +1 pt':                  '✓ +1 pt',
+    '✗ out':                    '✗ fuera',
+    'Pick':                     'Elegido',
+    'thru':                     'clasif.',
+    // footer
+    'Back to the leaderboard & bracket': 'Volver a la tabla y al bracket',
+    '2026 World Cup Pool':      'Grupo Mundial 2026',
+    // lang button
+    '🇲🇽 ES':                  '🇺🇸 EN',
+  }
+};
+
+/* Nodes we translate by data-i18n attribute */
+const I18N_SELECTORS = [
+  // nav links (text only, not href)
+  { sel: 'nav a.nl[href="/#leaderboard"]',    key: 'Leaderboard' },
+  { sel: 'nav a.nl[href="/picks/"]',           key: 'Picks' },
+  { sel: 'nav a.nl[href="/#bracket"]',         key: 'Bracket' },
+  // header
+  { sel: '.eyebrow',   key: 'Round of 48 · Everyone\'s Cards on the Table' },
+  { sel: 'header.page h1',  key: 'Player Picks' },
+  { sel: 'header.page p',   key: 'Picks are locked, so it\'s all out in the open. Choose a player to see the two teams they backed in every group — and how it\'s going.' },
+  // picker label
+  { sel: 'label[for="player-select"]', key: 'Player' },
+  // footer
+  { sel: 'footer a[href="/"]', key: 'Back to the leaderboard & bracket' },
+];
+
+let currentLang = 'en';
+
+function applyLang(lang){
+  const T = TRANSLATIONS[lang];
+  // static nodes
+  I18N_SELECTORS.forEach(({sel, key}) => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    el.textContent = T[key] ?? TRANSLATIONS.en[key];
+  });
+
+  // footer prefix text node
+  const footerWrap = document.querySelector('footer .wrap');
+  if (footerWrap){
+    // rebuild footer to avoid clobbering the anchor
+    const anchor = footerWrap.querySelector('a');
+    if (anchor) anchor.textContent = T['Back to the leaderboard & bracket'];
+    const textNode = footerWrap.childNodes[0];
+    if (textNode && textNode.nodeType === 3){
+      textNode.textContent = T['2026 World Cup Pool'] + ' · ';
+    }
+  }
+
+  // lang button itself
+  document.getElementById('lang-btn').textContent = T['🇲🇽 ES'];
+
+  // re-render dynamic content with new language
+  renderInLang(lang);
+}
+
+/* Patch render() to respect current language */
+const _origRender = render;
+function renderInLang(lang){
+  const T = TRANSLATIONS[lang];
+  // Run the original render (English strings are in JS)
+  _origRender();
+  // Now swap out the dynamic strings
+  // badges
+  document.querySelectorAll('.badge').forEach(b => {
+    const txt = b.textContent.trim();
+    if (txt === '✓ +1 pt') b.textContent = T['✓ +1 pt'];
+    else if (txt === '✗ out') b.textContent = T['✗ out'];
+    else if (txt === 'Pick') b.textContent = T['Pick'];
+    else if (txt === 'thru') b.textContent = T['thru'];
+  });
+
+  // group labels
+  document.querySelectorAll('.g-label').forEach(el => {
+    el.textContent = el.textContent.replace(/^Group /, lang === 'es' ? 'Grupo ' : 'Group ');
+  });
+
+  // summary chips — rebuild with translated strings
+  const summary = document.getElementById('summary');
+  if (summary && summary.innerHTML){
+    summary.innerHTML = summary.innerHTML
+      .replace(/picks made/g, T['picks made'] ?? 'picks made')
+      .replace(/through · /g, T['through · '] ?? 'through · ')
+      .replace(/\bpts\b/g, T['pts'] ?? 'pts')
+      .replace(/\beliminated\b/g, T['eliminated'] ?? 'eliminado')
+      .replace(/\/12 groups decided/g, lang === 'es' ? '/12 grupos decididos' : '/12 groups decided');
+  }
+
+  // legend
+  const legend = document.getElementById('legend');
+  if (legend){
+    const spans = legend.querySelectorAll('span > :last-child, span');
+    // rebuild legend text nodes
+    legend.querySelectorAll('span[class=""]').forEach(span => {
+      const dot = span.querySelector('.dot');
+      if (!dot) return;
+      const classes = dot.className;
+      if (classes.includes('gold'))  span.childNodes[1] && (span.childNodes[1].textContent = ' ' + T['Their pick']);
+      if (classes.includes('green')) span.childNodes[1] && (span.childNodes[1].textContent = ' ' + T['Pick advanced ✓']);
+      if (classes.includes('red'))   span.childNodes[1] && (span.childNodes[1].textContent = ' ' + T['Pick eliminated ✗']);
+    });
+    // the % note (last span)
+    const allSpans = legend.querySelectorAll('span');
+    const lastSpan = allSpans[allSpans.length - 1];
+    if (lastSpan && !lastSpan.querySelector('.dot')){
+      lastSpan.textContent = T['% = share of pool that picked the team'];
+    }
+  }
+}
+
+// Override render so future calls (select change, loadAll re-run) stay in current lang
+window._origRenderForLang = render;
+(function(){
+  const origRender = render;
+  window.render = function(){
+    origRender();
+    if (currentLang === 'es') renderInLang('es');
+  };
+})();
+
+document.getElementById('lang-btn').addEventListener('click', () => {
+  currentLang = currentLang === 'en' ? 'es' : 'en';
+  applyLang(currentLang);
+});
 </script>
 
 </body>
