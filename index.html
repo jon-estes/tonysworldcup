@@ -449,7 +449,7 @@
     <a class="nl" href="/picks/">Picks</a>
     <a class="nl" href="#groups">Groups</a>
     <a class="nl" href="#bracket">Bracket</a>
-    <a class="nl" href="#standings">Standings</a>
+    <a class="nl" href="#groups">Standings</a>
   </div>
 </nav>
 
@@ -580,13 +580,17 @@
 <section id="groups">
   <div class="wrap">
     <div class="sec-head">
-      <div class="kicker" data-i18n="kicker-groups">Round of 48 · Your First 24 Picks</div>
-      <h2 class="display" data-i18n="h2-groups">The Twelve Groups</h2>
-      <p data-i18n="p-groups">Pick the two teams that finish 1st and 2nd in each group — one point per correct team. Once groups are decided, the advancing teams get tagged right here.</p>
+      <div class="kicker">Group Stage · Live Standings</div>
+      <h2 class="display">How Every Group Looks Right Now</h2>
+      <p>Sorted by points, goal difference, and goals scored. Green = on track to advance.</p>
     </div>
-    <div class="groups-grid" id="groups-grid"></div>
-
-    
+    <div class="standings-meta" style="justify-content:flex-start;padding:0 0 24px">
+      <span class="s-live-dot">Live</span>
+      <span id="s-stamp">Loading…</span>
+    </div>
+    <div class="standings-grid" id="standings-grid">
+      <div class="s-loading">Loading standings…</div>
+    </div>
   </div>
 </section>
 
@@ -608,26 +612,6 @@
     <div class="bracket-note" id="bracket-updated" data-i18n="bracket-note">All dates and venues are official — team names replace the slot paths as the tournament unfolds.</div>
   </div>
 </section>
-
-<!-- ════════ LIVE STANDINGS ════════ -->
-<div class="standings-section" id="standings">
-  <div class="standings-header">
-    <div class="wrap">
-      <div class="eyebrow">Group Stage · Live Standings</div>
-      <h2 class="display">How Every Group Looks Right Now</h2>
-      <p>Sorted by points, goal difference, and goals scored. Green = on track to advance.</p>
-    </div>
-  </div>
-  <div class="standings-meta">
-    <span class="s-live-dot">Live</span>
-    <span id="s-stamp">Loading…</span>
-  </div>
-  <div class="wrap">
-    <div class="standings-grid" id="standings-grid">
-      <div class="s-loading">Loading standings…</div>
-    </div>
-  </div>
-</div>
 
 <footer>
   <div class="wrap">Thank you for playing in Tony's World Cup! · <span style="color:var(--gold)">v9</span></div>
