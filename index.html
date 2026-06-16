@@ -456,7 +456,7 @@
     </div>
 
     <!-- ── TONY'S AUDIO MESSAGE ── -->
-    <div class="audio-wrap" id="audio-wrap">
+    <div class="audio-wrap" id="audio-wrap" style="display:none">
       <button class="audio-play-btn" id="audio-play" aria-label="Play message">
         <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
@@ -467,7 +467,7 @@
         <div class="audio-progress"><div class="audio-progress-bar" id="audio-bar"></div></div>
       </div>
     </div>
-    <audio id="tony-audio" src="tony-message.mp3" preload="metadata"></audio>
+    <audio id="tony-audio" preload="none"></audio>
   </div>
 </header>
 
@@ -1188,12 +1188,22 @@ btn.addEventListener('click', () => {
 
 /* ══ AUDIO PLAYER ══ */
 (function(){
+  const AUDIO_FILE = 'tony-message.mp3';
+  const wrap = document.getElementById('audio-wrap');
   const audio = document.getElementById('tony-audio');
   const playBtn = document.getElementById('audio-play');
   const iconPlay = document.getElementById('icon-play');
   const iconPause = document.getElementById('icon-pause');
   const timeEl = document.getElementById('audio-time');
   const bar = document.getElementById('audio-bar');
+
+  // Only show the player if the file actually exists
+  fetch(AUDIO_FILE, {method:'HEAD'}).then(r => {
+    if (!r.ok) return; // file not uploaded yet — stay hidden
+    audio.src = AUDIO_FILE;
+    audio.preload = 'metadata';
+    wrap.style.display = '';
+  }).catch(() => {}); // silently hide if fetch fails
 
   function fmt(s){
     const m = Math.floor(s/60), sec = Math.floor(s%60);
