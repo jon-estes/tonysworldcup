@@ -392,12 +392,41 @@
     html{scroll-behavior:auto}
   }
 
-  /* ── LIVE STANDINGS ── */
+  /* ── LIVE STANDINGS + PICKS (merged) ── */
   .standings-section{padding:0 0 72px}
   .standings-header{text-align:center;padding:48px 0 32px;border-top:1px solid var(--line)}
   .standings-header .eyebrow{margin-bottom:12px}
   .standings-header h2{font-size:clamp(30px,5vw,52px);line-height:1;margin-bottom:10px}
-  .standings-header p{color:var(--chalk-dim);max-width:480px;margin:0 auto}
+  .standings-header p{color:var(--chalk-dim);max-width:560px;margin:0 auto}
+
+  .controls{
+    display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;
+    padding:28px 24px 30px;
+  }
+  .picker{
+    display:flex;align-items:center;gap:12px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:10px 16px;box-shadow:0 4px 14px rgba(20,30,60,.06);
+  }
+  .picker label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-faint);
+  }
+  .picker select{
+    font-family:'Archivo',sans-serif;font-size:17px;font-weight:700;color:var(--chalk);
+    background:transparent;border:none;outline:none;cursor:pointer;
+    padding:4px 6px;min-width:180px;
+  }
+  .summary{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .chip{
+    display:inline-flex;align-items:baseline;gap:8px;
+    border:1px solid var(--line);border-radius:999px;background:var(--card);
+    padding:8px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-faint);
+  }
+  .chip b{font-size:16px;letter-spacing:0;color:var(--grass)}
+  .chip.gold b{color:var(--gold)}
+
   .standings-meta{
     display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
     padding:0 24px 24px;
@@ -407,34 +436,82 @@
   .s-live-dot{display:inline-flex;align-items:center;gap:7px;color:var(--grass)}
   .s-live-dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--grass);animation:spulse 1.8s ease-in-out infinite}
   @keyframes spulse{0%,100%{box-shadow:0 0 0 0 rgba(22,138,69,.55)}50%{box-shadow:0 0 0 5px rgba(22,138,69,0)}}
-  .standings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-  .s-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
-  .s-card-head{
+
+  .merged-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:18px}
+  .m-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;position:relative}
+  .m-card-head{
     display:flex;align-items:center;justify-content:space-between;
-    padding:11px 16px;border-bottom:1px solid var(--line);
+    padding:12px 16px;border-bottom:1px solid var(--line);
     background:rgba(20,30,60,.025);position:relative;overflow:hidden;
   }
-  .s-card-head .ghost{position:absolute;right:-4px;top:-28px;font-family:'Anton',sans-serif;font-size:100px;line-height:1;color:rgba(20,30,60,.045);pointer-events:none}
-  .s-group-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);position:relative;z-index:1}
-  .s-table{width:100%;border-collapse:collapse}
-  .s-table th{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-faint);padding:6px 8px;text-align:right;background:rgba(20,30,60,.02);border-bottom:1px solid var(--line)}
-  .s-table th:nth-child(1){width:20px;text-align:center}
-  .s-table th:nth-child(2){text-align:left;padding-left:10px}
-  .s-table td{padding:9px 8px;font-size:13px;font-weight:500;border-bottom:1px solid rgba(20,30,60,.055);text-align:right}
-  .s-table tr:last-child td{border-bottom:none}
-  .s-table td.s-pos{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;text-align:center;color:var(--chalk-faint)}
-  .s-table td.s-team{text-align:left;padding-left:10px;font-weight:600}
-  .s-table td.s-pts{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;color:var(--grass)}
-  .s-table td.s-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-dim)}
-  .s-table td.s-gd{font-family:'JetBrains Mono',monospace;font-size:12px}
-  .s-table td.s-gd.pos{color:var(--grass)}
-  .s-table td.s-gd.neg{color:var(--red)}
-  .s-table tr.adv{background:rgba(22,138,69,.06)}
-  .s-table tr.adv td.s-pos{color:var(--grass)}
-  .s-table tr.adv td.s-team{color:var(--grass)}
-  .s-table tr.cut td{border-top:2px dashed rgba(22,138,69,.35) !important}
-  .s-flag{width:20px;height:14px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(20,30,60,.12);vertical-align:middle;margin-right:6px}
-  .s-loading{text-align:center;padding:40px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint);letter-spacing:.08em;grid-column:1/-1}
+  .m-ghost{position:absolute;right:-4px;top:-26px;font-family:'Anton',sans-serif;font-size:100px;line-height:1;color:rgba(20,30,60,.045);pointer-events:none}
+  .m-group-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);position:relative;z-index:1}
+  .m-pick-badge{
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold-deep);background:rgba(200,144,31,.12);border:1px solid rgba(200,144,31,.35);border-radius:6px;
+    padding:3px 8px;position:relative;z-index:1;
+  }
+  .m-pick-badge.all-hit{color:var(--grass);background:rgba(22,138,69,.1);border-color:rgba(22,138,69,.35)}
+
+  .m-table{width:100%;border-collapse:collapse;table-layout:fixed}
+  .m-table th{
+    font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--chalk-faint);
+    padding:6px 6px;text-align:right;background:rgba(20,30,60,.02);border-bottom:1px solid var(--line);overflow:hidden;
+  }
+  .m-table th:nth-child(1){width:24px;text-align:center}
+  .m-table th:nth-child(2){text-align:left;padding-left:8px;width:44%}
+  .m-table th:nth-child(3){width:28px}
+  .m-table th:nth-child(4){width:24px}
+  .m-table th:nth-child(5){width:24px}
+  .m-table th:nth-child(6){width:24px}
+  .m-table th:nth-child(7){width:28px}
+  .m-table th:nth-child(8){width:28px}
+  .m-table th:nth-child(9){width:30px}
+  .m-table th:nth-child(10){width:30px}
+  .m-table td{padding:8px 6px;font-size:12px;font-weight:500;border-bottom:1px solid rgba(20,30,60,.055);text-align:right;overflow:hidden}
+  .m-table tr:last-child td{border-bottom:none}
+  .m-table td.m-pos{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;text-align:center;color:var(--chalk-faint)}
+  .m-table td.m-team{text-align:left;padding-left:8px;font-weight:600;display:flex;align-items:center;gap:5px;overflow:hidden}
+  .m-table td.m-team .tname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+  .m-table td.m-pts{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:13px;color:var(--grass)}
+  .m-table td.m-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--chalk-dim)}
+  .m-table td.m-gd{font-family:'JetBrains Mono',monospace;font-size:11px}
+  .m-table td.m-gd.pos{color:var(--grass)}
+  .m-table td.m-gd.neg{color:var(--red)}
+  .m-table tr.m-cut td{border-top:2px dashed rgba(22,138,69,.35) !important}
+  .m-table tr.m-pick{background:rgba(200,144,31,.09)}
+  .m-table tr.m-pick td.m-pos{color:var(--gold)}
+  .m-table tr.m-pick td.m-team{color:var(--gold-deep);font-weight:700}
+  .m-table tr.m-hit{background:rgba(22,138,69,.1)}
+  .m-table tr.m-hit td.m-pos{color:var(--grass)}
+  .m-table tr.m-hit td.m-team{color:var(--grass);font-weight:700}
+  .m-table tr.m-miss{background:rgba(201,38,44,.07)}
+  .m-table tr.m-miss td.m-pos{color:var(--red)}
+  .m-table tr.m-miss td.m-team{color:var(--red);opacity:.75}
+  .m-table tr.m-miss td.m-team span.tname{text-decoration:line-through;text-decoration-thickness:1.5px}
+  .m-table tr.m-adv{background:rgba(22,138,69,.04)}
+  .m-table tr.m-adv td.m-pos{color:var(--grass)}
+  .m-pick-icon{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:4px;flex:none}
+  .m-pick-icon.pick{color:var(--gold-deep);background:rgba(200,144,31,.15);border:1px solid rgba(200,144,31,.4)}
+  .m-pick-icon.hit{color:var(--grass);background:rgba(22,138,69,.15);border:1px solid rgba(22,138,69,.4)}
+  .m-pick-icon.miss{color:var(--red);background:rgba(201,38,44,.1);border:1px solid rgba(201,38,44,.35)}
+  .m-flag{width:20px;height:14px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(20,30,60,.12);flex:none}
+  .m-loading{text-align:center;padding:40px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint);letter-spacing:.08em;grid-column:1/-1}
+
+  .legend{
+    margin-top:26px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--chalk-faint);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:3px;flex:none}
+  .dot.gold{background:rgba(200,144,31,.6)}
+  .dot.green{background:rgba(22,138,69,.6)}
+  .dot.red{background:rgba(201,38,44,.5)}
+
+  @media (max-width:560px){
+    .picker select{min-width:140px;font-size:16px}
+  }
 </style>
 </head>
 <body>
@@ -581,14 +658,26 @@
     <div class="sec-head">
       <div class="kicker" data-i18n="kicker-groups">Group Stage · Live Standings</div>
       <h2 class="display" data-i18n="h2-groups">How Every Group Looks Right Now</h2>
-      <p data-i18n="p-groups">Sorted by points, goal difference, and goals scored. Green = on track to advance.</p>
+      <p data-i18n="p-groups">Pick a player to see their picks highlighted right inside the live standings — sorted by points, goal difference, and goals scored.</p>
+    </div>
+    <div class="controls">
+      <div class="picker">
+        <label for="player-select" data-i18n="player-label">Player</label>
+        <select id="player-select" aria-label="Choose a player"></select>
+      </div>
+      <div class="summary" id="summary"></div>
     </div>
     <div class="standings-meta" style="justify-content:flex-start;padding:0 0 24px">
       <span class="s-live-dot">Live</span>
       <span id="s-stamp">Loading…</span>
     </div>
-    <div class="standings-grid" id="standings-grid">
-      <div class="s-loading">Loading standings…</div>
+    <div class="merged-grid" id="merged-grid">
+      <div class="m-loading">Loading picks and standings…</div>
+    </div>
+    <div class="legend" id="legend" style="display:none">
+      <span><span class="dot gold"></span> <span data-i18n="legend-pick">Their pick</span></span>
+      <span><span class="dot green"></span> <span data-i18n="legend-hit">Pick advanced ✓</span></span>
+      <span><span class="dot red"></span> <span data-i18n="legend-miss">Pick eliminated ✗</span></span>
     </div>
   </div>
 </section>
@@ -1074,7 +1163,8 @@ const ES={
   'p-board':'Cada entrada se toma directo del formulario y se califica automáticamente contra los resultados reales — sin conteo manual.',
   'live-dot':'En Vivo','refresh-btn':'↻ Actualizar',
   'kicker-groups':'Fase de Grupos · Tabla en Vivo','h2-groups':'Así Va Cada Grupo Ahora Mismo',
-  'p-groups':'Ordenado por puntos, diferencia de goles y goles marcados. Verde = en camino a clasificar.',
+  'p-groups':'Elige un jugador para ver sus picks resaltados dentro de la tabla en vivo — ordenado por puntos, diferencia de goles y goles marcados.',
+  'player-label':'Jugador','legend-pick':'Su elección','legend-hit':'Equipo clasificado ✓','legend-miss':'Equipo eliminado ✗',
   'kicker-bracket':'Fase Eliminatoria · 28 Jun – 19 Jul','h2-bracket':'El Bracket en Vivo',
   'p-bracket':'Los 31 partidos eliminatorios, desde la Ronda de 32 hasta la final en el MetLife Stadium. Los ganadores se iluminan en dorado conforme llegan los resultados.',
   'champion-label':'Campeones del Mundo 2026',
@@ -1103,7 +1193,8 @@ const EN={
   'p-board':"Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.",
   'live-dot':'Live','refresh-btn':'↻ Refresh',
   'kicker-groups':'Group Stage · Live Standings','h2-groups':'How Every Group Looks Right Now',
-  'p-groups':'Sorted by points, goal difference, and goals scored. Green = on track to advance.',
+  'p-groups':'Pick a player to see their picks highlighted right inside the live standings — sorted by points, goal difference, and goals scored.',
+  'player-label':'Player','legend-pick':'Their pick','legend-hit':'Pick advanced ✓','legend-miss':'Pick eliminated ✗',
   'kicker-bracket':'Knockout Stage · Jun 28 – Jul 19','h2-bracket':'The Live Bracket',
   'p-bracket':'All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.',
   'champion-label':'2026 World Champions',
@@ -1136,66 +1227,205 @@ function applyLang(T,navT){
 }
 langBtn.addEventListener('click',()=>{ lang=lang==='en'?'es':'en'; applyLang(lang==='es'?ES:EN, lang==='es'?NAV_ES:NAV_EN); });
 
-/* ══ LIVE STANDINGS ══ */
+/* ══ MERGED PICKS + LIVE STANDINGS ══ */
 const STANDINGS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWSBA3ph1bL3WpZb47heJiW_EnTOjGIt0ZVGrBQWLP6Ul-bfzOuaKCugVuc0cuSJalS81prbXOsjXm/pub?gid=318523542&single=true&output=csv";
 const GROUP_ORDER = ['A','B','C','D','E','F','G','H','I','J','K','L'];
-function flagImgS(team){
+
+let pickEntries = [];     // [{name, picks:{A:[c,c],...}}]
+let pickCounts = {};      // canonical team → count across the pool
+let currentPlayer = null;
+let standingsData = {};   // { A: [{team,w,d,l,gf,ga,pts,gd}, ...sorted], ... }
+
+function flagImgM(team){
   const code = FLAG_CODES[canon(team)];
-  return code ? `<img class="s-flag" src="https://flagcdn.com/w40/${code}.png" alt="">` : '';
+  return code ? `<img class="m-flag" src="https://flagcdn.com/w40/${code}.png" alt="">` : '';
 }
-async function loadStandings(){
-  const grid = document.getElementById('standings-grid');
-  const stamp = document.getElementById('s-stamp');
-  try {
-    const rows = await fetchCSV(STANDINGS_CSV_URL);
-    if (rows.length < 2){ stamp.textContent = 'No data yet'; return; }
-    const h = rows[0].map(x => x.trim().toLowerCase());
-    const iG=h.indexOf('group'),iT=h.indexOf('team'),
-          iW=h.indexOf('w'),iD=h.indexOf('d'),iL=h.indexOf('l'),
-          iGF=h.indexOf('gf'),iGA=h.indexOf('ga');
-    const groups = {};
-    rows.slice(1).forEach(r => {
-      const g = (r[iG]||'').trim().toUpperCase();
-      if (!g) return;
-      if (!groups[g]) groups[g] = [];
-      const w=parseInt(r[iW])||0,d=parseInt(r[iD])||0,l=parseInt(r[iL])||0,
-            gf=parseInt(r[iGF])||0,ga=parseInt(r[iGA])||0;
-      groups[g].push({team:(r[iT]||'').trim(),w,d,l,gf,ga,pts:w*3+d,gd:gf-ga});
+
+function parsePickEntries(rows){
+  const headers = rows[0];
+  let nameCol = headers.findIndex(h => /name|nickname|player/i.test(h));
+  if (nameCol === -1) nameCol = /timestamp|date/i.test(headers[0]||'') ? 1 : 0;
+  const groupCols = [];
+  headers.forEach((h, i) => {
+    const m = /group\s+([A-L])\b/i.exec(h);
+    if (m) groupCols.push([i, m[1].toUpperCase()]);
+  });
+  const people = new Map();
+  rows.slice(1).forEach(r => {
+    const name = (r[nameCol]||'').trim();
+    if (!name) return;
+    const picks = {};
+    groupCols.forEach(([i, letter]) => {
+      const t = canon(r[i]);
+      if (t) (picks[letter] = picks[letter] || []).push(t);
     });
-    Object.keys(groups).forEach(g => {
-      groups[g].sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.team.localeCompare(b.team));
+    people.set(name.toLowerCase(), { name, picks });
+  });
+  return [...people.values()].sort((a,b) => a.name.localeCompare(b.name));
+}
+function tallyPickCounts(){
+  pickCounts = {};
+  pickEntries.forEach(e => {
+    Object.values(e.picks).forEach(arr => {
+      new Set(arr).forEach(t => pickCounts[t] = (pickCounts[t]||0) + 1);
     });
-    grid.innerHTML = GROUP_ORDER.filter(g => groups[g]).map(g => {
-      const teams = groups[g];
-      const trows = teams.map((t,i) => {
-        const gdStr = t.gd > 0 ? '+'+t.gd : String(t.gd);
-        const gdClass = t.gd > 0 ? 'pos' : t.gd < 0 ? 'neg' : '';
-        return `<tr class="${i<2?'adv':''}${i===2?' cut':''}">
-          <td class="s-pos">${i+1}</td>
-          <td class="s-team">${flagImgS(t.team)}${t.team}</td>
-          <td class="s-num">${t.w+t.d+t.l}</td>
-          <td class="s-num">${t.w}</td><td class="s-num">${t.d}</td><td class="s-num">${t.l}</td>
-          <td class="s-num">${t.gf}</td><td class="s-num">${t.ga}</td>
-          <td class="s-gd ${gdClass}">${gdStr}</td>
-          <td class="s-pts">${t.pts}</td>
-        </tr>`;
-      }).join('');
-      return `<div class="s-card">
-        <div class="s-card-head"><span class="s-group-label">Group ${g}</span><span class="ghost">${g}</span></div>
-        <table class="s-table">
-          <thead><tr><th>#</th><th style="text-align:left;padding-left:10px">Team</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead>
-          <tbody>${trows}</tbody>
-        </table>
-      </div>`;
+  });
+}
+
+function renderMerged(){
+  const grid = document.getElementById('merged-grid');
+  const legend = document.getElementById('legend');
+  const summary = document.getElementById('summary');
+  if (!currentPlayer){ grid.innerHTML = '<div class="m-loading">Select a player above to see their picks.</div>'; return; }
+
+  const total = pickEntries.length || 1;
+  let hits = 0, misses = 0, decided = 0;
+
+  grid.innerHTML = GROUP_ORDER.map(letter => {
+    const myPicks = new Set(currentPlayer.picks[letter] || []);
+    const result = groupResults[letter]; // Set of canon names that advanced
+    const sRows = standingsData[letter] || [];
+    if (result) decided++;
+
+    myPicks.forEach(c => {
+      if (result){
+        if (result.has(c)) hits++;
+        else misses++;
+      }
+    });
+
+    let badgeHits = 0;
+    myPicks.forEach(c => { if (result && result.has(c)) badgeHits++; });
+    const pickedCount = myPicks.size;
+    const badgeText = pickedCount === 0 ? 'No picks' :
+      result ? `${badgeHits}/${pickedCount} ✓` : `${pickedCount} picked`;
+    const badgeCls = badgeHits === pickedCount && pickedCount > 0 && result ? 'all-hit' : '';
+
+    const fallbackTeams = (GROUPS.find(([l]) => l === letter) || [letter,[]])[1];
+    const rowsSrc = sRows.length > 0 ? sRows : fallbackTeams.map(t => ({team:t,w:0,d:0,l:0,gf:0,ga:0,pts:0,gd:0}));
+
+    const rows = rowsSrc.map((r, i) => {
+      const c = canon(r.team);
+      const picked = myPicks.has(c);
+      const through = result && result.has(c);
+      const out = result && picked && !through;
+      const gdStr = r.gd > 0 ? '+'+r.gd : String(r.gd);
+      const gdClass = r.gd > 0 ? 'pos' : r.gd < 0 ? 'neg' : '';
+
+      let rowCls = i === 2 ? 'm-cut' : '';
+      let iconHtml = '';
+      if (picked && through){ rowCls += ' m-hit'; iconHtml = '<span class="m-pick-icon hit">✓ +1</span>'; }
+      else if (out){ rowCls += ' m-miss'; iconHtml = '<span class="m-pick-icon miss">✗ out</span>'; }
+      else if (picked){ rowCls += ' m-pick'; iconHtml = '<span class="m-pick-icon pick">Pick</span>'; }
+      else if (through){ rowCls += ' m-adv'; }
+
+      const teamCell = `<td class="m-team">${flagImgM(r.team)}<span class="tname">${esc(r.team)}</span>${iconHtml}</td>`;
+
+      return `<tr class="${rowCls.trim()}">
+        <td class="m-pos">${i+1}</td>
+        ${teamCell}
+        <td class="m-num">${r.w+r.d+r.l}</td>
+        <td class="m-num">${r.w}</td><td class="m-num">${r.d}</td><td class="m-num">${r.l}</td>
+        <td class="m-num">${r.gf}</td><td class="m-num">${r.ga}</td>
+        <td class="m-gd ${gdClass}">${gdStr}</td>
+        <td class="m-pts">${r.pts}</td>
+      </tr>`;
     }).join('');
+
+    return `<div class="m-card">
+      <div class="m-card-head">
+        <span class="m-group-label">Group ${letter}</span>
+        <span class="m-pick-badge ${badgeCls}">${badgeText}</span>
+        <span class="m-ghost">${letter}</span>
+      </div>
+      <table class="m-table">
+        <thead><tr>
+          <th>#</th><th style="text-align:left;padding-left:10px">Team</th>
+          <th>MP</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }).join('');
+
+  legend.style.display = '';
+  summary.innerHTML = `
+    <span class="chip gold"><b>${Object.values(currentPlayer.picks).flat().length}</b> picks made</span>
+    <span class="chip"><b>${hits}</b> through · ${hits} pts</span>
+    <span class="chip"><b>${misses}</b> eliminated</span>
+    <span class="chip"><b>${decided}</b>/12 groups decided</span>`;
+}
+
+function populatePlayerSelect(){
+  const sel = document.getElementById('player-select');
+  sel.innerHTML = pickEntries.map(e => `<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');
+  const want = new URLSearchParams(location.search).get('player');
+  if (want){
+    const match = pickEntries.find(e => e.name.toLowerCase() === want.toLowerCase());
+    if (match) sel.value = match.name;
+  }
+  currentPlayer = pickEntries.find(e => e.name === sel.value) || pickEntries[0];
+  sel.onchange = () => {
+    currentPlayer = pickEntries.find(e => e.name === sel.value);
+    const u = new URL(location); u.searchParams.set('player', currentPlayer.name);
+    history.replaceState(null, '', u);
+    renderMerged();
+  };
+}
+
+async function loadMergedPicks(){
+  const stamp = document.getElementById('s-stamp');
+  const grid = document.getElementById('merged-grid');
+  try {
+    const [picksRows, standingsRows] = await Promise.allSettled([
+      fetchCSV(RESPONSES_CSV_URL),
+      fetchCSV(STANDINGS_CSV_URL)
+    ]);
+
+    if (picksRows.status === 'fulfilled'){
+      pickEntries = parsePickEntries(picksRows.value);
+      tallyPickCounts();
+    }
+
+    if (standingsRows.status === 'fulfilled'){
+      const sRows = standingsRows.value;
+      if (sRows.length >= 2){
+        const h = sRows[0].map(x => x.trim().toLowerCase());
+        const iG=h.indexOf('group'),iT=h.indexOf('team'),
+              iW=h.indexOf('w'),iD=h.indexOf('d'),iL=h.indexOf('l'),
+              iGF=h.indexOf('gf'),iGA=h.indexOf('ga');
+        const raw = {};
+        sRows.slice(1).forEach(r => {
+          const g = (r[iG]||'').trim().toUpperCase();
+          if (!g) return;
+          if (!raw[g]) raw[g] = [];
+          const w=parseInt(r[iW])||0,d=parseInt(r[iD])||0,l=parseInt(r[iL])||0,
+                gf=parseInt(r[iGF])||0,ga=parseInt(r[iGA])||0;
+          raw[g].push({team:(r[iT]||'').trim(),w,d,l,gf,ga,pts:w*3+d,gd:gf-ga});
+        });
+        standingsData = {};
+        Object.keys(raw).forEach(g => {
+          standingsData[g] = raw[g].sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.team.localeCompare(b.team));
+        });
+      }
+    }
+
+    if (!pickEntries.length){
+      grid.innerHTML = '<div class="m-loading">No picks found yet — check back once the pool sheet syncs.</div>';
+      stamp.textContent = 'No picks yet';
+      return;
+    }
+
+    populatePlayerSelect();
+    renderMerged();
     stamp.textContent = 'Synced ' + new Date().toLocaleTimeString() + ' · auto-refreshes every 5 min';
   } catch(e) {
-    stamp.textContent = 'Could not load standings';
-    grid.innerHTML = '<div class="s-loading">Standings unavailable — refresh to retry.</div>';
+    stamp.textContent = 'Sync failed — retrying';
+    grid.innerHTML = '<div class="m-loading">Couldn\'t load — refresh to retry.</div>';
   }
 }
-loadStandings();
-setInterval(loadStandings, AUTO_REFRESH_MS);
+loadMergedPicks();
+setInterval(loadMergedPicks, AUTO_REFRESH_MS);
 </script>
 
 </body>
