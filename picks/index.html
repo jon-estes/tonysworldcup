@@ -278,8 +278,7 @@
   /* picked + eliminated */
   .m-table tr.m-miss{background:rgba(201,38,44,.07)}
   .m-table tr.m-miss td.m-pos{color:var(--red)}
-  .m-table tr.m-miss td.m-team{color:var(--red);opacity:.75}
-  .m-table tr.m-miss td.m-team span.tname{text-decoration:line-through;text-decoration-thickness:1.5px}
+  .m-table tr.m-miss td.m-team{color:var(--red);opacity:.85}
 
   /* advanced but not picked */
   .m-table tr.m-adv{background:rgba(22,138,69,.04)}
@@ -343,7 +342,7 @@
     <div class="legend" id="legend" style="display:none">
       <span><span class="dot gold"></span> Their pick</span>
       <span><span class="dot green"></span> Pick advanced ✓</span>
-      <span><span class="dot red"></span> Pick eliminated ✗</span>
+      <span><span class="dot red"></span> Pick didn't score ✗</span>
       <span>% = share of pool that picked the team</span>
     </div>
   </div>
@@ -543,7 +542,7 @@ function renderMerged(){
       let rowCls = i === 2 ? 'm-cut' : '';
       let iconHtml = '';
       if (picked && through){ rowCls += ' m-hit'; iconHtml = '<span class="m-pick-icon hit">✓ +1</span>'; }
-      else if (out){ rowCls += ' m-miss'; iconHtml = '<span class="m-pick-icon miss">✗ out</span>'; }
+      else if (out){ rowCls += ' m-miss'; iconHtml = '<span class="m-pick-icon miss">✗ no point</span>'; }
       else if (picked){ rowCls += ' m-pick'; iconHtml = '<span class="m-pick-icon pick">Pick</span>'; }
       else if (through){ rowCls += ' m-adv'; }
 
@@ -703,11 +702,11 @@ const TRANSLATIONS = {
     // legend
     'Their pick':               'Their pick',
     'Pick advanced ✓':          'Pick advanced ✓',
-    'Pick eliminated ✗':        'Pick eliminated ✗',
+    'Pick eliminated ✗':        "Pick didn't score ✗",
     '% = share of pool that picked the team': '% = share of pool that picked the team',
     // badges
     '✓ +1 pt':                  '✓ +1 pt',
-    '✗ out':                    '✗ out',
+    '✗ out':                    '✗ no point',
     'Pick':                     'Pick',
     'thru':                     'thru',
     // summary chips
@@ -744,11 +743,11 @@ const TRANSLATIONS = {
     // legend
     'Their pick':               'Su elección',
     'Pick advanced ✓':          'Equipo clasificado ✓',
-    'Pick eliminated ✗':        'Equipo eliminado ✗',
+    'Pick eliminated ✗':        'No anotó punto ✗',
     '% = share of pool that picked the team': '% = porcentaje del grupo que eligió al equipo',
     // badges
     '✓ +1 pt':                  '✓ +1 pt',
-    '✗ out':                    '✗ fuera',
+    '✗ out':                    '✗ sin punto',
     'Pick':                     'Elegido',
     'thru':                     'clasif.',
     // footer
@@ -816,7 +815,7 @@ function renderInLang(lang){
   document.querySelectorAll('.badge').forEach(b => {
     const txt = b.textContent.trim();
     if (txt === '✓ +1 pt') b.textContent = T['✓ +1 pt'];
-    else if (txt === '✗ out') b.textContent = T['✗ out'];
+    else if (txt === '✗ no point') b.textContent = T['✗ out'];
     else if (txt === 'Pick') b.textContent = T['Pick'];
     else if (txt === 'thru') b.textContent = T['thru'];
   });
