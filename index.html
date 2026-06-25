@@ -487,8 +487,7 @@
   .m-table tr.m-hit td.m-team{color:var(--grass);font-weight:700}
   .m-table tr.m-miss{background:rgba(201,38,44,.07)}
   .m-table tr.m-miss td.m-pos{color:var(--red)}
-  .m-table tr.m-miss td.m-team{color:var(--red);opacity:.75}
-  .m-table tr.m-miss td.m-team span.tname{text-decoration:line-through;text-decoration-thickness:1.5px}
+  .m-table tr.m-miss td.m-team{color:var(--red);opacity:.85}
   .m-table tr.m-adv{background:rgba(22,138,69,.04)}
   .m-table tr.m-adv td.m-pos{color:var(--grass)}
   .m-pick-icon{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:4px;flex:none}
@@ -677,7 +676,7 @@
     <div class="legend" id="legend" style="display:none">
       <span><span class="dot gold"></span> <span data-i18n="legend-pick">Their pick</span></span>
       <span><span class="dot green"></span> <span data-i18n="legend-hit">Pick advanced ✓</span></span>
-      <span><span class="dot red"></span> <span data-i18n="legend-miss">Pick eliminated ✗</span></span>
+      <span><span class="dot red"></span> <span data-i18n="legend-miss">Pick didn't score ✗</span></span>
     </div>
   </div>
 </section>
@@ -1164,7 +1163,7 @@ const ES={
   'live-dot':'En Vivo','refresh-btn':'↻ Actualizar',
   'kicker-groups':'Fase de Grupos · Tabla en Vivo','h2-groups':'Así Va Cada Grupo Ahora Mismo',
   'p-groups':'Elige un jugador para ver sus picks resaltados dentro de la tabla en vivo — ordenado por puntos, diferencia de goles y goles marcados.',
-  'player-label':'Jugador','legend-pick':'Su elección','legend-hit':'Equipo clasificado ✓','legend-miss':'Equipo eliminado ✗',
+  'player-label':'Jugador','legend-pick':'Su elección','legend-hit':'Equipo clasificado ✓','legend-miss':'No anotó punto ✗',
   'kicker-bracket':'Fase Eliminatoria · 28 Jun – 19 Jul','h2-bracket':'El Bracket en Vivo',
   'p-bracket':'Los 31 partidos eliminatorios, desde la Ronda de 32 hasta la final en el MetLife Stadium. Los ganadores se iluminan en dorado conforme llegan los resultados.',
   'champion-label':'Campeones del Mundo 2026',
@@ -1194,7 +1193,7 @@ const EN={
   'live-dot':'Live','refresh-btn':'↻ Refresh',
   'kicker-groups':'Group Stage · Live Standings','h2-groups':'How Every Group Looks Right Now',
   'p-groups':'Pick a player to see their picks highlighted right inside the live standings — sorted by points, goal difference, and goals scored.',
-  'player-label':'Player','legend-pick':'Their pick','legend-hit':'Pick advanced ✓','legend-miss':'Pick eliminated ✗',
+  'player-label':'Player','legend-pick':'Their pick','legend-hit':'Pick advanced ✓','legend-miss':"Pick didn't score ✗",
   'kicker-bracket':'Knockout Stage · Jun 28 – Jul 19','h2-bracket':'The Live Bracket',
   'p-bracket':'All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.',
   'champion-label':'2026 World Champions',
@@ -1315,7 +1314,7 @@ function renderMerged(){
       let rowCls = i === 2 ? 'm-cut' : '';
       let iconHtml = '';
       if (picked && through){ rowCls += ' m-hit'; iconHtml = '<span class="m-pick-icon hit">✓ +1</span>'; }
-      else if (out){ rowCls += ' m-miss'; iconHtml = '<span class="m-pick-icon miss">✗ out</span>'; }
+      else if (out){ rowCls += ' m-miss'; iconHtml = '<span class="m-pick-icon miss">✗ no point</span>'; }
       else if (picked){ rowCls += ' m-pick'; iconHtml = '<span class="m-pick-icon pick">Pick</span>'; }
       else if (through){ rowCls += ' m-adv'; }
 
