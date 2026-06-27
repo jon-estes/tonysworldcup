@@ -695,9 +695,6 @@
         <span class="cc-num" id="cc-days">–</span> <span data-i18n="cc-label">days until we crown a champion</span>
       </span>
     </div>
-    <div style="margin-top:18px">
-      <button class="share-btn" id="open-share-btn">📤 <span data-i18n="share-btn">Share My Standing</span></button>
-    </div>
     <div class="audio-wrap" id="audio-wrap" style="display:none">
       <button class="audio-play-btn" id="audio-play" aria-label="Play message">
         <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -2245,7 +2242,6 @@ function openShareModal(){
   drawShareCard();
   shareBackdrop.classList.add('open');
 }
-document.getElementById('open-share-btn').addEventListener('click', openShareModal);
 document.getElementById('open-share-btn-2').addEventListener('click', openShareModal);
 document.getElementById('share-close-btn').addEventListener('click', () => {
   shareBackdrop.classList.remove('open');
