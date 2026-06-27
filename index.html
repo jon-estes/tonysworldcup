@@ -220,6 +220,138 @@
   }
   .entry-count b{color:var(--gold);font-size:14px}
 
+  /* ── RANK MOVEMENT ── */
+  .move-arrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
+    margin-left:6px;display:inline-flex;align-items:center;gap:1px;
+  }
+  .move-arrow.up{color:var(--grass)}
+  .move-arrow.down{color:var(--red)}
+  .move-arrow.same{color:var(--chalk-faint)}
+
+  .mover-banner{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    background:linear-gradient(90deg, rgba(22,138,69,.1), rgba(200,144,31,.06));
+    border:1px solid rgba(22,138,69,.3);border-radius:12px;
+    padding:12px 18px;margin-bottom:16px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+  }
+  .mover-banner .mb-icon{font-size:18px}
+  .mover-banner .mb-text{color:var(--chalk);font-weight:600}
+  .mover-banner .mb-text b{color:var(--grass)}
+  .mover-banner.cooling{
+    background:linear-gradient(90deg, rgba(201,38,44,.08), rgba(200,144,31,.04));
+    border-color:rgba(201,38,44,.25);
+  }
+  .mover-banner.cooling .mb-text b{color:var(--red)}
+
+  /* ── UPSET TRACKER ── */
+  .upset-sec{padding:56px 0 72px;border-top:1px solid var(--line)}
+  .upset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .upset-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;position:relative;overflow:hidden;
+  }
+  .upset-card::before{
+    content:"⚡";position:absolute;right:-6px;top:-14px;font-size:80px;opacity:.05;
+  }
+  .upset-card .u-group{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px;
+  }
+  .upset-card .u-team{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;margin-bottom:4px}
+  .upset-card .u-team img{width:26px;height:19px;object-fit:cover;border-radius:3px;box-shadow:0 0 0 1px rgba(20,30,60,.14)}
+  .upset-card .u-pct{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--chalk-dim);
+  }
+  .upset-card .u-pct b{color:var(--red);font-size:15px}
+  .upset-empty{
+    text-align:center;padding:36px 24px;color:var(--chalk-faint);
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;
+    grid-column:1/-1;
+  }
+
+  /* ── POOL PULSE TICKER ── */
+  .pulse-ticker{
+    background:var(--chalk);color:var(--ink);overflow:hidden;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    position:relative;height:34px;display:flex;align-items:center;
+  }
+  .pulse-ticker .pulse-track{
+    display:flex;white-space:nowrap;
+    animation:pulse-scroll 38s linear infinite;
+  }
+  .pulse-ticker:hover .pulse-track{animation-play-state:paused}
+  .pulse-item{
+    display:inline-flex;align-items:center;gap:8px;padding:0 28px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;
+    color:rgba(255,255,255,.85);
+  }
+  .pulse-item b{color:var(--gold)}
+  .pulse-item .dotsep{color:rgba(255,255,255,.25)}
+  @keyframes pulse-scroll{
+    0%{transform:translateX(0)}
+    100%{transform:translateX(-50%)}
+  }
+
+  /* ── CHAMPION COUNTDOWN ── */
+  .champ-countdown{
+    display:inline-flex;align-items:center;gap:10px;
+    margin-top:14px;padding:9px 18px;
+    background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:999px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--chalk-dim);
+  }
+  .champ-countdown .cc-num{font-weight:800;color:var(--gold-deep);font-size:14px}
+
+  /* ── FLAG WALL ── */
+  .flagwall-sec{padding:0 0 60px}
+  .flagwall{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  }
+  .fw-flag{
+    position:relative;width:52px;height:38px;border-radius:6px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(20,30,60,.14);transition:transform .15s,opacity .4s;
+  }
+  .fw-flag img{width:100%;height:100%;object-fit:cover;display:block}
+  .fw-flag.eliminated{opacity:.18;filter:grayscale(1)}
+  .fw-flag:not(.eliminated):hover{transform:scale(1.12);box-shadow:0 4px 14px rgba(20,30,60,.25)}
+  .fw-flag .fw-x{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    color:var(--red);font-size:22px;font-weight:800;opacity:0;
+  }
+  .fw-flag.eliminated .fw-x{opacity:.7}
+
+  /* ── SHARE CARD ── */
+  .share-btn{
+    cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+    background:var(--chalk);color:var(--ink);border:none;border-radius:999px;
+    padding:9px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
+    letter-spacing:.12em;text-transform:uppercase;
+    transition:transform .15s;
+  }
+  .share-btn:hover{transform:translateY(-2px)}
+  .share-modal-backdrop{
+    position:fixed;inset:0;background:rgba(15,15,14,.7);z-index:200;
+    display:none;align-items:center;justify-content:center;padding:24px;
+  }
+  .share-modal-backdrop.open{display:flex}
+  .share-modal{
+    background:var(--ink);border-radius:18px;padding:0;max-width:420px;width:100%;
+    overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.4);
+  }
+  .share-modal canvas{width:100%;display:block}
+  .share-modal-actions{display:flex;gap:10px;padding:16px;background:var(--card)}
+  .share-modal-actions button{
+    flex:1;cursor:pointer;border:1px solid var(--line);background:var(--card);
+    border-radius:10px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);
+  }
+  .share-modal-actions button.primary{background:var(--grass);color:#fff;border-color:var(--grass)}
+
+  /* ── CONFETTI CANVAS ── */
+  #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:300;display:none}
+
   /* ── BRACKET ── */
   .bracket-scroll{overflow-x:auto;padding-bottom:14px;-webkit-overflow-scrolling:touch}
   .bracket{
@@ -522,11 +654,17 @@
     <span class="brand">WC26 Pool</span>
     <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#leaderboard">Leaderboard</a>
-    <a class="nl" href="/picks/">Picks</a>
-    <a class="nl" href="#groups">Standings</a>
+    <a class="nl" href="/picks/">Picks Page</a>
+    <a class="nl" href="#groups" data-i18n="nav-picks">Live Picks</a>
     <a class="nl" href="#bracket">Bracket</a>
+    <a class="nl" href="#upsets">Upsets</a>
+    <a class="nl" href="#flagwall-sec" data-i18n="nav-flagwall">Survivors</a>
   </div>
 </nav>
+
+<div class="pulse-ticker" id="pulse-ticker" style="display:none">
+  <div class="pulse-track" id="pulse-track"></div>
+</div>
 
 <!-- ════════ HERO ════════ -->
 <header class="hero">
@@ -551,6 +689,14 @@
     <div class="perfect">
       <span class="num">113</span>
       <span class="lbl" data-i18n="perfect-lbl">points · perfect bracket</span>
+    </div>
+    <div>
+      <span class="champ-countdown" id="champ-countdown">
+        <span class="cc-num" id="cc-days">–</span> <span data-i18n="cc-label">days until we crown a champion</span>
+      </span>
+    </div>
+    <div style="margin-top:18px">
+      <button class="share-btn" id="open-share-btn">📤 <span data-i18n="share-btn">Share My Standing</span></button>
     </div>
     <div class="audio-wrap" id="audio-wrap" style="display:none">
       <button class="audio-play-btn" id="audio-play" aria-label="Play message">
@@ -642,6 +788,7 @@
       <span id="board-updated">Waiting for first sync…</span>
       <button class="refresh-btn" id="refresh-board" type="button" data-i18n="refresh-btn">↻ Refresh</button>
     </div>
+    <div id="mover-banner-slot"></div>
     <div class="board"><div class="board-scroll" id="board">
       <div class="empty">
         <div class="big">Connecting to the pool…</div>
@@ -651,24 +798,50 @@
   </div>
 </section>
 
+<!-- ════════ UPSET TRACKER ════════ -->
+<section class="upset-sec" id="upsets">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Underdog Watch</div>
+      <h2 class="display">Upset Alerts</h2>
+      <p>Teams that advanced despite a minority of the pool picking them. Brag rights for anyone who called it.</p>
+    </div>
+    <div class="upset-grid" id="upset-grid">
+      <div class="upset-empty">No upsets yet — check back as groups finish.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ════════ THE GROUPS ════════ -->
 <section id="groups">
   <div class="wrap">
     <div class="sec-head">
-      <div class="kicker" data-i18n="kicker-groups">Group Stage · Live Standings</div>
-      <h2 class="display" data-i18n="h2-groups">How Every Group Looks Right Now</h2>
-      <p data-i18n="p-groups">Pick a player to see their picks highlighted right inside the live standings — sorted by points, goal difference, and goals scored.</p>
+      <div class="kicker" data-i18n="kicker-groups">Player Picks · Live Tracking</div>
+      <h2 class="display" data-i18n="h2-groups">Player Picks</h2>
+      <p data-i18n="p-groups">Pick a player and a round to see their picks tracked live — from the group stage all the way to the final.</p>
     </div>
     <div class="controls">
       <div class="picker">
         <label for="player-select" data-i18n="player-label">Player</label>
         <select id="player-select" aria-label="Choose a player"></select>
       </div>
+      <div class="picker">
+        <label for="round-select" data-i18n="round-label">Round</label>
+        <select id="round-select" aria-label="Choose a round">
+          <option value="GROUPS">Groups</option>
+          <option value="R32">Round of 32</option>
+          <option value="R16">Round of 16</option>
+          <option value="QF">Quarterfinals</option>
+          <option value="SF">Semifinals</option>
+          <option value="F">Final</option>
+        </select>
+      </div>
       <div class="summary" id="summary"></div>
     </div>
     <div class="standings-meta" style="justify-content:flex-start;padding:0 0 24px">
       <span class="s-live-dot">Live</span>
       <span id="s-stamp">Loading…</span>
+      <button class="share-btn" id="open-share-btn-2" style="margin-left:auto;padding:6px 14px;font-size:10px">📤 Share My Standing</button>
     </div>
     <div class="merged-grid" id="merged-grid">
       <div class="m-loading">Loading picks and standings…</div>
@@ -700,15 +873,46 @@
   </div>
 </section>
 
+<!-- ════════ FLAG WALL ════════ -->
+<section class="flagwall-sec" id="flagwall-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker" data-i18n="kicker-flagwall">Still Standing</div>
+      <h2 class="display" data-i18n="h2-flagwall">Every Team Still Alive</h2>
+      <p data-i18n="p-flagwall">All 48 teams. Eliminated ones fade out as the tournament moves on.</p>
+    </div>
+    <div class="flagwall" id="flagwall"></div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">Thank you for playing in Tony's World Cup! · <span style="color:var(--gold)">v9</span></div>
 </footer>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="share-modal-backdrop" id="share-modal-backdrop">
+  <div class="share-modal">
+    <canvas id="share-canvas" width="600" height="750"></canvas>
+    <div class="share-modal-actions">
+      <button id="share-download-btn" class="primary">⬇ Download Image</button>
+      <button id="share-close-btn">Close</button>
+    </div>
+  </div>
+</div>
 
 <div class="tricolor" aria-hidden="true"><span></span><span></span><span></span></div>
 
 <button id="lang-btn" aria-label="Toggle language">🇲🇽 ES</button>
 
 <script>
+/* All shared state declared up front, before any function bodies
+   that reference it — `let` bindings are NOT safely hoisted across
+   a function call the way `var`/function declarations are, so any
+   variable a function reads must already be declared by the time
+   that function actually runs, not just by the time it's defined. */
+let standingsData = {};   // { A: [{team,w,d,l,gf,ga,pts,gd}, ...sorted], ... }
+
 /* ═══════════════════════════════════════════════════════════════
    SETUP — two links, then everything is automatic.
 
@@ -744,13 +948,20 @@ const RESULTS_CSV_URL   = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWSB
    link it to Sheets, publish its responses tab as CSV, and paste
    the link below. Answers are matched by the person's name and
    graded against that round's winners in the Results tab.       */
+/* ══════════════════════════════════════════════════════════
+   PASTE EACH ROUND'S PUBLISHED CSV URL(S) HERE AS YOU GET THEM.
+   A round can have ONE url or SEVERAL (e.g. if Tony split a
+   round's picks across multiple Google Forms) — just list them
+   all in the urls array. Leave urls:[] for a round not open yet
+   — the page will automatically show "Picks not open yet".
+   ══════════════════════════════════════════════════════════ */
 const KNOCKOUT_FORMS = [
-  { round:'R32', pts:2, url:"" },
-  { round:'R16', pts:3, url:"" },
-  { round:'QF',  pts:4, url:"" },
-  { round:'SF',  pts:5, url:"" },
-  { round:'3P',  pts:1, url:"" },   // can share a form with the Final
-  { round:'F',   pts:6, url:"" }
+  { round:'R32', pts:2, urls:["https://docs.google.com/spreadsheets/d/e/2PACX-1vQgGhUvUeJawwDSaP-PCKzeH0UfPcFQQ_QflGzdmomfGtZl6-3Atx4YPkhGMNzAhuW0voBpJsfBl8du/pub?output=csv"] },
+  { round:'R16', pts:3, urls:[] },
+  { round:'QF',  pts:4, urls:[] },
+  { round:'SF',  pts:5, urls:[] },
+  { round:'3P',  pts:1, urls:[] },   // can share a form with the Final
+  { round:'F',   pts:6, urls:[] }
 ];
 const AUTO_REFRESH_MS = 5 * 60 * 1000;
 
@@ -841,9 +1052,18 @@ function parseCSV(text){
   return rows.filter(r => r.some(c => c.trim() !== ''));
 }
 async function fetchCSV(url){
-  const res = await fetch(url + (url.includes('?')?'&':'?') + 'cb=' + Date.now());
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  return parseCSV(await res.text());
+  const cb = '&_=' + Date.now();
+  const full = url + (url.includes('?')?'&':'?') + 'cb=' + Date.now();
+  try{
+    const res = await fetch(full);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return parseCSV(await res.text());
+  }catch(e){
+    // one quiet retry — Google's publish-to-web endpoint occasionally blips
+    const res2 = await fetch(full + cb);
+    if (!res2.ok) throw new Error('HTTP ' + res2.status);
+    return parseCSV(await res2.text());
+  }
 }
 
 /* ── RESULTS (one tab drives everything) ── */
@@ -872,9 +1092,11 @@ async function loadResults(){
       }
     });
     renderBracket();
+    renderFlagWall();
     note.textContent = 'Results synced ' + new Date().toLocaleTimeString() + ' — updates automatically.';
   }catch(e){
     renderBracket();
+    renderFlagWall();
     note.textContent = 'Results sync failed — showing last known state.';
   }
 }
@@ -923,6 +1145,32 @@ const ROUNDS = [
   { key:'SF',  name:'Semifinals',   pts:'5 pts', count:2,  dates:'Jul 14 – 15' },
   { key:'F',   name:'The Final',    pts:'6 pts', count:1,  dates:'Jul 19 · New York/NJ', final:true }
 ];
+/* Resolves a SCHEDULE slot label like "Winner A" or "Runner-up C"
+   into a real team name using the live group standings — so the
+   bracket fills in automatically as groups finish, without having
+   to type results into the Results sheet by hand. "3rd place" slots
+   are intentionally left alone since FIFA's official third-place
+   ranking formula isn't something we should silently guess at. */
+function resolveSlot(label){
+  if (!label) return null;
+  const m = /^(Winner|Runner-up)\s+([A-L])$/i.exec(label.trim());
+  if (!m) return null; // "3rd place", "SF loser", "Winner M73" etc. — not auto-resolvable here
+  const letter = m[2].toUpperCase();
+  const pos = /winner/i.test(m[1]) ? 0 : 1; // 1st or 2nd in the group
+  const rows = standingsData[letter];
+  if (!rows || rows.length <= pos){
+    console.log('[resolveSlot]', label, '→ no standings data for group', letter, 'rows:', rows);
+    return null;
+  }
+  const row = rows[pos];
+  if (!row || (row.w + row.d + row.l) < 2){
+    console.log('[resolveSlot]', label, '→ not enough matches played yet:', row);
+    return null;
+  }
+  console.log('[resolveSlot]', label, '→ resolved to', row.team);
+  return row.team;
+}
+
 function teamRow(team, score, isWinner, decided, placeholder){
   if (!team || !team.trim()){
     return `<div class="row tbd"><span class="flag-blank"></span> ${esc(placeholder||'TBD')} <span class="score"></span></div>`;
@@ -937,11 +1185,20 @@ function matchCard(key, fallbackLabel, m, extraClass){
     ? `M${sched.m} · ${sched.d} · ${sched.c}`
     : fallbackLabel;
   const decided = !!(m.w && m.w.trim());
+
+  // if the Results sheet hasn't given us real teams yet, try to
+  // auto-resolve from live group standings
+  let t1 = m.t1, t2 = m.t2;
+  if (sched){
+    if (!t1 || !t1.trim()) t1 = resolveSlot(sched.s1);
+    if (!t2 || !t2.trim()) t2 = resolveSlot(sched.s2);
+  }
+
   const w = canon(m.w);
   return `<div class="match ${extraClass||''}">
     <div class="m-label">${esc(label)}</div>
-    ${teamRow(m.t1, m.s1, decided && canon(m.t1)===w, decided, sched && sched.s1)}
-    ${teamRow(m.t2, m.s2, decided && canon(m.t2)===w, decided, sched && sched.s2)}
+    ${teamRow(t1, m.s1, decided && canon(t1)===w, decided, sched && sched.s1)}
+    ${teamRow(t2, m.s2, decided && canon(t2)===w, decided, sched && sched.s2)}
   </div>`;
 }
 function renderBracket(){
@@ -974,7 +1231,8 @@ function renderBracket(){
 
 /* ── AUTO-SCORING ENGINE ── */
 function findNameCol(headers){
-  let i = headers.findIndex(h => /name|nickname|player/i.test(h));
+  let i = headers.findIndex(h => /display\s*name/i.test(h));
+  if (i === -1) i = headers.findIndex(h => /name|nickname|player/i.test(h));
   if (i === -1) i = /timestamp|date/i.test(headers[0]||'') ? 1 : 0;
   return i;
 }
@@ -1053,14 +1311,22 @@ async function loadLeaderboard(){
     }
     const entries = parseGroupEntries(rows);
 
-    // knockout forms (only ones with URLs)
+    // knockout forms (only ones with URLs) — a round may have multiple sheets
     const koScores = {};   // round → Map(name → pts)
     for (const f of KNOCKOUT_FORMS){
-      if (!f.url) continue;
-      try{
-        const koRows = await fetchCSV(f.url);
-        if (koRows.length > 1) koScores[f.round] = scoreKnockoutRows(koRows, f.round, f.pts);
-      }catch(e){ /* skip a failing round, keep the rest */ }
+      const urls = f.urls || (f.url ? [f.url] : []);
+      for (const url of urls){
+        try{
+          const koRows = await fetchCSV(url);
+          if (koRows.length > 1){
+            const partial = scoreKnockoutRows(koRows, f.round, f.pts);
+            if (!koScores[f.round]) koScores[f.round] = new Map();
+            partial.forEach((pts, name) => {
+              koScores[f.round].set(name, (koScores[f.round].get(name)||0) + pts);
+            });
+          }
+        }catch(e){ /* skip a failing sheet, keep the rest */ }
+      }
     }
 
     const graded = entries.map(e => {
@@ -1076,6 +1342,53 @@ async function loadLeaderboard(){
 
     const anyResults = Object.keys(groupResults).length > 0;
     const medal = i => i===0?'🥇':i===1?'🥈':i===2?'🥉':String(i+1);
+
+    /* ── rank movement vs last sync ── */
+    let prevRanks = {};
+    try{ prevRanks = JSON.parse(localStorage.getItem('wc26_prev_ranks') || '{}'); }catch(e){}
+    const moves = []; // {name, delta}
+    graded.forEach((p,i) => {
+      const key = p.name.toLowerCase();
+      const prev = prevRanks[key];
+      if (prev !== undefined){
+        const delta = prev - i; // positive = moved up
+        moves.push({ name: p.name, delta });
+        p._delta = delta;
+      } else {
+        p._delta = null;
+      }
+    });
+    const newRanks = {};
+    graded.forEach((p,i) => { newRanks[p.name.toLowerCase()] = i; });
+    localStorage.setItem('wc26_prev_ranks', JSON.stringify(newRanks));
+
+    const moveArrow = (d) => {
+      if (d === null || d === undefined) return '';
+      if (d > 0) return `<span class="move-arrow up">▲${d}</span>`;
+      if (d < 0) return `<span class="move-arrow down">▼${Math.abs(d)}</span>`;
+      return `<span class="move-arrow same">–</span>`;
+    };
+
+    /* ── biggest mover banner ── */
+    const bannerSlot = document.getElementById('mover-banner-slot');
+    const positiveMoves = moves.filter(m => m.delta > 0).sort((a,b) => b.delta - a.delta);
+    const negativeMoves = moves.filter(m => m.delta < 0).sort((a,b) => a.delta - b.delta);
+    if (positiveMoves.length){
+      const top = positiveMoves[0];
+      bannerSlot.innerHTML = `<div class="mover-banner">
+        <span class="mb-icon">🔥</span>
+        <span class="mb-text">${esc(top.name)} jumped <b>${top.delta} spot${top.delta>1?'s':''}</b> since the last sync</span>
+      </div>`;
+    } else if (negativeMoves.length){
+      const top = negativeMoves[0];
+      bannerSlot.innerHTML = `<div class="mover-banner cooling">
+        <span class="mb-icon">📉</span>
+        <span class="mb-text">${esc(top.name)} slipped <b>${Math.abs(top.delta)} spot${Math.abs(top.delta)>1?'s':''}</b> since the last sync</span>
+      </div>`;
+    } else {
+      bannerSlot.innerHTML = '';
+    }
+
     board.innerHTML = `<table>
       <thead><tr>
         <th>#</th><th>Player</th>
@@ -1084,14 +1397,41 @@ async function loadLeaderboard(){
       </tr></thead>
       <tbody>${graded.map((p,i)=>`
         <tr class="${anyResults && i<3 ? 'r'+(i+1) : ''}">
-          <td class="rank">${anyResults ? medal(i) : '–'}</td>
+          <td class="rank">${anyResults ? medal(i) : '–'}${moveArrow(p._delta)}</td>
           <td class="name">${esc(p.name)}</td>
           ${ROUND_LABELS.map(([l]) => `<td class="rd">${p.byRound[l] === null ? '·' : p.byRound[l]}</td>`).join('')}
-          <td class="pts">${p.total}</td>
+          <td class="pts" data-target="${p.total}">0</td>
         </tr>`).join('')}
       </tbody></table>`;
     count.innerHTML = `<b>${graded.length}</b> entries`;
     stamp.textContent = 'Synced ' + new Date().toLocaleTimeString();
+
+    // expose for share card
+    window._gradedLeaderboard = graded;
+
+    // animated count-up for point totals
+    document.querySelectorAll('#board td.pts').forEach(td => {
+      const target = parseInt(td.getAttribute('data-target'), 10) || 0;
+      const start = performance.now();
+      const dur = 700;
+      function step(now){
+        const p = Math.min(1, (now - start) / dur);
+        td.textContent = Math.round(target * (1 - Math.pow(1-p,3)));
+        if (p < 1) requestAnimationFrame(step);
+        else td.textContent = target;
+      }
+      requestAnimationFrame(step);
+    });
+
+    // confetti when the #1 player changes
+    if (anyResults && graded.length){
+      const newLeader = graded[0].name.toLowerCase();
+      const prevLeader = localStorage.getItem('wc26_leader');
+      if (prevLeader && prevLeader !== newLeader){
+        fireConfetti();
+      }
+      localStorage.setItem('wc26_leader', newLeader);
+    }
   }catch(e){
     stamp.textContent = 'Sync failed — retrying on next refresh';
   }
@@ -1101,11 +1441,12 @@ async function loadLeaderboard(){
 async function syncAll(){
   await loadResults();      // results first so scoring uses fresh winners
   await loadLeaderboard();
+  if (typeof updateUpsetTracker === 'function') updateUpsetTracker();
 }
 renderBracket();            // immediate TBD skeleton
-syncAll();
-setInterval(syncAll, AUTO_REFRESH_MS);
-document.getElementById('refresh-board').addEventListener('click', syncAll);
+syncAll().then(loadMergedPicks);
+setInterval(() => syncAll(), AUTO_REFRESH_MS);
+document.getElementById('refresh-board').addEventListener('click', () => syncAll());
 
 /* ══ AUDIO PLAYER ══ */
 (function(){
@@ -1161,9 +1502,13 @@ const ES={
   'kicker-board':'Tabla del Grupo · Puntuación Automática','h2-board':'Tabla en Vivo',
   'p-board':'Cada entrada se toma directo del formulario y se califica automáticamente contra los resultados reales — sin conteo manual.',
   'live-dot':'En Vivo','refresh-btn':'↻ Actualizar',
-  'kicker-groups':'Fase de Grupos · Tabla en Vivo','h2-groups':'Así Va Cada Grupo Ahora Mismo',
-  'p-groups':'Elige un jugador para ver sus picks resaltados dentro de la tabla en vivo — ordenado por puntos, diferencia de goles y goles marcados.',
-  'player-label':'Jugador','legend-pick':'Su elección','legend-hit':'Equipo clasificado ✓','legend-miss':'No anotó punto ✗',
+  'kicker-groups':'Picks de Jugadores · Seguimiento en Vivo','h2-groups':'Picks de Jugadores',
+  'p-groups':'Elige un jugador y una ronda para ver sus picks en vivo — desde la fase de grupos hasta la final.',
+  'player-label':'Jugador','round-label':'Ronda','legend-pick':'Su elección','legend-hit':'Equipo clasificado ✓','legend-miss':'No anotó punto ✗',
+  'cc-label':'días para coronar a un campeón','share-btn':'Compartir Mi Posición',
+  'kicker-flagwall':'Siguen en Pie','h2-flagwall':'Cada Equipo Aún Vivo',
+  'p-flagwall':'Los 48 equipos. Los eliminados se desvanecen conforme avanza el torneo.',
+  'nav-flagwall':'Sobrevivientes',
   'kicker-bracket':'Fase Eliminatoria · 28 Jun – 19 Jul','h2-bracket':'El Bracket en Vivo',
   'p-bracket':'Los 31 partidos eliminatorios, desde la Ronda de 32 hasta la final en el MetLife Stadium. Los ganadores se iluminan en dorado conforme llegan los resultados.',
   'champion-label':'Campeones del Mundo 2026',
@@ -1191,16 +1536,20 @@ const EN={
   'kicker-board':'Pool Standings · Auto-Scored','h2-board':'Live Leaderboard',
   'p-board':"Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.",
   'live-dot':'Live','refresh-btn':'↻ Refresh',
-  'kicker-groups':'Group Stage · Live Standings','h2-groups':'How Every Group Looks Right Now',
-  'p-groups':'Pick a player to see their picks highlighted right inside the live standings — sorted by points, goal difference, and goals scored.',
-  'player-label':'Player','legend-pick':'Their pick','legend-hit':'Pick advanced ✓','legend-miss':"Pick didn't score ✗",
+  'kicker-groups':'Player Picks · Live Tracking','h2-groups':'Player Picks',
+  'p-groups':'Pick a player and a round to see their picks tracked live — from the group stage all the way to the final.',
+  'player-label':'Player','round-label':'Round','legend-pick':'Their pick','legend-hit':'Pick advanced ✓','legend-miss':"Pick didn't score ✗",
+  'cc-label':'days until we crown a champion','share-btn':'Share My Standing',
+  'kicker-flagwall':'Still Standing','h2-flagwall':'Every Team Still Alive',
+  'p-flagwall':'All 48 teams. Eliminated ones fade out as the tournament moves on.',
+  'nav-flagwall':'Survivors',
   'kicker-bracket':'Knockout Stage · Jun 28 – Jul 19','h2-bracket':'The Live Bracket',
   'p-bracket':'All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.',
   'champion-label':'2026 World Champions',
   'bracket-note':'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
 };
-const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks','#groups':'Standings','#bracket':'Bracket'};
-const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Picks','#groups':'Tabla Grupos','#bracket':'Bracket'};
+const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks Page','#groups':'Live Picks','#bracket':'Bracket'};
+const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Página de Picks','#groups':'Picks en Vivo','#bracket':'Bracket'};
 let lang='en';
 const langBtn=document.getElementById('lang-btn');
 function applyLang(T,navT){
@@ -1233,22 +1582,34 @@ const GROUP_ORDER = ['A','B','C','D','E','F','G','H','I','J','K','L'];
 let pickEntries = [];     // [{name, picks:{A:[c,c],...}}]
 let pickCounts = {};      // canonical team → count across the pool
 let currentPlayer = null;
-let standingsData = {};   // { A: [{team,w,d,l,gf,ga,pts,gd}, ...sorted], ... }
+let currentRound = 'GROUPS';
+let roundPicks = {};       // { R32: Map(nameLower -> Map(matchKey -> canonTeam)), ... }
+let roundPickCounts = {};  // { R32: { matchKey: { canonTeam: count } }, ... }
 
 function flagImgM(team){
   const code = FLAG_CODES[canon(team)];
   return code ? `<img class="m-flag" src="https://flagcdn.com/w40/${code}.png" alt="">` : '';
 }
 
+/* ══════════════════════════════════════════════════════════
+   GROUP STAGE PICKS PARSER
+   Header row looks like: Date, Name, Group A (1st Pick),
+   Group A (2nd Pick), Group B (1st Pick), ... Group L (2nd Pick)
+   We find the Name column directly, and for every other column
+   pull the group letter straight out of "Group X" in the header
+   — no guessing, no ambiguity.
+   ══════════════════════════════════════════════════════════ */
 function parsePickEntries(rows){
   const headers = rows[0];
-  let nameCol = headers.findIndex(h => /name|nickname|player/i.test(h));
-  if (nameCol === -1) nameCol = /timestamp|date/i.test(headers[0]||'') ? 1 : 0;
-  const groupCols = [];
+  const nameCol = headers.findIndex(h => /^name$/i.test(h.trim())) !== -1
+    ? headers.findIndex(h => /^name$/i.test(h.trim()))
+    : headers.findIndex(h => /name/i.test(h));
+  const groupCols = []; // [colIndex, letter]
   headers.forEach((h, i) => {
-    const m = /group\s+([A-L])\b/i.exec(h);
+    const m = /group\s*([A-L])\b/i.exec(h);
     if (m) groupCols.push([i, m[1].toUpperCase()]);
   });
+
   const people = new Map();
   rows.slice(1).forEach(r => {
     const name = (r[nameCol]||'').trim();
@@ -1262,6 +1623,7 @@ function parsePickEntries(rows){
   });
   return [...people.values()].sort((a,b) => a.name.localeCompare(b.name));
 }
+
 function tallyPickCounts(){
   pickCounts = {};
   pickEntries.forEach(e => {
@@ -1271,27 +1633,147 @@ function tallyPickCounts(){
   });
 }
 
+/* ══════════════════════════════════════════════════════════
+   KNOCKOUT ROUND PICKS — explicit column config per round.
+   Rather than guess which column is the name and which is the
+   pick from header text (fragile), each form is described here
+   with EXACT 0-indexed column numbers. This is the only thing
+   you need to edit when wiring up a new round's sheet.
+
+   nameCol  = column with the player's display name
+   matches  = list of { key, col, label } — one per pick column
+              key   = a short unique id for this match (e.g. "R32-1")
+              col   = 0-indexed column number of the pick
+              label = human label shown on the card, e.g. "Canada vs South Africa"
+   ══════════════════════════════════════════════════════════ */
+const ROUND_SHEET_CONFIG = {
+  R32: [
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgGhUvUeJawwDSaP-PCKzeH0UfPcFQQ_QflGzdmomfGtZl6-3Atx4YPkhGMNzAhuW0voBpJsfBl8du/pub?output=csv",
+      nameCol: 2,   // column C — "What was the display name you entered?"
+      matches: [
+        { key:"R32-1", col:4, label:"Canada vs South Africa" }  // column E — "Canada or South Africa?"
+      ]
+    }
+    // When the second R32 sheet (with the rest of the matches) is ready,
+    // add another { url, nameCol, matches:[...] } object to this array.
+  ],
+  R16: [],
+  QF:  [],
+  SF:  [],
+  '3P':[],
+  F:   []
+};
+const ROUND_POINTS = { R32:2, R16:3, QF:4, SF:5, F:6, '3P':1 };
+const ROUND_FULL_NAME = { R32:'Round of 32', R16:'Round of 16', QF:'Quarterfinals', SF:'Semifinals', F:'Final', '3P':'Third Place' };
+
+/* Parses one configured sheet for a round using its EXACT column
+   numbers — no header guessing. Merges into existing roundPicks. */
+async function loadRoundSheet(roundKey, cfg){
+  const rows = await fetchCSV(cfg.url);
+  if (!rows || rows.length < 2) return;
+
+  if (!roundPicks[roundKey]) roundPicks[roundKey] = new Map();
+  if (!roundPickCounts[roundKey]) roundPickCounts[roundKey] = {};
+  const playerMap = roundPicks[roundKey];
+  const matchCounts = roundPickCounts[roundKey];
+
+  rows.slice(1).forEach(r => {
+    const name = (r[cfg.nameCol]||'').trim();
+    if (!name) return;
+    const key = name.toLowerCase();
+
+    cfg.matches.forEach(m => {
+      const pick = canon(r[m.col]);
+      if (!pick) return;
+      if (!playerMap.has(key)) playerMap.set(key, new Map());
+      playerMap.get(key).set(m.key, { team: pick, label: m.label });
+
+      if (!matchCounts[m.key]) matchCounts[m.key] = {};
+      matchCounts[m.key][pick] = (matchCounts[m.key][pick]||0) + 1;
+    });
+  });
+}
+
+async function loadAllRoundPicks(){
+  roundPicks = {};
+  roundPickCounts = {};
+  for (const roundKey of Object.keys(ROUND_SHEET_CONFIG)){
+    for (const cfg of ROUND_SHEET_CONFIG[roundKey]){
+      try{ await loadRoundSheet(roundKey, cfg); }
+      catch(e){ /* leave that sheet's picks unavailable, keep going */ }
+    }
+  }
+}
+
 function renderMerged(){
+  if (currentRound === 'GROUPS') renderGroupsView();
+  else renderKnockoutView(currentRound);
+  renderCumulativeSummary();
+}
+
+/* Cumulative totals across the group stage AND every knockout round
+   that has picks loaded — independent of whichever round is selected
+   in the dropdown, so this always reflects the player's full pool standing. */
+function renderCumulativeSummary(){
+  const summary = document.getElementById('summary');
+  if (!currentPlayer){ summary.innerHTML = ''; return; }
+
+  let totalPicks = 0, totalPts = 0, totalCorrect = 0, totalWrong = 0, totalPending = 0;
+  let groupsDecided = 0;
+
+  GROUP_ORDER.forEach(letter => {
+    const myPicks = new Set(currentPlayer.picks[letter] || []);
+    const result = groupResults[letter];
+    if (result) groupsDecided++;
+    totalPicks += myPicks.size;
+    myPicks.forEach(c => {
+      if (result){
+        if (result.has(c)){ totalCorrect++; totalPts += 1; }
+        else totalWrong++;
+      } else {
+        totalPending++;
+      }
+    });
+  });
+
+  Object.keys(roundPicks).forEach(roundKey => {
+    const playerMap = roundPicks[roundKey].get(currentPlayer.name.toLowerCase());
+    if (!playerMap) return;
+    const pts = ROUND_POINTS[roundKey] || 0;
+    playerMap.forEach((pickInfo, matchKey) => {
+      totalPicks++;
+      const bd = bracketData[matchKey] || {};
+      const isWinnerKnown = bd.w && bd.w.trim();
+      if (isWinnerKnown){
+        if (canon(bd.w) === pickInfo.team){ totalCorrect++; totalPts += pts; }
+        else totalWrong++;
+      } else {
+        totalPending++;
+      }
+    });
+  });
+
+  summary.innerHTML = `
+    <span class="chip gold"><b>${totalPicks}</b> total picks</span>
+    <span class="chip"><b>${totalPts}</b> pts so far</span>
+    <span class="chip"><b>${totalCorrect}</b> correct</span>
+    <span class="chip"><b>${totalWrong}</b> incorrect</span>
+    <span class="chip"><b>${totalPending}</b> pending</span>
+    <span class="chip"><b>${groupsDecided}</b>/12 groups decided</span>`;
+}
+
+function renderGroupsView(){
   const grid = document.getElementById('merged-grid');
   const legend = document.getElementById('legend');
-  const summary = document.getElementById('summary');
   if (!currentPlayer){ grid.innerHTML = '<div class="m-loading">Select a player above to see their picks.</div>'; return; }
 
   const total = pickEntries.length || 1;
-  let hits = 0, misses = 0, decided = 0;
 
   grid.innerHTML = GROUP_ORDER.map(letter => {
     const myPicks = new Set(currentPlayer.picks[letter] || []);
     const result = groupResults[letter]; // Set of canon names that advanced
     const sRows = standingsData[letter] || [];
-    if (result) decided++;
-
-    myPicks.forEach(c => {
-      if (result){
-        if (result.has(c)) hits++;
-        else misses++;
-      }
-    });
 
     let badgeHits = 0;
     myPicks.forEach(c => { if (result && result.has(c)) badgeHits++; });
@@ -1300,7 +1782,7 @@ function renderMerged(){
       result ? `${badgeHits}/${pickedCount} ✓` : `${pickedCount} picked`;
     const badgeCls = badgeHits === pickedCount && pickedCount > 0 && result ? 'all-hit' : '';
 
-    const fallbackTeams = (GROUPS.find(([l]) => l === letter) || [letter,[]])[1];
+    const fallbackTeams = (GROUPS.find(([l]) => l === letter) || [letter,'',[]])[2];
     const rowsSrc = sRows.length > 0 ? sRows : fallbackTeams.map(t => ({team:t,w:0,d:0,l:0,gf:0,ga:0,pts:0,gd:0}));
 
     const rows = rowsSrc.map((r, i) => {
@@ -1348,25 +1830,115 @@ function renderMerged(){
   }).join('');
 
   legend.style.display = '';
-  summary.innerHTML = `
-    <span class="chip gold"><b>${Object.values(currentPlayer.picks).flat().length}</b> picks made</span>
-    <span class="chip"><b>${hits}</b> through · ${hits} pts</span>
-    <span class="chip"><b>${misses}</b> eliminated</span>
-    <span class="chip"><b>${decided}</b>/12 groups decided</span>`;
+}
+
+function renderKnockoutView(roundKey){
+  const grid = document.getElementById('merged-grid');
+  const legend = document.getElementById('legend');
+  legend.style.display = 'none';
+
+  const cfgs = ROUND_SHEET_CONFIG[roundKey] || [];
+  if (!cfgs.length){
+    grid.innerHTML = `<div class="m-loading">Picks not open yet for ${esc(ROUND_FULL_NAME[roundKey] || roundKey)}. Check back once the bracket is set.</div>`;
+    return;
+  }
+  if (!currentPlayer){
+    grid.innerHTML = '<div class="m-loading">Select a player above to see their picks.</div>';
+    return;
+  }
+
+  const playerMap = (roundPicks[roundKey] || new Map()).get(currentPlayer.name.toLowerCase());
+  if (!playerMap || playerMap.size === 0){
+    grid.innerHTML = `<div class="m-loading">${esc(currentPlayer.name)} hasn't submitted ${esc(ROUND_FULL_NAME[roundKey] || roundKey)} picks yet.</div>`;
+    return;
+  }
+
+  const total = pickEntries.length || 1;
+  const matchCountsForRound = roundPickCounts[roundKey] || {};
+
+  const cards = [];
+  playerMap.forEach((pickInfo, matchKey) => {
+    const pickedTeam = pickInfo.team;
+    const bd = bracketData[matchKey] || {};
+    const isWinnerKnown = bd.w && bd.w.trim();
+    const correct = isWinnerKnown ? canon(bd.w) === pickedTeam : null;
+    const counts = matchCountsForRound[matchKey] || {};
+
+    // figure out both team display names — prefer live bracketData,
+    // fall back to the pick label independently for each side, so a
+    // partially-filled bracketData row can't hide a team entirely
+    const labelParts = (pickInfo.label || '').split(/\s+(?:vs\.?|v\.?|or)\s+/i);
+    const teamA = (bd.t1 && bd.t1.trim()) || labelParts[0];
+    const teamB = (bd.t2 && bd.t2.trim()) || labelParts[1];
+    const teams = [teamA, teamB].filter(Boolean);
+
+    const rows = teams.map(t => {
+      const c = canon(t);
+      const picked = c === pickedTeam;
+      const isWinner = isWinnerKnown && canon(bd.w) === c;
+      const pct = Math.round(100 * (counts[c]||0) / total);
+
+      let rowCls = '';
+      let iconHtml = '';
+      if (picked && isWinnerKnown && isWinner){ rowCls = 'm-hit'; iconHtml = '<span class="m-pick-icon hit">✓ +'+(ROUND_POINTS[roundKey]||0)+'</span>'; }
+      else if (picked && isWinnerKnown && !isWinner){ rowCls = 'm-miss'; iconHtml = '<span class="m-pick-icon miss">✗ no point</span>'; }
+      else if (picked){ rowCls = 'm-pick'; iconHtml = '<span class="m-pick-icon pick">Pick</span>'; }
+      else if (isWinnerKnown && isWinner){ rowCls = 'm-adv'; }
+
+      return `<tr class="${rowCls}">
+        <td class="m-team" style="padding-left:14px">${flagImgM(t)}<span class="tname">${esc(t)}</span>${iconHtml}</td>
+        <td class="m-num" style="text-align:right;padding-right:14px">${pct}% of pool</td>
+      </tr>`;
+    }).join('');
+
+    const statusBadge = isWinnerKnown
+      ? (correct ? `<span class="m-pick-badge all-hit">✓ Correct</span>` : `<span class="m-pick-badge" style="color:var(--red);background:rgba(201,38,44,.1);border-color:rgba(201,38,44,.35)">✗ Missed</span>`)
+      : `<span class="m-pick-badge">Pending</span>`;
+
+    const matchupLabel = teams.length === 2 ? `${esc(teams[0])} vs ${esc(teams[1])}` : esc(pickInfo.label || ROUND_FULL_NAME[roundKey] || roundKey);
+
+    cards.push(`<div class="m-card">
+      <div class="m-card-head">
+        <span class="m-group-label">${matchupLabel}</span>
+        ${statusBadge}
+      </div>
+      <table class="m-table" style="table-layout:auto">
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`);
+  });
+
+  grid.innerHTML = cards.join('') || '<div class="m-loading">No matches found for this round yet.</div>';
 }
 
 function populatePlayerSelect(){
   const sel = document.getElementById('player-select');
-  sel.innerHTML = pickEntries.map(e => `<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');
+  sel.innerHTML = '<option value="" disabled selected>Please select player</option>' +
+    pickEntries.map(e => `<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');
   const want = new URLSearchParams(location.search).get('player');
   if (want){
     const match = pickEntries.find(e => e.name.toLowerCase() === want.toLowerCase());
     if (match) sel.value = match.name;
   }
-  currentPlayer = pickEntries.find(e => e.name === sel.value) || pickEntries[0];
+  currentPlayer = want ? (pickEntries.find(e => e.name.toLowerCase() === want.toLowerCase()) || null) : null;
   sel.onchange = () => {
-    currentPlayer = pickEntries.find(e => e.name === sel.value);
-    const u = new URL(location); u.searchParams.set('player', currentPlayer.name);
+    currentPlayer = pickEntries.find(e => e.name === sel.value) || null;
+    const u = new URL(location);
+    if (currentPlayer) u.searchParams.set('player', currentPlayer.name);
+    else u.searchParams.delete('player');
+    history.replaceState(null, '', u);
+    renderMerged();
+  };
+
+  const roundSel = document.getElementById('round-select');
+  const wantRound = new URLSearchParams(location.search).get('round');
+  if (wantRound && [...roundSel.options].some(o => o.value === wantRound.toUpperCase())){
+    roundSel.value = wantRound.toUpperCase();
+    currentRound = roundSel.value;
+  }
+  roundSel.onchange = () => {
+    currentRound = roundSel.value;
+    const u = new URL(location); u.searchParams.set('round', currentRound);
     history.replaceState(null, '', u);
     renderMerged();
   };
@@ -1384,15 +1956,19 @@ async function loadMergedPicks(){
     if (picksRows.status === 'fulfilled'){
       pickEntries = parsePickEntries(picksRows.value);
       tallyPickCounts();
+    } else {
+      console.error('Group picks sheet failed to load', picksRows.reason);
     }
 
     if (standingsRows.status === 'fulfilled'){
       const sRows = standingsRows.value;
+      console.log('[standings] raw rows:', sRows.length, 'header:', sRows[0]);
       if (sRows.length >= 2){
         const h = sRows[0].map(x => x.trim().toLowerCase());
         const iG=h.indexOf('group'),iT=h.indexOf('team'),
               iW=h.indexOf('w'),iD=h.indexOf('d'),iL=h.indexOf('l'),
               iGF=h.indexOf('gf'),iGA=h.indexOf('ga');
+        console.log('[standings] column indices — group:',iG,'team:',iT,'w:',iW,'d:',iD,'l:',iL,'gf:',iGF,'ga:',iGA);
         const raw = {};
         sRows.slice(1).forEach(r => {
           const g = (r[iG]||'').trim().toUpperCase();
@@ -1406,7 +1982,13 @@ async function loadMergedPicks(){
         Object.keys(raw).forEach(g => {
           standingsData[g] = raw[g].sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || a.team.localeCompare(b.team));
         });
+        console.log('[standings] parsed standingsData:', JSON.stringify(standingsData));
+        renderBracket(); // re-render now that standings can resolve R32 slots
+      } else {
+        console.log('[standings] sheet returned fewer than 2 rows — nothing to parse');
       }
+    } else {
+      console.log('[standings] fetch failed:', standingsRows.reason);
     }
 
     if (!pickEntries.length){
@@ -1415,16 +1997,274 @@ async function loadMergedPicks(){
       return;
     }
 
+    await loadAllRoundPicks();
+
     populatePlayerSelect();
     renderMerged();
+    updateUpsetTracker();
     stamp.textContent = 'Synced ' + new Date().toLocaleTimeString() + ' · auto-refreshes every 5 min';
   } catch(e) {
-    stamp.textContent = 'Sync failed — retrying';
+    console.error('loadMergedPicks failed:', e);
+    stamp.textContent = 'Having trouble syncing — retrying shortly';
     grid.innerHTML = '<div class="m-loading">Couldn\'t load — refresh to retry.</div>';
   }
 }
-loadMergedPicks();
+
+/* ══ UPSET TRACKER ══
+   Flags any team that advanced out of its group despite being
+   picked by under 30% of the pool — an "upset" relative to the
+   crowd's expectations, not necessarily an underdog on paper. */
+function updateUpsetTracker(){
+  const upsetGrid = document.getElementById('upset-grid');
+  if (!upsetGrid) return;
+  const total = pickEntries.length || 0;
+  if (!total || !Object.keys(groupResults).length){
+    upsetGrid.innerHTML = '<div class="upset-empty">No upsets yet — check back as groups finish.</div>';
+    return;
+  }
+
+  const upsets = [];
+  Object.keys(groupResults).forEach(letter => {
+    groupResults[letter].forEach(canonTeam => {
+      const pct = Math.round(100 * (pickCounts[canonTeam]||0) / total);
+      if (pct < 30){
+        const sRows = standingsData[letter] || [];
+        let displayName = (sRows.find(r => canon(r.team) === canonTeam) || {}).team;
+        if (!displayName){
+          const fallback = (GROUPS.find(([l]) => l === letter) || [letter,'',[]])[2] || [];
+          displayName = fallback.find(t => canon(t) === canonTeam) || canonTeam;
+        }
+        upsets.push({ letter, team: displayName, pct });
+      }
+    });
+  });
+
+  if (!upsets.length){
+    upsetGrid.innerHTML = '<div class="upset-empty">No upsets yet — every advancing team was a popular pick.</div>';
+    return;
+  }
+
+  upsets.sort((a,b) => a.pct - b.pct);
+  upsetGrid.innerHTML = upsets.map(u => `
+    <div class="upset-card">
+      <div class="u-group">Group ${u.letter} · Advanced</div>
+      <div class="u-team">${flagImg(u.team)}${esc(u.team)}</div>
+      <div class="u-pct">Only <b>${u.pct}%</b> of the pool picked them</div>
+    </div>`).join('');
+}
 setInterval(loadMergedPicks, AUTO_REFRESH_MS);
+
+/* ══ FLAG WALL ══ */
+function renderFlagWall(){
+  const wall = document.getElementById('flagwall');
+  if (!wall) return;
+  const decidedGroups = Object.keys(groupResults).length;
+  wall.innerHTML = GROUPS.map(([letter,,teams]) => {
+    const result = groupResults[letter];
+    return teams.map(t => {
+      const c = canon(t);
+      const eliminated = result && !result.has(c);
+      const code = FLAG_CODES[c];
+      const img = code ? `<img src="https://flagcdn.com/w80/${code}.png" alt="${esc(t)}" loading="lazy">` : '';
+      return `<div class="fw-flag${eliminated?' eliminated':''}" title="${esc(t)}${eliminated?' — eliminated':''}">
+        ${img}<span class="fw-x">✗</span>
+      </div>`;
+    }).join('');
+  }).join('');
+}
+
+/* ══ POOL PULSE TICKER ══ */
+function updatePulseTicker(){
+  const ticker = document.getElementById('pulse-ticker');
+  const track = document.getElementById('pulse-track');
+  if (!ticker || !track) return;
+
+  const items = [];
+
+  // group results → advancing teams
+  Object.keys(groupResults).forEach(letter => {
+    groupResults[letter].forEach(c => {
+      const fallback = (GROUPS.find(([l]) => l === letter) || [letter,[],[]])[2] || [];
+      const name = fallback.find(t => canon(t) === c) || c;
+      items.push(`<b>${esc(name)}</b> advances from Group ${letter}`);
+    });
+  });
+
+  // current leader
+  if (window._gradedLeaderboard && window._gradedLeaderboard.length){
+    const leader = window._gradedLeaderboard[0];
+    items.push(`<b>${esc(leader.name)}</b> leads the pool with ${leader.total} pts`);
+  }
+
+  // biggest upset
+  if (typeof pickCounts !== 'undefined' && Object.keys(groupResults).length){
+    const total = (pickEntries||[]).length || 1;
+    let best = null;
+    Object.keys(groupResults).forEach(letter => {
+      groupResults[letter].forEach(c => {
+        const pct = Math.round(100*(pickCounts[c]||0)/total);
+        if (!best || pct < best.pct) best = { c, pct, letter };
+      });
+    });
+    if (best && best.pct < 30){
+      const fallback = (GROUPS.find(([l]) => l === best.letter) || [best.letter,[],[]])[2] || [];
+      const name = fallback.find(t => canon(t) === best.c) || best.c;
+      items.push(`⚡ Upset alert: only <b>${best.pct}%</b> picked ${esc(name)}`);
+    }
+  }
+
+  if (!items.length){
+    ticker.style.display = 'none';
+    return;
+  }
+  ticker.style.display = '';
+  const html = items.map(i => `<span class="pulse-item">${i}</span><span class="pulse-item dotsep">●</span>`).join('');
+  track.innerHTML = html + html; // duplicate for seamless scroll
+}
+
+/* ══ CHAMPION COUNTDOWN ══ */
+function updateChampionCountdown(){
+  const el = document.getElementById('cc-days');
+  if (!el) return;
+  const finalDate = new Date(2026, 6, 19); // July 19, 2026
+  const now = new Date();
+  const diff = Math.ceil((finalDate - now) / 86400000);
+  el.textContent = diff > 0 ? diff : '0';
+}
+updateChampionCountdown();
+setInterval(updateChampionCountdown, 3600000);
+
+/* ══ CONFETTI ══ */
+function fireConfetti(){
+  const canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+  canvas.style.display = 'block';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const colors = ['#C8901F','#168A45','#C9262C','#18203A','#FAFAF8'];
+  const pieces = Array.from({length:140}, () => ({
+    x: Math.random()*canvas.width,
+    y: -20 - Math.random()*canvas.height*0.3,
+    r: 4 + Math.random()*5,
+    c: colors[Math.floor(Math.random()*colors.length)],
+    vy: 2 + Math.random()*3,
+    vx: -1.5 + Math.random()*3,
+    rot: Math.random()*360,
+    vr: -6 + Math.random()*12
+  }));
+  let frame = 0;
+  function tick(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);
+      ctx.restore();
+    });
+    if (frame < 220) requestAnimationFrame(tick);
+    else { canvas.style.display = 'none'; ctx.clearRect(0,0,canvas.width,canvas.height); }
+  }
+  tick();
+}
+
+/* ══ SHARE CARD ══ */
+function drawShareCard(){
+  const canvas = document.getElementById('share-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // background
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#18203A'); grad.addColorStop(1,'#0f0f0e');
+  ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+
+  // tricolor bar
+  ['#B91C2C','#FAFAF8','#2C6E49'].forEach((c,i)=>{ ctx.fillStyle=c; ctx.fillRect(i*W/3,0,W/3,8); });
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#C8901F';
+  ctx.font = '700 16px monospace';
+  ctx.fillText("TONY'S WORLD CUP 2026 POOL", W/2, 70);
+
+  const player = currentPlayer ? currentPlayer.name : (window._gradedLeaderboard && window._gradedLeaderboard[0] ? window._gradedLeaderboard[0].name : null);
+  let rank = null, total = null, poolSize = (window._gradedLeaderboard||[]).length;
+  if (player && window._gradedLeaderboard){
+    const idx = window._gradedLeaderboard.findIndex(p => p.name.toLowerCase() === player.toLowerCase());
+    if (idx !== -1){ rank = idx+1; total = window._gradedLeaderboard[idx].total; }
+  }
+
+  ctx.fillStyle = '#FAFAF8';
+  ctx.font = '800 30px sans-serif';
+  ctx.fillText(player || 'My Pool Standing', W/2, 130);
+
+  ctx.font = '900 110px sans-serif';
+  ctx.fillStyle = '#C8901F';
+  ctx.fillText(rank ? '#'+rank : '—', W/2, 270);
+
+  ctx.font = '600 18px monospace';
+  ctx.fillStyle = 'rgba(255,255,255,.6)';
+  ctx.fillText(poolSize ? `of ${poolSize} players` : 'rank pending', W/2, 305);
+
+  ctx.font = '800 46px monospace';
+  ctx.fillStyle = '#168A45';
+  ctx.fillText(total !== null ? total + ' PTS' : '— PTS', W/2, 380);
+
+  // mini group strip
+  if (currentPlayer){
+    let y = 460;
+    ctx.textAlign = 'left';
+    ctx.font = '700 13px monospace';
+    ctx.fillStyle = 'rgba(255,255,255,.5)';
+    ctx.fillText('GROUP PICKS', 60, y);
+    y += 26;
+    Object.keys(currentPlayer.picks).slice(0,8).forEach(letter => {
+      const picks = currentPlayer.picks[letter];
+      const result = groupResults[letter];
+      const hitCount = picks.filter(p => result && result.has(p)).length;
+      ctx.fillStyle = result ? (hitCount === picks.length ? '#168A45' : hitCount>0 ? '#C8901F' : '#C9262C') : 'rgba(255,255,255,.3)';
+      ctx.font = '700 14px monospace';
+      ctx.fillText(`Group ${letter}`, 60, y);
+      ctx.fillStyle = 'rgba(255,255,255,.6)';
+      ctx.fillText(result ? `${hitCount}/${picks.length} ✓` : 'pending', 170, y);
+      y += 24;
+    });
+  }
+
+  ctx.textAlign = 'center';
+  ctx.font = '600 13px monospace';
+  ctx.fillStyle = 'rgba(255,255,255,.4)';
+  ctx.fillText('tonysworldcup.xyz', W/2, H-30);
+}
+
+const shareBackdrop = document.getElementById('share-modal-backdrop');
+function openShareModal(){
+  drawShareCard();
+  shareBackdrop.classList.add('open');
+}
+document.getElementById('open-share-btn').addEventListener('click', openShareModal);
+document.getElementById('open-share-btn-2').addEventListener('click', openShareModal);
+document.getElementById('share-close-btn').addEventListener('click', () => {
+  shareBackdrop.classList.remove('open');
+});
+shareBackdrop.addEventListener('click', (e) => { if (e.target === shareBackdrop) shareBackdrop.classList.remove('open'); });
+document.getElementById('share-download-btn').addEventListener('click', () => {
+  const canvas = document.getElementById('share-canvas');
+  const link = document.createElement('a');
+  link.download = 'my-world-cup-pool-standing.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+});
+
+// refresh pulse ticker whenever a sync completes
+const _origSyncAll = syncAll;
+syncAll = async function(){
+  await _origSyncAll();
+  updatePulseTicker();
+};
 </script>
 
 </body>
