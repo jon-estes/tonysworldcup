@@ -173,6 +173,32 @@
       var(--ink-2);
     border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   }
+  /* ── PRIZE MONEY ── */
+  .prize-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+  .prize-chip{
+    display:flex;align-items:center;gap:10px;
+    border:1px solid var(--line);border-radius:12px;background:var(--card);
+    padding:12px 18px;box-shadow:0 2px 10px rgba(20,30,60,.05);
+  }
+  .prize-chip .prize-medal{font-size:22px;line-height:1}
+  .prize-chip .prize-label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-faint);
+  }
+  .prize-chip .prize-amt{
+    font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.01em;color:var(--chalk);margin-left:2px;
+  }
+  .prize-chip.gold{border-color:rgba(200,144,31,.4);background:linear-gradient(180deg, rgba(200,144,31,.08), var(--card))}
+  .prize-chip.gold .prize-amt{color:var(--gold-deep)}
+  .prize-chip.silver{border-color:rgba(124,135,151,.4);background:linear-gradient(180deg, rgba(124,135,151,.08), var(--card))}
+  .prize-chip.silver .prize-amt{color:var(--silver)}
+  .prize-chip.bronze{border-color:rgba(169,107,63,.4);background:linear-gradient(180deg, rgba(169,107,63,.08), var(--card))}
+  .prize-chip.bronze .prize-amt{color:var(--bronze)}
+  .prize-note{
+    margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;
+    color:var(--chalk-faint);letter-spacing:.02em;
+  }
+
   .board-meta{
     display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;
     font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
@@ -202,7 +228,11 @@
   .board th:first-child,.board th:nth-child(2){text-align:left}
   .board td{padding:13px 14px;border-bottom:1px solid var(--line);font-size:15px}
   .board tr:last-child td{border-bottom:none}
-  .board td.rank{font-family:'JetBrains Mono',monospace;font-weight:800;width:60px;color:var(--chalk-faint)}
+  .board td.rank{font-family:'JetBrains Mono',monospace;font-weight:800;width:72px;color:var(--chalk-faint)}
+  .rank-prize{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10px;
+    letter-spacing:.02em;margin-top:2px;opacity:.85;
+  }
   .board td.name{font-weight:600;white-space:nowrap}
   .board td.rd{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--chalk-dim);text-align:right}
   .board td.pts{font-family:'JetBrains Mono',monospace;font-weight:800;text-align:right;color:var(--grass);width:84px;font-size:16px}
@@ -655,6 +685,7 @@
     <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#leaderboard">Leaderboard</a>
     <a class="nl" href="/picks/">Picks Page</a>
+    <a class="nl" href="#bracket">Bracket</a>
     <a class="nl" href="/extras.html">Extras</a>
   </div>
 </nav>
@@ -774,7 +805,13 @@
     <div class="sec-head">
       <div class="kicker" data-i18n="kicker-board">Pool Standings · Auto-Scored</div>
       <h2 class="display" data-i18n="h2-board">Live Leaderboard</h2>
-      <p data-i18n="p-board">Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.</p>
+      <p data-i18n="p-board">Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over. <strong data-i18n="p-board-prize">Total pool: $1,420 — paid out to the top 3 finishers.</strong></p>
+      <div class="prize-row">
+        <div class="prize-chip gold"><span class="prize-medal">🥇</span><span class="prize-label" data-i18n="prize-1st">1st Place</span><span class="prize-amt">$1,000</span></div>
+        <div class="prize-chip silver"><span class="prize-medal">🥈</span><span class="prize-label" data-i18n="prize-2nd">2nd Place</span><span class="prize-amt">$300</span></div>
+        <div class="prize-chip bronze"><span class="prize-medal">🥉</span><span class="prize-label" data-i18n="prize-3rd">3rd Place</span><span class="prize-amt">$120</span></div>
+      </div>
+      <p class="prize-note" data-i18n="prize-note">Ties split the prize money, or winners can agree on a tiebreaker.</p>
     </div>
     <div class="board-meta">
       <span class="live-dot" data-i18n="live-dot">Live</span>
@@ -832,6 +869,25 @@
       <span><span class="dot green"></span> <span data-i18n="legend-hit">Pick advanced ✓</span></span>
       <span><span class="dot red"></span> <span data-i18n="legend-miss">Pick didn't score ✗</span></span>
     </div>
+  </div>
+</section>
+
+<!-- ════════ BRACKET ════════ -->
+<section id="bracket">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker" data-i18n="kicker-bracket">Knockout Stage · Jun 28 – Jul 19</div>
+      <h2 class="display" data-i18n="h2-bracket">The Live Bracket</h2>
+      <p data-i18n="p-bracket">All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.</p>
+    </div>
+    <div class="champion-banner" id="champion-banner">
+      <div class="cb-label" data-i18n="champion-label">2026 World Champions</div>
+      <div class="cb-team" id="champion-team"></div>
+    </div>
+    <div class="bracket-scroll">
+      <div class="bracket" id="bracket-grid" aria-label="Knockout bracket"></div>
+    </div>
+    <div class="bracket-note" id="bracket-updated" data-i18n="bracket-note">All dates and venues are official — team names replace the slot paths as the tournament unfolds.</div>
   </div>
 </section>
 
@@ -1341,6 +1397,11 @@ async function loadLeaderboard(){
       bannerSlot.innerHTML = '';
     }
 
+    const PRIZES = ['$1,000','$300','$120'];
+    const medalWithPrize = i => anyResults
+      ? `${medal(i)}${i<3 ? `<div class="rank-prize">${PRIZES[i]}</div>` : ''}`
+      : '–';
+
     board.innerHTML = `<table>
       <thead><tr>
         <th>#</th><th>Player</th><th>Total</th>
@@ -1348,7 +1409,7 @@ async function loadLeaderboard(){
       </tr></thead>
       <tbody>${graded.map((p,i)=>`
         <tr class="${anyResults && i<3 ? 'r'+(i+1) : ''}">
-          <td class="rank">${anyResults ? medal(i) : '–'}${moveArrow(p._delta)}</td>
+          <td class="rank">${medalWithPrize(i)}${moveArrow(p._delta)}</td>
           <td class="name">${esc(p.name)}</td>
           <td class="pts" data-target="${p.total}">0</td>
           ${ROUND_LABELS.map(([l]) => `<td class="rd">${p.byRound[l] === null ? '·' : p.byRound[l]}</td>`).join('')}
@@ -1452,6 +1513,9 @@ const ES={
   'wildcard-detail':"Los 8 mejores terceros lugares también avanzan a la Ronda de 32 — pero no valen puntos aquí. Los tomarás en cuenta cuando elijas los cruces de la Ronda de 32, así que no te preocupes por ellos en esta ronda. Solo elige a los dos primeros.",
   'kicker-board':'Tabla del Grupo · Puntuación Automática','h2-board':'Tabla en Vivo',
   'p-board':'Cada entrada se toma directo del formulario y se califica automáticamente contra los resultados reales — sin conteo manual.',
+  'p-board-prize':'Bolsa total: $1,420 — repartidos entre los 3 primeros lugares.',
+  'prize-1st':'1er Lugar','prize-2nd':'2do Lugar','prize-3rd':'3er Lugar',
+  'prize-note':'En caso de empate, el premio se divide o los ganadores acuerdan un desempate.',
   'live-dot':'En Vivo','refresh-btn':'↻ Actualizar',
   'kicker-groups':'Picks de Jugadores · Seguimiento en Vivo','h2-groups':'Picks de Jugadores',
   'p-groups':'Elige un jugador y una ronda para ver sus picks en vivo — desde la fase de grupos hasta la final.',
@@ -1486,6 +1550,9 @@ const EN={
   'wildcard-detail':"The 8 best third-place teams also advance to the Round of 32 — but they're not worth points here. You'll account for them when you pick the Round of 32 matchups, so don't sweat them in this round. Top-two picks only.",
   'kicker-board':'Pool Standings · Auto-Scored','h2-board':'Live Leaderboard',
   'p-board':"Every entry is pulled straight from the picks form and graded automatically against the real results — no hand counting, no spreadsheets to argue over.",
+  'p-board-prize':'Total pool: $1,420 — paid out to the top 3 finishers.',
+  'prize-1st':'1st Place','prize-2nd':'2nd Place','prize-3rd':'3rd Place',
+  'prize-note':'Ties split the prize money, or winners can agree on a tiebreaker.',
   'live-dot':'Live','refresh-btn':'↻ Refresh',
   'kicker-groups':'Player Picks · Live Tracking','h2-groups':'Player Picks',
   'p-groups':'Pick a player and a round to see their picks tracked live — from the group stage all the way to the final.',
@@ -1499,15 +1566,21 @@ const EN={
   'champion-label':'2026 World Champions',
   'bracket-note':'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
 };
-const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks Page','/extras.html':'Extras'};
-const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Página de Picks','/extras.html':'Extras'};
+const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks Page','#bracket':'Bracket','/extras.html':'Extras'};
+const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Página de Picks','#bracket':'Bracket','/extras.html':'Extras'};
 let lang='en';
 const langBtn=document.getElementById('lang-btn');
 function applyLang(T,navT){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.getAttribute('data-i18n');
+    if (k === 'p-board') return; // has a nested <strong data-i18n="p-board-prize">; handle separately below
     if(T[k]!==undefined) el.textContent=T[k];
   });
+  const pBoard = document.querySelector('[data-i18n="p-board"]');
+  if (pBoard){
+    const tn = pBoard.childNodes[0];
+    if (tn && tn.nodeType === 3 && T['p-board'] !== undefined) tn.textContent = T['p-board'] + ' ';
+  }
   const sub=document.querySelector('.hero .sub');
   if(sub){
     const tn=sub.childNodes[0]; if(tn&&tn.nodeType===3) tn.textContent=lang==='es'
