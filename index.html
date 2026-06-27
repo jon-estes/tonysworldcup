@@ -712,7 +712,7 @@
   <div class="wrap">
     <div class="eyebrow" data-i18n="eyebrow">FIFA World Cup 2026 · USA · Mexico · Canada</div>
     <img class="hero-trophy" src="trophy.png" alt="2026 FIFA World Cup — United States, Canada, Mexico" width="1900" height="1333">
-    <p class="sub" data-i18n="hero-sub">48 teams. 104 matches. One pool. Picks are scored automatically and the bracket fills in live — <strong data-i18n="hero-strong">points climb every round you survive.</strong> First points awarded <span style="color:var(--gold);font-weight:700">June 28</span> when the group stage ends.</p>
+    <p class="sub" data-i18n="hero-sub">48 teams. 104 matches. One pool. Picks are scored automatically and the bracket fills in live — <strong data-i18n="hero-strong">points climb every round you survive.</strong> <span style="color:var(--gold);font-weight:700">Points are updating daily</span> as match results come in.</p>
     <div><span class="host-line">⚽ <span data-i18n="hosted-by">Hosted by</span> <strong>Tony Gutierrez Castro</strong></span></div>
     <div class="perfect">
       <span class="num">113</span>
@@ -1586,13 +1586,11 @@ function applyLang(T,navT){
     const tn=sub.childNodes[0]; if(tn&&tn.nodeType===3) tn.textContent=lang==='es'
       ?'48 equipos. 104 partidos. Una quiniela. Los picks se califican automáticamente y el bracket se llena en vivo — '
       :'48 teams. 104 matches. One pool. Picks are scored automatically and the bracket fills in live — ';
-    const tn2=sub.childNodes[2]; if(tn2&&tn2.nodeType===3) tn2.textContent=lang==='es'
-      ?' Los primeros puntos se otorgan el '
-      :' First points awarded ';
+    const tn2=sub.childNodes[2]; if(tn2&&tn2.nodeType===3) tn2.textContent=' ';
     const tn3=sub.childNodes[4]; if(tn3&&tn3.nodeType===3) tn3.textContent=lang==='es'
-      ?' cuando termina la fase de grupos.'
-      :' when the group stage ends.';
-    const span=sub.querySelector('span'); if(span) span.textContent=lang==='es'?'28 de junio':'June 28';
+      ?' conforme llegan los resultados de los partidos.'
+      :' as match results come in.';
+    const span=sub.querySelector('span'); if(span) span.textContent=lang==='es'?'Los puntos se actualizan diariamente':'Points are updating daily';
   }
   document.querySelectorAll('nav a.nl').forEach(a=>{ const l=navT[a.getAttribute('href')]; if(l) a.textContent=l; });
   langBtn.textContent=lang==='es'?'🇺🇸 EN':'🇲🇽 ES';
