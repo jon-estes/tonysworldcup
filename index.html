@@ -655,10 +655,7 @@
     <a class="nl" href="#how">Scoring</a>
     <a class="nl" href="#leaderboard">Leaderboard</a>
     <a class="nl" href="/picks/">Picks Page</a>
-    <a class="nl" href="#groups" data-i18n="nav-picks">Live Picks</a>
-    <a class="nl" href="#bracket">Bracket</a>
-    <a class="nl" href="#upsets">Upsets</a>
-    <a class="nl" href="#flagwall-sec" data-i18n="nav-flagwall">Survivors</a>
+    <a class="nl" href="/extras.html">Extras</a>
   </div>
 </nav>
 
@@ -796,19 +793,6 @@
 </section>
 
 <!-- ════════ UPSET TRACKER ════════ -->
-<section class="upset-sec" id="upsets">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">Underdog Watch</div>
-      <h2 class="display">Upset Alerts</h2>
-      <p>Teams that advanced despite a minority of the pool picking them. Brag rights for anyone who called it.</p>
-    </div>
-    <div class="upset-grid" id="upset-grid">
-      <div class="upset-empty">No upsets yet — check back as groups finish.</div>
-    </div>
-  </div>
-</section>
-
 <!-- ════════ THE GROUPS ════════ -->
 <section id="groups">
   <div class="wrap">
@@ -848,37 +832,6 @@
       <span><span class="dot green"></span> <span data-i18n="legend-hit">Pick advanced ✓</span></span>
       <span><span class="dot red"></span> <span data-i18n="legend-miss">Pick didn't score ✗</span></span>
     </div>
-  </div>
-</section>
-
-<!-- ════════ BRACKET ════════ -->
-<section id="bracket">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker" data-i18n="kicker-bracket">Knockout Stage · Jun 28 – Jul 19</div>
-      <h2 class="display" data-i18n="h2-bracket">The Live Bracket</h2>
-      <p data-i18n="p-bracket">All 31 knockout matches, from the Round of 32 to the final at MetLife Stadium. Winners light up gold as results come in. Round of 32 matchups lock in when the group stage ends — FIFA seeds the eight third-place wildcards by a preset formula.</p>
-    </div>
-    <div class="champion-banner" id="champion-banner">
-      <div class="cb-label" data-i18n="champion-label">2026 World Champions</div>
-      <div class="cb-team" id="champion-team"></div>
-    </div>
-    <div class="bracket-scroll">
-      <div class="bracket" id="bracket-grid" aria-label="Knockout bracket"></div>
-    </div>
-    <div class="bracket-note" id="bracket-updated" data-i18n="bracket-note">All dates and venues are official — team names replace the slot paths as the tournament unfolds.</div>
-  </div>
-</section>
-
-<!-- ════════ FLAG WALL ════════ -->
-<section class="flagwall-sec" id="flagwall-sec">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker" data-i18n="kicker-flagwall">Still Standing</div>
-      <h2 class="display" data-i18n="h2-flagwall">Every Team Still Alive</h2>
-      <p data-i18n="p-flagwall">All 48 teams. Eliminated ones fade out as the tournament moves on.</p>
-    </div>
-    <div class="flagwall" id="flagwall"></div>
   </div>
 </section>
 
@@ -1069,7 +1022,7 @@ let roundWinners = {};       // { R32:Set, R16:Set, QF:Set, SF:Set, '3P':Set, F:
 async function loadResults(){
   groupResults = {}; bracketData = {}; roundWinners = {};
   if (!RESULTS_CSV_URL){ renderBracket(); return; }
-  const note = document.getElementById('bracket-updated');
+  const note = document.getElementById('bracket-updated'); // now lives on extras.html — may be null here
   try{
     const rows = await fetchCSV(RESULTS_CSV_URL);
     const h = rows[0].map(x => x.trim().toLowerCase());
@@ -1090,11 +1043,11 @@ async function loadResults(){
     });
     renderBracket();
     renderFlagWall();
-    note.textContent = 'Results synced ' + new Date().toLocaleTimeString() + ' — updates automatically.';
+    if (note) note.textContent = 'Results synced ' + new Date().toLocaleTimeString() + ' — updates automatically.';
   }catch(e){
     renderBracket();
     renderFlagWall();
-    note.textContent = 'Results sync failed — showing last known state.';
+    if (note) note.textContent = 'Results sync failed — showing last known state.';
   }
 }
 
@@ -1200,6 +1153,7 @@ function matchCard(key, fallbackLabel, m, extraClass){
 }
 function renderBracket(){
   const grid = document.getElementById('bracket-grid');
+  if (!grid) return; // bracket UI lives on extras.html now — this page just needs bracketData computed
   grid.innerHTML = ROUNDS.map(r => {
     let cards = '';
     for (let i = 1; i <= r.count; i++){
@@ -1218,6 +1172,7 @@ function renderBracket(){
 
   const fin = bracketData['F-1'];
   const banner = document.getElementById('champion-banner');
+  if (!banner) return;
   if (fin && fin.w && fin.w.trim()){
     document.getElementById('champion-team').innerHTML = flagImg(fin.w) + ' ' + esc(fin.w);
     banner.classList.add('show');
@@ -1388,16 +1343,15 @@ async function loadLeaderboard(){
 
     board.innerHTML = `<table>
       <thead><tr>
-        <th>#</th><th>Player</th>
+        <th>#</th><th>Player</th><th>Total</th>
         ${ROUND_LABELS.map(([l]) => `<th>${l}</th>`).join('')}
-        <th>Total</th>
       </tr></thead>
       <tbody>${graded.map((p,i)=>`
         <tr class="${anyResults && i<3 ? 'r'+(i+1) : ''}">
           <td class="rank">${anyResults ? medal(i) : '–'}${moveArrow(p._delta)}</td>
           <td class="name">${esc(p.name)}</td>
-          ${ROUND_LABELS.map(([l]) => `<td class="rd">${p.byRound[l] === null ? '·' : p.byRound[l]}</td>`).join('')}
           <td class="pts" data-target="${p.total}">0</td>
+          ${ROUND_LABELS.map(([l]) => `<td class="rd">${p.byRound[l] === null ? '·' : p.byRound[l]}</td>`).join('')}
         </tr>`).join('')}
       </tbody></table>`;
     count.innerHTML = `<b>${graded.length}</b> entries`;
@@ -1545,8 +1499,8 @@ const EN={
   'champion-label':'2026 World Champions',
   'bracket-note':'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
 };
-const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks Page','#groups':'Live Picks','#bracket':'Bracket'};
-const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Página de Picks','#groups':'Picks en Vivo','#bracket':'Bracket'};
+const NAV_EN={'#how':'Scoring','#leaderboard':'Leaderboard','/picks/':'Picks Page','/extras.html':'Extras'};
+const NAV_ES={'#how':'Puntuación','#leaderboard':'Tabla','/picks/':'Página de Picks','/extras.html':'Extras'};
 let lang='en';
 const langBtn=document.getElementById('lang-btn');
 function applyLang(T,navT){
