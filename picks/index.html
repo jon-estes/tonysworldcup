@@ -543,9 +543,33 @@ const ROUND_SHEET_CONFIG = {
       matches: [
         { key:"R32-1", col:4, label:"Canada vs South Africa" }  // column E — "Canada or South Africa?"
       ]
+    },
+    {
+      // Second R32 sheet — covers the other 15 Round of 32 matches.
+      // Name is the LAST column ("Please enter display name?"); the
+      // "full name" column right before it is intentionally skipped.
+      // keys here match the "Match" number used in the Results sheet,
+      // NOT FIFA's official match numbers.
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSkWNPFbEpNjwFdiGX0h58LCTJ7INw1agrfF-CtZ9HWONlWehcuwJnHYcG0sqI3WodELLuiyHSYxZl0/pub?output=csv",
+      nameCol: 17,  // "Please enter display name?"
+      matches: [
+        { key:"R32-2",  col:1,  label:"Netherlands vs Morocco" },
+        { key:"R32-3",  col:2,  label:"Germany vs Paraguay" },
+        { key:"R32-4",  col:3,  label:"France vs Sweden" },
+        { key:"R32-5",  col:4,  label:"Belgium vs Senegal" },
+        { key:"R32-6",  col:5,  label:"USA vs Bosnia" },
+        { key:"R32-7",  col:6,  label:"Spain vs Austria" },
+        { key:"R32-8",  col:7,  label:"Portugal vs Croatia" },
+        { key:"R32-9",  col:8,  label:"Brazil vs Japan" },
+        { key:"R32-10", col:9,  label:"Ivory Coast vs Norway" },
+        { key:"R32-11", col:10, label:"Mexico vs Ecuador" },
+        { key:"R32-12", col:11, label:"England vs DR Congo" },
+        { key:"R32-13", col:12, label:"Switzerland vs Algeria" },
+        { key:"R32-14", col:13, label:"Colombia vs Ghana" },
+        { key:"R32-15", col:14, label:"Australia vs Egypt" },
+        { key:"R32-16", col:15, label:"Argentina vs Cape Verde" }
+      ]
     }
-    // When the second R32 sheet (with the rest of the matches) is ready,
-    // add another { url, nameCol, matches:[...] } object to this array.
   ],
   R16: [],
   QF:  [],
