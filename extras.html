@@ -524,37 +524,37 @@ async function loadResults(){
 /* ── official knockout schedule: FIFA match #, date, city, slot paths ── */
 const SCHEDULE = {
   'R32-1' :{m:73, d:'Sun Jun 28', c:'Los Angeles',   s1:'Runner-up A',  s2:'Runner-up B'},
-  'R32-2' :{m:74, d:'Mon Jun 29', c:'Boston',        s1:'Winner E',     s2:'3rd place'},
-  'R32-3' :{m:75, d:'Mon Jun 29', c:'Monterrey',     s1:'Winner F',     s2:'Runner-up C'},
-  'R32-4' :{m:76, d:'Mon Jun 29', c:'Houston',       s1:'Winner C',     s2:'Runner-up F'},
-  'R32-5' :{m:77, d:'Tue Jun 30', c:'New York/NJ',   s1:'Winner I',     s2:'3rd place'},
-  'R32-6' :{m:78, d:'Tue Jun 30', c:'Dallas',        s1:'Runner-up E',  s2:'Runner-up I'},
-  'R32-7' :{m:79, d:'Tue Jun 30', c:'Mexico City',   s1:'Winner A',     s2:'3rd place'},
-  'R32-8' :{m:80, d:'Wed Jul 1',  c:'Atlanta',       s1:'Winner L',     s2:'3rd place'},
-  'R32-9' :{m:81, d:'Wed Jul 1',  c:'San Francisco', s1:'Winner D',     s2:'3rd place'},
-  'R32-10':{m:82, d:'Wed Jul 1',  c:'Seattle',       s1:'Winner G',     s2:'3rd place'},
-  'R32-11':{m:83, d:'Fri Jul 3',  c:'Kansas City',   s1:'Runner-up K',  s2:'Runner-up L'},
-  'R32-12':{m:84, d:'Thu Jul 2',  c:'Los Angeles',   s1:'Winner H',     s2:'Runner-up J'},
-  'R32-13':{m:85, d:'Fri Jul 3',  c:'Dallas',        s1:'Runner-up D',  s2:'Runner-up G'},
-  'R32-14':{m:86, d:'Fri Jul 3',  c:'Miami',         s1:'Winner J',     s2:'Runner-up H'},
-  'R32-15':{m:87, d:'Thu Jul 2',  c:'Toronto',       s1:'Winner K',     s2:'3rd place'},
-  'R32-16':{m:88, d:'Thu Jul 2',  c:'Vancouver',     s1:'Winner B',     s2:'3rd place'},
-  'R16-1' :{m:89, d:'Sat Jul 4',  c:'Philadelphia',  s1:'Winner M74',   s2:'Winner M77'},
-  'R16-2' :{m:90, d:'Sat Jul 4',  c:'Houston',       s1:'Winner M73',   s2:'Winner M75'},
-  'R16-3' :{m:91, d:'Sun Jul 5',  c:'New York/NJ',   s1:'Winner M76',   s2:'Winner M78'},
-  'R16-4' :{m:92, d:'Sun Jul 5',  c:'Mexico City',   s1:'Winner M79',   s2:'Winner M80'},
-  'R16-5' :{m:93, d:'Mon Jul 6',  c:'Dallas',        s1:'Winner M83',   s2:'Winner M84'},
-  'R16-6' :{m:94, d:'Mon Jul 6',  c:'Seattle',       s1:'Winner M81',   s2:'Winner M82'},
-  'R16-7' :{m:95, d:'Tue Jul 7',  c:'Atlanta',       s1:'Winner M86',   s2:'Winner M88'},
-  'R16-8' :{m:96, d:'Tue Jul 7',  c:'Vancouver',     s1:'Winner M85',   s2:'Winner M87'},
-  'QF-1'  :{m:97, d:'Thu Jul 9',  c:'Boston',        s1:'Winner M89',   s2:'Winner M90'},
-  'QF-2'  :{m:98, d:'Fri Jul 10', c:'Los Angeles',   s1:'Winner M93',   s2:'Winner M94'},
-  'QF-3'  :{m:99, d:'Sat Jul 11', c:'Miami',         s1:'Winner M91',   s2:'Winner M92'},
-  'QF-4'  :{m:100,d:'Sat Jul 11', c:'Kansas City',   s1:'Winner M95',   s2:'Winner M96'},
-  'SF-1'  :{m:101,d:'Tue Jul 14', c:'Dallas',        s1:'Winner M97',   s2:'Winner M98'},
-  'SF-2'  :{m:102,d:'Wed Jul 15', c:'Atlanta',       s1:'Winner M99',   s2:'Winner M100'},
+  'R32-2' :{m:75, d:'Mon Jun 29', c:'Monterrey',     s1:'Winner F',     s2:'Runner-up C'},
+  'R32-3' :{m:74, d:'Mon Jun 29', c:'Boston',        s1:'Winner E',     s2:'3rd place'},
+  'R32-4' :{m:77, d:'Tue Jun 30', c:'New York/NJ',   s1:'Winner I',     s2:'3rd place'},
+  'R32-5' :{m:82, d:'Wed Jul 1',  c:'Seattle',       s1:'Winner G',     s2:'3rd place'},
+  'R32-6' :{m:81, d:'Wed Jul 1',  c:'San Francisco', s1:'Winner D',     s2:'3rd place'},
+  'R32-7' :{m:84, d:'Thu Jul 2',  c:'Los Angeles',   s1:'Winner H',     s2:'Runner-up J'},
+  'R32-8' :{m:87, d:'Thu Jul 2',  c:'Toronto',       s1:'Winner K',     s2:'3rd place'},
+  'R32-9' :{m:76, d:'Mon Jun 29', c:'Houston',       s1:'Winner C',     s2:'Runner-up F'},
+  'R32-10':{m:78, d:'Tue Jun 30', c:'Dallas',        s1:'Runner-up E',  s2:'Runner-up I'},
+  'R32-11':{m:79, d:'Tue Jun 30', c:'Mexico City',   s1:'Winner A',     s2:'3rd place'},
+  'R32-12':{m:80, d:'Wed Jul 1',  c:'Atlanta',       s1:'Winner L',     s2:'3rd place'},
+  'R32-13':{m:88, d:'Thu Jul 2',  c:'Vancouver',     s1:'Winner B',     s2:'3rd place'},
+  'R32-14':{m:83, d:'Fri Jul 3',  c:'Kansas City',   s1:'Runner-up K',  s2:'Runner-up L'},
+  'R32-15':{m:85, d:'Fri Jul 3',  c:'Dallas',        s1:'Runner-up D',  s2:'Runner-up G'},
+  'R32-16':{m:86, d:'Fri Jul 3',  c:'Miami',         s1:'Winner J',     s2:'Runner-up H'},
+  'R16-1' :{m:89, d:'Sat Jul 4',  c:'Philadelphia',  s1:'Winner R32-3', s2:'Winner R32-4'},
+  'R16-2' :{m:90, d:'Sat Jul 4',  c:'Houston',       s1:'Winner R32-1', s2:'Winner R32-2'},
+  'R16-3' :{m:91, d:'Sun Jul 5',  c:'New York/NJ',   s1:'Winner R32-9', s2:'Winner R32-10'},
+  'R16-4' :{m:92, d:'Sun Jul 5',  c:'Mexico City',   s1:'Winner R32-11',s2:'Winner R32-12'},
+  'R16-5' :{m:93, d:'Mon Jul 6',  c:'Dallas',        s1:'Winner R32-14',s2:'Winner R32-7'},
+  'R16-6' :{m:94, d:'Mon Jul 6',  c:'Seattle',       s1:'Winner R32-6', s2:'Winner R32-5'},
+  'R16-7' :{m:95, d:'Tue Jul 7',  c:'Atlanta',       s1:'Winner R32-16',s2:'Winner R32-13'},
+  'R16-8' :{m:96, d:'Tue Jul 7',  c:'Vancouver',     s1:'Winner R32-15',s2:'Winner R32-8'},
+  'QF-1'  :{m:97, d:'Thu Jul 9',  c:'Boston',        s1:'Winner R16-1', s2:'Winner R16-2'},
+  'QF-2'  :{m:98, d:'Fri Jul 10', c:'Los Angeles',   s1:'Winner R16-5', s2:'Winner R16-6'},
+  'QF-3'  :{m:99, d:'Sat Jul 11', c:'Miami',         s1:'Winner R16-3', s2:'Winner R16-4'},
+  'QF-4'  :{m:100,d:'Sat Jul 11', c:'Kansas City',   s1:'Winner R16-7', s2:'Winner R16-8'},
+  'SF-1'  :{m:101,d:'Tue Jul 14', c:'Dallas',        s1:'Winner QF-1',  s2:'Winner QF-2'},
+  'SF-2'  :{m:102,d:'Wed Jul 15', c:'Atlanta',       s1:'Winner QF-3',  s2:'Winner QF-4'},
   '3P-1'  :{m:103,d:'Sat Jul 18', c:'Miami',         s1:'SF loser',     s2:'SF loser'},
-  'F-1'   :{m:104,d:'Sun Jul 19', c:'New York/NJ',   s1:'Winner M101',  s2:'Winner M102'}
+  'F-1'   :{m:104,d:'Sun Jul 19', c:'New York/NJ',   s1:'Winner SF-1',  s2:'Winner SF-2'}
 };
 
 /* ── BRACKET render ── */
@@ -573,12 +573,12 @@ function resolveSlot(label){
   if (!label) return null;
   label = label.trim();
 
-  // "Winner M73" — pull the winner of that FIFA match number from bracketData
-  const mMatch = /^Winner\s+M(?:atch)?\s*(\d+)$/i.exec(label);
+  // "Winner R32-1" — pull the winner of that bracket slot from bracketData,
+  // using our own internal keys (matching the Results sheet's Match #
+  // column for that round) rather than FIFA's official match numbers.
+  const mMatch = /^Winner\s+((?:R32|R16|QF|SF)-\d+)$/i.exec(label);
   if (mMatch){
-    const matchNum = parseInt(mMatch[1], 10);
-    const key = Object.keys(SCHEDULE).find(k => SCHEDULE[k].m === matchNum);
-    if (!key) return null;
+    const key = mMatch[1].toUpperCase();
     const bd = bracketData[key];
     if (!bd || !bd.w || !bd.w.trim()) return null;
     return bd.w;
