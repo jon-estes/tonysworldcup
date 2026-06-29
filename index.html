@@ -1728,6 +1728,9 @@ async function loadRoundSheet(roundKey, cfg){
   const rows = await fetchCSV(cfg.url);
   if (!rows || rows.length < 2) return;
 
+  if (window._roundSheetHeaderDebug === undefined) window._roundSheetHeaderDebug = [];
+  window._roundSheetHeaderDebug.push({ url: cfg.url, header: rows[0], firstDataRow: rows[1] });
+
   if (!roundPicks[roundKey]) roundPicks[roundKey] = new Map();
   if (!roundPickCounts[roundKey]) roundPickCounts[roundKey] = {};
   const playerMap = roundPicks[roundKey];
@@ -1753,12 +1756,31 @@ async function loadRoundSheet(roundKey, cfg){
 async function loadAllRoundPicks(){
   roundPicks = {};
   roundPickCounts = {};
+  window._roundSheetHeaderDebug = [];
   for (const roundKey of Object.keys(ROUND_SHEET_CONFIG)){
     for (const cfg of ROUND_SHEET_CONFIG[roundKey]){
       try{ await loadRoundSheet(roundKey, cfg); }
       catch(e){ /* leave that sheet's picks unavailable, keep going */ }
     }
   }
+  renderHeaderDebugPanel();
+}
+
+function renderHeaderDebugPanel(){
+  let panel = document.getElementById('header-debug-panel');
+  if (!panel){
+    panel = document.createElement('div');
+    panel.id = 'header-debug-panel';
+    panel.style.cssText = 'background:#fffbe6;border:2px solid #e0c200;border-radius:8px;padding:14px 18px;margin:0 0 20px;font-family:monospace;font-size:11px;white-space:pre-wrap;overflow-x:auto;';
+    const grid = document.getElementById('merged-grid');
+    grid.parentNode.insertBefore(panel, grid);
+  }
+  const debug = window._roundSheetHeaderDebug || [];
+  panel.textContent = debug.map((d,i) => {
+    const headerLine = d.header.map((h,idx) => `[${idx}]${h}`).join(' | ');
+    const dataLine = d.firstDataRow.map((v,idx) => `[${idx}]${v}`).join(' | ');
+    return `SHEET ${i+1}: ${d.url.slice(-12)}\nHEADER: ${headerLine}\nROW 1:  ${dataLine}\n`;
+  }).join('\n');
 }
 
 function renderMerged(){
