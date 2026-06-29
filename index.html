@@ -1119,11 +1119,11 @@ const SCHEDULE = {
   'R32-8' :{m:80, d:'Wed Jul 1',  c:'Atlanta',       s1:'Winner L',     s2:'3rd place'},
   'R32-9' :{m:81, d:'Wed Jul 1',  c:'San Francisco', s1:'Winner D',     s2:'3rd place'},
   'R32-10':{m:82, d:'Wed Jul 1',  c:'Seattle',       s1:'Winner G',     s2:'3rd place'},
-  'R32-11':{m:83, d:'Thu Jul 2',  c:'Toronto',       s1:'Runner-up K',  s2:'Runner-up L'},
+  'R32-11':{m:83, d:'Fri Jul 3',  c:'Kansas City',   s1:'Runner-up K',  s2:'Runner-up L'},
   'R32-12':{m:84, d:'Thu Jul 2',  c:'Los Angeles',   s1:'Winner H',     s2:'Runner-up J'},
   'R32-13':{m:85, d:'Fri Jul 3',  c:'Dallas',        s1:'Runner-up D',  s2:'Runner-up G'},
   'R32-14':{m:86, d:'Fri Jul 3',  c:'Miami',         s1:'Winner J',     s2:'Runner-up H'},
-  'R32-15':{m:87, d:'Fri Jul 3',  c:'Kansas City',   s1:'Winner K',     s2:'3rd place'},
+  'R32-15':{m:87, d:'Thu Jul 2',  c:'Toronto',       s1:'Winner K',     s2:'3rd place'},
   'R32-16':{m:88, d:'Thu Jul 2',  c:'Vancouver',     s1:'Winner B',     s2:'3rd place'},
   'R16-1' :{m:89, d:'Sat Jul 4',  c:'Philadelphia',  s1:'Winner M74',   s2:'Winner M77'},
   'R16-2' :{m:90, d:'Sat Jul 4',  c:'Houston',       s1:'Winner M73',   s2:'Winner M75'},
@@ -1159,21 +1159,32 @@ const ROUNDS = [
    ranking formula isn't something we should silently guess at. */
 function resolveSlot(label){
   if (!label) return null;
-  const m = /^(Winner|Runner-up)\s+([A-L])$/i.exec(label.trim());
-  if (!m) return null; // "3rd place", "SF loser", "Winner M73" etc. — not auto-resolvable here
-  const letter = m[2].toUpperCase();
-  const pos = /winner/i.test(m[1]) ? 0 : 1; // 1st or 2nd in the group
+  label = label.trim();
+
+  // "Winner M73" / "Winner Match 73" — pull the winner of that FIFA match
+  // number directly from bracketData once the Results sheet has it.
+  const mMatch = /^Winner\s+M(?:atch)?\s*(\d+)$/i.exec(label);
+  if (mMatch){
+    const matchNum = parseInt(mMatch[1], 10);
+    const key = Object.keys(SCHEDULE).find(k => SCHEDULE[k].m === matchNum);
+    if (!key) return null;
+    const bd = bracketData[key];
+    if (!bd || !bd.w || !bd.w.trim()) return null;
+    return bd.w;
+  }
+
+  // "Winner A" / "Runner-up C" — pull straight from live group standings
+  const mGroup = /^(Winner|Runner-up)\s+([A-L])$/i.exec(label);
+  if (!mGroup) return null; // "3rd place", "SF loser" etc. — not auto-resolvable here
+  const letter = mGroup[2].toUpperCase();
+  const pos = /winner/i.test(mGroup[1]) ? 0 : 1; // 1st or 2nd in the group
   const rows = standingsData[letter];
-  if (!rows || rows.length <= pos){
-    console.log('[resolveSlot]', label, '→ no standings data for group', letter, 'rows:', rows);
-    return null;
-  }
+  if (!rows || rows.length <= pos) return null;
+  // Only trust this once the group has played enough matches to be
+  // meaningfully decided — require at least 2 matches played for the
+  // team in that position, otherwise standings can still flip.
   const row = rows[pos];
-  if (!row || (row.w + row.d + row.l) < 2){
-    console.log('[resolveSlot]', label, '→ not enough matches played yet:', row);
-    return null;
-  }
-  console.log('[resolveSlot]', label, '→ resolved to', row.team);
+  if (!row || (row.w + row.d + row.l) < 2) return null;
   return row.team;
 }
 

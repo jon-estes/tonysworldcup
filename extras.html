@@ -191,19 +191,55 @@
 
   /* ── FLAG WALL ── */
   .flagwall-sec{padding-bottom:80px}
-  .flagwall{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .fw-status-row{
+    display:flex;gap:18px;flex-wrap:wrap;margin-bottom:32px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--chalk-faint);
+  }
+  .fw-status-row span{display:inline-flex;align-items:center;gap:8px}
+  .fw-dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .fw-dot.alive{background:var(--grass)}
+  .fw-dot.out{background:var(--chalk-faint);opacity:.5}
+
+  .flagwall{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:14px;
+  }
+  .fw-card{
+    display:flex;align-items:center;gap:12px;
+    border:1px solid var(--line);border-radius:10px;background:var(--card);
+    padding:10px 14px;transition:transform .15s,box-shadow .15s,opacity .3s;
+  }
+  .fw-card:not(.eliminated):hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(20,30,60,.12)}
   .fw-flag{
-    position:relative;width:52px;height:38px;border-radius:6px;overflow:hidden;
-    box-shadow:0 0 0 1px rgba(20,30,60,.14);transition:transform .15s,opacity .4s;
+    flex:none;width:38px;height:27px;border-radius:4px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(20,30,60,.16);
   }
   .fw-flag img{width:100%;height:100%;object-fit:cover;display:block}
-  .fw-flag.eliminated{opacity:.18;filter:grayscale(1)}
-  .fw-flag:not(.eliminated):hover{transform:scale(1.12);box-shadow:0 4px 14px rgba(20,30,60,.25)}
-  .fw-flag .fw-x{
-    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    color:var(--red);font-size:22px;font-weight:800;opacity:0;
+  .fw-info{flex:1;min-width:0}
+  .fw-name{font-weight:700;font-size:14px;color:var(--chalk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fw-group{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--chalk-faint);margin-top:1px;
   }
-  .fw-flag.eliminated .fw-x{opacity:.7}
+  .fw-badge{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:5px;
+  }
+  .fw-card:not(.eliminated) .fw-badge{color:var(--grass);background:rgba(22,138,69,.12)}
+  .fw-card.eliminated{opacity:.5;background:rgba(20,30,60,.02)}
+  .fw-card.eliminated .fw-flag{filter:grayscale(1);opacity:.7}
+  .fw-card.eliminated .fw-name{color:var(--chalk-faint);text-decoration:line-through;text-decoration-color:rgba(201,38,44,.5);text-decoration-thickness:1.5px}
+  .fw-card.eliminated .fw-badge{color:var(--red);background:rgba(201,38,44,.1)}
+
+  .fw-divider{
+    grid-column:1/-1;margin:8px 0 4px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--chalk-faint);
+    display:flex;align-items:center;gap:12px;
+  }
+  .fw-divider::after{content:"";flex:1;height:1px;background:var(--line)}
 
   footer{
     border-top:1px solid var(--line);
@@ -283,7 +319,11 @@
     <div class="sec-head">
       <div class="kicker" data-i18n="kicker-flagwall">Still Standing</div>
       <h2 class="display" data-i18n="h2-flagwall">Every Team Still Alive</h2>
-      <p data-i18n="p-flagwall">All 48 teams. Eliminated ones fade out as the tournament moves on.</p>
+      <p data-i18n="p-flagwall">All 48 teams, sorted by group. Eliminated teams move to the bottom and get crossed out.</p>
+    </div>
+    <div class="fw-status-row">
+      <span><span class="fw-dot alive"></span> <span data-i18n="fw-alive-label">Still in it</span> — <b id="fw-alive-count">48</b></span>
+      <span><span class="fw-dot out"></span> <span data-i18n="fw-out-label">Eliminated</span> — <b id="fw-out-count">0</b></span>
     </div>
     <div class="flagwall" id="flagwall"></div>
   </div>
@@ -296,6 +336,12 @@
 <button id="lang-btn" aria-label="Toggle language">🇲🇽 ES</button>
 
 <script>
+/* Declared up front since renderFlagWall reads it — `let` bindings
+   aren't safely usable inside a function call that happens before
+   their own declaration line executes, even if the function itself
+   was defined earlier in the file. */
+let lang='en';
+
 /* ══════════════════════════════════════════════════════════════════
    PASTE YOUR SHEET CSV URLS HERE — same ones used on the main page.
    ══════════════════════════════════════════════════════════════════ */
@@ -487,11 +533,11 @@ const SCHEDULE = {
   'R32-8' :{m:80, d:'Wed Jul 1',  c:'Atlanta',       s1:'Winner L',     s2:'3rd place'},
   'R32-9' :{m:81, d:'Wed Jul 1',  c:'San Francisco', s1:'Winner D',     s2:'3rd place'},
   'R32-10':{m:82, d:'Wed Jul 1',  c:'Seattle',       s1:'Winner G',     s2:'3rd place'},
-  'R32-11':{m:83, d:'Thu Jul 2',  c:'Toronto',       s1:'Runner-up K',  s2:'Runner-up L'},
+  'R32-11':{m:83, d:'Fri Jul 3',  c:'Kansas City',   s1:'Runner-up K',  s2:'Runner-up L'},
   'R32-12':{m:84, d:'Thu Jul 2',  c:'Los Angeles',   s1:'Winner H',     s2:'Runner-up J'},
   'R32-13':{m:85, d:'Fri Jul 3',  c:'Dallas',        s1:'Runner-up D',  s2:'Runner-up G'},
   'R32-14':{m:86, d:'Fri Jul 3',  c:'Miami',         s1:'Winner J',     s2:'Runner-up H'},
-  'R32-15':{m:87, d:'Fri Jul 3',  c:'Kansas City',   s1:'Winner K',     s2:'3rd place'},
+  'R32-15':{m:87, d:'Thu Jul 2',  c:'Toronto',       s1:'Winner K',     s2:'3rd place'},
   'R32-16':{m:88, d:'Thu Jul 2',  c:'Vancouver',     s1:'Winner B',     s2:'3rd place'},
   'R16-1' :{m:89, d:'Sat Jul 4',  c:'Philadelphia',  s1:'Winner M74',   s2:'Winner M77'},
   'R16-2' :{m:90, d:'Sat Jul 4',  c:'Houston',       s1:'Winner M73',   s2:'Winner M75'},
@@ -525,10 +571,24 @@ const ROUNDS = [
    third-place ranking formula isn't something to silently guess at. */
 function resolveSlot(label){
   if (!label) return null;
-  const m = /^(Winner|Runner-up)\s+([A-L])$/i.exec(label.trim());
-  if (!m) return null;
-  const letter = m[2].toUpperCase();
-  const pos = /winner/i.test(m[1]) ? 0 : 1;
+  label = label.trim();
+
+  // "Winner M73" — pull the winner of that FIFA match number from bracketData
+  const mMatch = /^Winner\s+M(?:atch)?\s*(\d+)$/i.exec(label);
+  if (mMatch){
+    const matchNum = parseInt(mMatch[1], 10);
+    const key = Object.keys(SCHEDULE).find(k => SCHEDULE[k].m === matchNum);
+    if (!key) return null;
+    const bd = bracketData[key];
+    if (!bd || !bd.w || !bd.w.trim()) return null;
+    return bd.w;
+  }
+
+  // "Winner A" / "Runner-up C" — pull from live group standings
+  const mGroup = /^(Winner|Runner-up)\s+([A-L])$/i.exec(label);
+  if (!mGroup) return null;
+  const letter = mGroup[2].toUpperCase();
+  const pos = /winner/i.test(mGroup[1]) ? 0 : 1;
   const rows = standingsData[letter];
   if (!rows || rows.length <= pos) return null;
   const row = rows[pos];
@@ -628,18 +688,40 @@ function updateUpsetTracker(){
 /* ── FLAG WALL ── */
 function renderFlagWall(){
   const wall = document.getElementById('flagwall');
-  wall.innerHTML = GROUPS.map(([letter,,teams]) => {
+  const aliveCards = [];
+  const outCards = [];
+
+  GROUPS.forEach(([letter,,teams]) => {
     const result = groupResults[letter];
-    return teams.map(t => {
+    teams.forEach(t => {
       const c = canon(t);
-      const eliminated = result && !result.has(c);
+      const eliminated = !!(result && !result.has(c));
       const code = FLAG_CODES[c];
       const img = code ? `<img src="https://flagcdn.com/w80/${code}.png" alt="${esc(t)}" loading="lazy">` : '';
-      return `<div class="fw-flag${eliminated?' eliminated':''}" title="${esc(t)}${eliminated?' — eliminated':''}">
-        ${img}<span class="fw-x">✗</span>
+      const badge = eliminated ? (lang==='es'?'Fuera':'Out') : (lang==='es'?'Vivo':'Alive');
+      const card = `<div class="fw-card${eliminated?' eliminated':''}">
+        <div class="fw-flag">${img}</div>
+        <div class="fw-info">
+          <div class="fw-name">${esc(t)}</div>
+          <div class="fw-group">Group ${letter}</div>
+        </div>
+        <span class="fw-badge">${badge}</span>
       </div>`;
-    }).join('');
-  }).join('');
+      (eliminated ? outCards : aliveCards).push(card);
+    });
+  });
+
+  document.getElementById('fw-alive-count').textContent = aliveCards.length;
+  document.getElementById('fw-out-count').textContent = outCards.length;
+
+  const aliveLabel = lang==='es' ? 'Siguen en Pie' : 'Still Alive';
+  const outLabel = lang==='es' ? 'Eliminados' : 'Eliminated';
+
+  let html = `<div class="fw-divider">${aliveLabel}</div>` + aliveCards.join('');
+  if (outCards.length){
+    html += `<div class="fw-divider">${outLabel}</div>` + outCards.join('');
+  }
+  wall.innerHTML = html;
 }
 
 /* ── BOOT ── */
@@ -702,7 +784,8 @@ const ES={
   'bracket-note':'Fechas y sedes son oficiales — los nombres de equipos reemplazan las rutas conforme avanza el torneo.',
   'kicker-flagwall':'Siguen en Pie',
   'h2-flagwall':'Cada Equipo Aún Vivo',
-  'p-flagwall':'Los 48 equipos. Los eliminados se desvanecen conforme avanza el torneo.',
+  'p-flagwall':'Los 48 equipos, ordenados por grupo. Los eliminados bajan y se tachan.',
+  'fw-alive-label':'Siguen en pie','fw-out-label':'Eliminados',
 };
 const EN={
   'eyebrow':'Bonus Coverage',
@@ -718,9 +801,9 @@ const EN={
   'bracket-note':'All dates and venues are official — team names replace the slot paths as the tournament unfolds.',
   'kicker-flagwall':'Still Standing',
   'h2-flagwall':'Every Team Still Alive',
-  'p-flagwall':'All 48 teams. Eliminated ones fade out as the tournament moves on.',
+  'p-flagwall':'All 48 teams, sorted by group. Eliminated teams move to the bottom and get crossed out.',
+  'fw-alive-label':'Still in it','fw-out-label':'Eliminated',
 };
-let lang='en';
 const langBtn=document.getElementById('lang-btn');
 function applyLang(strings){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
@@ -732,6 +815,7 @@ function applyLang(strings){
 langBtn.addEventListener('click',()=>{
   lang = lang==='en' ? 'es' : 'en';
   applyLang(lang==='es' ? ES : EN);
+  renderFlagWall();
 });
 </script>
 
