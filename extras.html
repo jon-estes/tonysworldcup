@@ -306,39 +306,61 @@
   /* wide card spans full row */
   .stat-card.wide{grid-column:1/-1}
 
-  /* accuracy leaderboard */
-  .acc-table{width:100%;border-collapse:collapse}
-  .acc-table th{
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--chalk-faint);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);
-  }
-  .acc-table th:not(:first-child){text-align:center}
-  .acc-table td{padding:8px;font-size:13px;border-bottom:1px solid rgba(20,30,60,.06)}
-  .acc-table td:not(:first-child){text-align:center;font-family:'JetBrains Mono',monospace}
-  .acc-table tr:last-child td{border-bottom:none}
-  .acc-table td.acc-name{font-weight:700}
-  .acc-table tr:nth-child(1) td.acc-name{color:var(--gold-deep)}
-  .acc-pct-high{color:var(--grass);font-weight:800}
-  .acc-pct-mid{color:var(--chalk-dim)}
-  .acc-pct-low{color:var(--red)}
+  /* pick split chart */
+  .ps-list{display:flex;flex-direction:column;gap:10px}
+  .ps-row{display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(20,30,60,.06)}
+  .ps-row:last-child{border-bottom:none}
+  .ps-label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;overflow:hidden}
+  .ps-label img{width:20px;height:14px;object-fit:cover;border-radius:2px;flex:none}
+  .ps-label-right{flex-direction:row-reverse;text-align:right}
+  .ps-winner{color:var(--grass);font-weight:800}
+  .ps-loser{color:var(--chalk-faint)}
+  .ps-bar-wrap{position:relative;display:flex;height:20px;align-items:center;border-radius:4px;overflow:hidden;background:rgba(20,30,60,.06)}
+  .ps-bar{height:100%;border-radius:0;transition:width .4s}
+  .ps-bar-right{position:absolute;right:0;top:0}
+  .ps-pct{position:absolute;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+  .ps-pct-left{left:6px}
+  .ps-pct-right{right:6px}
 
-  /* elimination watch / sweating / bubble — shared row style */
-  .ew-list,.sw-list,.bb-list{display:flex;flex-direction:column;gap:10px}
-  .ew-row,.sw-row,.bb-row{
-    display:flex;align-items:center;gap:10px;padding:9px 0;
-    border-bottom:1px solid rgba(20,30,60,.06);font-size:13px;
-  }
-  .ew-row:last-child,.sw-row:last-child,.bb-row:last-child{border-bottom:none}
-  .ew-name,.sw-name,.bb-name{font-weight:700;flex:1;min-width:0}
-  .ew-detail,.sw-detail,.bb-detail{
-    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--chalk-faint);text-align:right;flex:none;
-  }
-  .sw-count{
-    font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;color:var(--gold-deep);
-    flex:none;min-width:22px;text-align:center;
-  }
-  .bb-miss-dots{display:flex;gap:3px;flex:none}
-  .bb-miss-dot{width:8px;height:8px;border-radius:50%;background:var(--red);opacity:.7}
+  /* round leaderboard */
+  .rl-round-name{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:14px}
+  .rl-list{display:flex;flex-direction:column;gap:8px}
+  .rl-row{display:flex;align-items:center;gap:10px;font-size:13px}
+  .rl-rank{flex:none;width:24px;text-align:center}
+  .rl-name{flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rl-bar-track{flex:1;height:6px;border-radius:99px;background:rgba(20,30,60,.08);overflow:hidden;max-width:80px}
+  .rl-bar-fill{height:100%;background:var(--gold);border-radius:99px}
+  .rl-pts{flex:none;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:13px;color:var(--grass);white-space:nowrap}
+
+  /* crowd vs reality */
+  .cvr-list{display:flex;flex-direction:column;gap:12px}
+  .cvr-row{padding:8px 0;border-bottom:1px solid rgba(20,30,60,.06)}
+  .cvr-row:last-child{border-bottom:none}
+  .cvr-match{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk-faint);margin-bottom:4px}
+  .cvr-result{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;margin-bottom:6px}
+  .cvr-result img{width:20px;height:14px;object-fit:cover;border-radius:2px}
+  .cvr-bar-track{height:8px;border-radius:99px;background:rgba(20,30,60,.08);overflow:hidden;margin-bottom:4px}
+  .cvr-bar-fill{height:100%;border-radius:99px}
+  .cvr-bar-fill.acc-pct-high{background:var(--grass)}
+  .cvr-bar-fill.acc-pct-mid{background:var(--gold)}
+  .cvr-bar-fill.acc-pct-low{background:var(--red)}
+  .cvr-pct{font-family:'JetBrains Mono',monospace;font-size:12px}
+
+  /* chalk wins */
+  .cw-list{display:flex;flex-direction:column;gap:8px}
+  .cw-row{display:flex;align-items:center;gap:10px;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(20,30,60,.06)}
+  .cw-row:last-child{border-bottom:none}
+  .cw-rank{flex:none;width:26px;text-align:center}
+  .cw-name{flex:1;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cw-pts{flex:none;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;color:var(--grass)}
+  .cw-current{font-weight:400;font-size:11px;color:var(--chalk-faint)}
+
+  /* ew list */
+  .ew-list{display:flex;flex-direction:column;gap:8px}
+  .ew-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(20,30,60,.06);font-size:13px}
+  .ew-row:last-child{border-bottom:none}
+  .ew-name{flex:1;font-weight:700}
+  .ew-detail{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--chalk-faint);text-align:right;flex:none}
 
   /* heat map */
   .heatmap-grid{display:flex;flex-wrap:wrap;gap:8px}
@@ -445,63 +467,63 @@
 </section>
 
 <!-- ════════ POOL STATS ════════ -->
+<!-- ════════ POOL INTEL — ROW 1 ════════ -->
 <section class="poolstats-sec" id="poolstats">
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker" data-i18n="kicker-poolstats">Pool Intel</div>
       <h2 class="display" data-i18n="h2-poolstats">How The Room Is Playing</h2>
-      <p data-i18n="p-poolstats">Crowd favorites, flawless brackets, and who's zigging while everyone else zags.</p>
+      <p data-i18n="p-poolstats">Live stats for your round-by-round pick pool — who's hot this round, who the crowd's riding with, and what happens if chalk wins out.</p>
     </div>
-
     <div class="stat-grid">
+      <div class="stat-card wide" id="picksplit-card">
+        <div class="stat-label" data-i18n="picksplit-label">Pick Split — This Round</div>
+        <div class="stat-body" id="picksplit-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+    </div>
+    <div class="stat-grid" style="margin-top:18px">
+      <div class="stat-card" id="roundlb-card">
+        <div class="stat-label" data-i18n="roundlb-label">This Round's Leaderboard</div>
+        <div class="stat-body" id="roundlb-body"><div class="stat-loading">Loading…</div></div>
+      </div>
       <div class="stat-card" id="popular-pick-card">
         <div class="stat-label" data-i18n="popular-pick-label">Most Popular Pick This Round</div>
         <div class="stat-body" id="popular-pick-body"><div class="stat-loading">Loading…</div></div>
       </div>
-
       <div class="stat-card" id="perfect-bracket-card">
         <div class="stat-label" data-i18n="perfect-bracket-label">Perfect Brackets Remaining</div>
         <div class="stat-body" id="perfect-bracket-body"><div class="stat-loading">Loading…</div></div>
-      </div>
-
-      <div class="stat-card" id="contrarian-card">
-        <div class="stat-label" data-i18n="contrarian-label">Boldest Bracket Still Alive</div>
-        <div class="stat-body" id="contrarian-body"><div class="stat-loading">Loading…</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ MORE POOL INTEL ════════ -->
+<!-- ════════ POOL INTEL — ROW 2 ════════ -->
 <section class="poolstats-sec" id="poolstats2">
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker" data-i18n="kicker-more">Deeper Cuts</div>
       <h2 class="display" data-i18n="h2-more">Who's Actually Good At This</h2>
-      <p data-i18n="p-more">Hit rates, who's still got a shot at first, and who's sweating the next round the hardest.</p>
+      <p data-i18n="p-more">Accuracy by round, who's still alive for first, how everyone splits on undecided games, and what the scoreboard looks like if the crowd gets it right.</p>
     </div>
-
     <div class="stat-grid">
       <div class="stat-card wide" id="accuracy-card">
         <div class="stat-label" data-i18n="accuracy-label">Round-By-Round Accuracy</div>
         <div class="stat-body" id="accuracy-body"><div class="stat-loading">Loading…</div></div>
       </div>
     </div>
-
     <div class="stat-grid" style="margin-top:18px">
       <div class="stat-card" id="elimination-card">
-        <div class="stat-label" data-i18n="elimination-label">Still Mathematically In It For 1st</div>
+        <div class="stat-label" data-i18n="elimination-label">Still In It For 1st</div>
         <div class="stat-body" id="elimination-body"><div class="stat-loading">Loading…</div></div>
       </div>
-
-      <div class="stat-card" id="sweating-card">
-        <div class="stat-label" data-i18n="sweating-label">Sweating It Out This Round</div>
-        <div class="stat-body" id="sweating-body"><div class="stat-loading">Loading…</div></div>
+      <div class="stat-card" id="crowdvreality-card">
+        <div class="stat-label" data-i18n="crowdvreality-label">Crowd vs. Reality</div>
+        <div class="stat-body" id="crowdvreality-body"><div class="stat-loading">Loading…</div></div>
       </div>
-
-      <div class="stat-card" id="bubble-card">
-        <div class="stat-label" data-i18n="bubble-label">On The Bubble</div>
-        <div class="stat-body" id="bubble-body"><div class="stat-loading">Loading…</div></div>
+      <div class="stat-card" id="chalkwins-card">
+        <div class="stat-label" data-i18n="chalkwins-label">If Chalk Wins From Here</div>
+        <div class="stat-body" id="chalkwins-body"><div class="stat-loading">Loading…</div></div>
       </div>
     </div>
   </div>
@@ -522,6 +544,7 @@
 <footer>
   <div class="wrap">Thank you for playing in Tony's World Cup! · <span style="color:var(--gold)">v1</span></div>
 </footer>
+
 
 <button id="lang-btn" aria-label="Toggle language">🇲🇽 ES</button>
 
@@ -1230,72 +1253,189 @@ function renderPerfectBrackets(){
    Among players who are still "perfect" (see above), finds the one
    whose surviving picks are, on average, the least popular with the
    rest of the pool — i.e. the most contrarian flawless bracket. */
-function renderContrarianBracket(){
-  const body = document.getElementById('contrarian-body');
-  if (!pickEntries.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
-
-  const totalPicks = pickEntries.length || 1;
-
-  const candidates = pickEntries.map(e => {
-    let hasMiss = false;
-    const alivePicks = []; // { team, pct, displayName }
-
-    Object.keys(e.picks).forEach(letter => {
-      const result = groupResults[letter];
-      e.picks[letter].forEach(c => {
-        if (result){
-          if (!result.has(c)){ hasMiss = true; return; }
-        }
-        const count = pickCounts[c] || 0;
-        alivePicks.push({ team: c, pct: Math.round(100*count/totalPicks), displayName: displayNameFor(c) });
-      });
-    });
-
-    const koPicks = koPlayerPicks[e.name.toLowerCase()] || {};
-    Object.entries(koPicks).forEach(([matchKey, p]) => {
-      const bd = bracketData[matchKey];
-      if (bd && bd.w && bd.w.trim()){
-        if (canon(bd.w) !== p.team){ hasMiss = true; return; }
-      }
-      const counts = koMatchCounts[matchKey] || {};
-      const roundTotal = koTotalSubmissions[p.roundKey] || totalPicks;
-      const pct = roundTotal ? Math.round(100*(counts[p.team]||0)/roundTotal) : 0;
-      alivePicks.push({ team: p.team, pct, displayName: displayNameFor(p.team) });
-    });
-
-    if (hasMiss || !alivePicks.length) return null;
-    const avgPct = alivePicks.reduce((s,p) => s+p.pct, 0) / alivePicks.length;
-    return { name: e.name, avgPct, picks: alivePicks.sort((a,b) => a.pct-b.pct) };
-  }).filter(Boolean);
-
-  if (!candidates.length){
-    body.innerHTML = '<div class="stat-empty">No flawless brackets to compare yet.</div>';
-    return;
-  }
-
-  candidates.sort((a,b) => a.avgPct - b.avgPct);
-  const boldest = candidates[0];
-  const longshots = boldest.picks.slice(0,4).map(p =>
-    `<div class="cb-pick-row">${flagImg(p.displayName)}${esc(p.displayName)}<span class="cb-pick-pct">${p.pct}% of pool</span></div>`
-  ).join('');
-
-  body.innerHTML = `
-    <div class="cb-player-name">${esc(boldest.name)}</div>
-    <div class="cb-score-row"><span class="cb-score-num">${Math.round(boldest.avgPct)}%</span><span class="cb-score-label">avg pick popularity</span></div>
-    <div class="cb-pick-list">${longshots}</div>
-  `;
-}
 
 function renderPoolStats(){
+  renderPickSplit();
+  renderRoundLeaderboard();
   renderPopularPick();
   renderPerfectBrackets();
-  renderContrarianBracket();
   renderAccuracyLeaderboard();
   renderEliminationWatch();
-  renderSweatingItOut();
-  renderOnTheBubble();
+  renderCrowdVsReality();
+  renderChalkWins();
   renderHeatMap();
 }
+
+/* ── PICK SPLIT CHART
+   For every match in the current live round, show how the pool
+   split between the two teams — a horizontal % bar per match. */
+function renderPickSplit(){
+  const body = document.getElementById('picksplit-body');
+  const currentRound = findCurrentRound();
+  if (!currentRound){ body.innerHTML = '<div class="stat-empty">No knockout round picks open yet.</div>'; return; }
+  const cfgs = ROUND_SHEET_CONFIG[currentRound] || [];
+  const total = koTotalSubmissions[currentRound] || 0;
+  if (!total){ body.innerHTML = '<div class="stat-empty">No picks submitted yet for this round.</div>'; return; }
+
+  const rows = [];
+  cfgs.forEach(cfg => {
+    cfg.matches.forEach(m => {
+      const counts = koMatchCounts[m.key] || {};
+      const bd = bracketData[m.key];
+      const decided = bd && bd.w && bd.w.trim();
+
+      // determine the two teams from the label
+      const parts = m.label.split(/\s+vs\.?\s+/i);
+      const t1 = parts[0], t2 = parts[1];
+      if (!t1 || !t2) return;
+
+      const c1 = canon(t1), c2 = canon(t2);
+      const n1 = counts[c1] || 0, n2 = counts[c2] || 0;
+      const pct1 = total ? Math.round(100 * n1 / total) : 0;
+      const pct2 = total ? Math.round(100 * n2 / total) : 0;
+      const winner = decided ? canon(bd.w) : null;
+
+      const hi1 = winner && winner === c1 ? 'ps-winner' : winner && winner !== c1 ? 'ps-loser' : '';
+      const hi2 = winner && winner === c2 ? 'ps-winner' : winner && winner !== c2 ? 'ps-loser' : '';
+
+      rows.push(`<div class="ps-row">
+        <div class="ps-label">${flagImg(t1)}<span class="${hi1}">${esc(t1)}</span></div>
+        <div class="ps-bar-wrap">
+          <div class="ps-bar" style="width:${pct1}%;background:${hi1==='ps-winner'?'var(--grass)':hi1==='ps-loser'?'rgba(20,30,60,.18)':'var(--gold)'}"></div>
+          <span class="ps-pct ps-pct-left">${pct1}%</span>
+          <span class="ps-pct ps-pct-right">${pct2}%</span>
+          <div class="ps-bar ps-bar-right" style="width:${pct2}%;background:${hi2==='ps-winner'?'var(--grass)':hi2==='ps-loser'?'rgba(20,30,60,.18)':'var(--gold)'}"></div>
+        </div>
+        <div class="ps-label ps-label-right">${flagImg(t2)}<span class="${hi2}">${esc(t2)}</span></div>
+      </div>`);
+    });
+  });
+
+  body.innerHTML = rows.length
+    ? `<div class="ps-list">${rows.join('')}</div>`
+    : '<div class="stat-empty">No matches found for this round.</div>';
+}
+
+/* ── ROUND LEADERBOARD
+   Points scored in the current/most-recent active round only,
+   separate from the all-time leaderboard. */
+function renderRoundLeaderboard(){
+  const body = document.getElementById('roundlb-body');
+  const graded = gradeAllPlayers();
+  if (!graded.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
+
+  const currentRound = findCurrentRound() || 'GROUPS';
+  const ranked = graded
+    .map(g => ({ name: g.name, pts: (g.rounds[currentRound]||{}).pts || 0, correct: (g.rounds[currentRound]||{}).correct || 0 }))
+    .filter(g => g.correct > 0 || (g.pts || 0) >= 0)
+    .sort((a,b) => b.pts - a.pts || b.correct - a.correct);
+
+  const maxPts = ranked[0]?.pts || 0;
+  const medals = ['🥇','🥈','🥉'];
+  const rows = ranked.slice(0,10).map((g,i) => {
+    const pct = maxPts ? Math.round(100 * g.pts / maxPts) : 0;
+    const medal = i < 3 ? medals[i] : `${i+1}.`;
+    return `<div class="rl-row">
+      <span class="rl-rank">${medal}</span>
+      <span class="rl-name">${esc(g.name)}</span>
+      <div class="rl-bar-track"><div class="rl-bar-fill" style="width:${pct}%"></div></div>
+      <span class="rl-pts">${g.pts}pts</span>
+    </div>`;
+  }).join('');
+
+  const roundLabel = ROUND_FULL_NAME[currentRound] || currentRound;
+  body.innerHTML = `<div class="rl-round-name">${esc(roundLabel)}</div><div class="rl-list">${rows}</div>`;
+}
+
+/* ── CROWD VS. REALITY
+   For each decided match this round, what % of the pool called it
+   correctly? Shows which games the room nailed vs. collectively whiffed. */
+function renderCrowdVsReality(){
+  const body = document.getElementById('crowdvreality-body');
+  const currentRound = findCurrentRound();
+  if (!currentRound){ body.innerHTML = '<div class="stat-empty">No knockout picks yet.</div>'; return; }
+
+  const cfgs = ROUND_SHEET_CONFIG[currentRound] || [];
+  const total = koTotalSubmissions[currentRound] || 0;
+  if (!total){ body.innerHTML = '<div class="stat-empty">No picks submitted yet.</div>'; return; }
+
+  const decided = [];
+  cfgs.forEach(cfg => {
+    cfg.matches.forEach(m => {
+      const bd = bracketData[m.key];
+      if (!bd || !bd.w || !bd.w.trim()) return;
+      const winner = canon(bd.w);
+      const correctCount = (koMatchCounts[m.key] || {})[winner] || 0;
+      const pct = Math.round(100 * correctCount / total);
+      decided.push({ label: m.label, winner: bd.w, pct, correctCount });
+    });
+  });
+
+  if (!decided.length){ body.innerHTML = '<div class="stat-empty">No decided matches in this round yet.</div>'; return; }
+  decided.sort((a,b) => a.pct - b.pct);
+
+  const rows = decided.map(d => {
+    const cls = d.pct >= 70 ? 'acc-pct-high' : d.pct >= 40 ? 'acc-pct-mid' : 'acc-pct-low';
+    return `<div class="cvr-row">
+      <div class="cvr-match">${esc(d.label)}</div>
+      <div class="cvr-result">${flagImg(d.winner)}${esc(d.winner)} won</div>
+      <div class="cvr-bar-track"><div class="cvr-bar-fill ${cls}" style="width:${d.pct}%"></div></div>
+      <span class="cvr-pct ${cls}">${d.pct}% called it</span>
+    </div>`;
+  }).join('');
+
+  body.innerHTML = `<div class="cvr-list">${rows}</div>`;
+}
+
+/* ── IF CHALK WINS FROM HERE
+   Simulates the leaderboard if the most-picked team wins every
+   remaining undecided match — shows who'd win the pool under that scenario. */
+function renderChalkWins(){
+  const body = document.getElementById('chalkwins-body');
+  const graded = gradeAllPlayers();
+  if (!graded.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
+
+  // for each undecided match in every open round, find the most-picked team
+  const chalkWinners = {}; // matchKey -> canonTeam
+  Object.entries(ROUND_SHEET_CONFIG).forEach(([roundKey, cfgs]) => {
+    cfgs.forEach(cfg => {
+      cfg.matches.forEach(m => {
+        const bd = bracketData[m.key];
+        if (bd && bd.w && bd.w.trim()) return; // already decided
+        const counts = koMatchCounts[m.key] || {};
+        const top = Object.keys(counts).sort((a,b) => counts[b]-counts[a])[0];
+        if (top) chalkWinners[m.key] = top;
+      });
+    });
+  });
+
+  // simulate adding chalk points to each player's current total
+  const simulated = graded.map(g => {
+    let bonus = 0;
+    const koPicks = koPlayerPicks[g.name.toLowerCase()] || {};
+    Object.entries(koPicks).forEach(([matchKey, p]) => {
+      const bd = bracketData[matchKey];
+      if (bd && bd.w && bd.w.trim()) return; // real result already counted
+      if (chalkWinners[matchKey] === p.team){
+        bonus += ROUND_POINTS[p.roundKey] || 0;
+      }
+    });
+    return { name: g.name, current: g.totalPts, simulated: g.totalPts + bonus };
+  }).sort((a,b) => b.simulated - a.simulated);
+
+  const medals = ['🥇','🥈','🥉'];
+  const rows = simulated.slice(0,8).map((g,i) => `
+    <div class="cw-row">
+      <span class="cw-rank">${i < 3 ? medals[i] : (i+1)+'.'}  </span>
+      <span class="cw-name">${esc(g.name)}</span>
+      <span class="cw-pts">${g.simulated}<span class="cw-current"> (now ${g.current})</span></span>
+    </div>`).join('');
+
+  body.innerHTML = `
+    <div class="pb-sub" style="margin-bottom:14px">Simulated final score if the pool's favorite wins every remaining match</div>
+    <div class="cw-list">${rows}</div>`;
+}
+
 
 /* ══════════════════════════════════════════════════════════
    SHARED PLAYER GRADING — computes per-round hit/miss/pending
@@ -1426,62 +1566,7 @@ function renderEliminationWatch(){
 /* 6) SWEATING IT OUT THIS ROUND
    Players ranked by how many pending picks they currently have in
    the most active live round — the most "at stake right now". */
-function renderSweatingItOut(){
-  const body = document.getElementById('sweating-body');
-  const currentRound = findCurrentRound();
-  if (!currentRound){ body.innerHTML = '<div class="stat-empty">No live knockout round yet.</div>'; return; }
-
-  const counts = pickEntries.map(e => {
-    const picks = koPlayerPicks[e.name.toLowerCase()] || {};
-    let pending = 0;
-    Object.entries(picks).forEach(([matchKey, p]) => {
-      if (p.roundKey !== currentRound) return;
-      const bd = bracketData[matchKey];
-      if (!bd || !bd.w || !bd.w.trim()) pending++;
-    });
-    return { name: e.name, pending };
-  }).filter(p => p.pending > 0).sort((a,b) => b.pending - a.pending);
-
-  if (!counts.length){
-    body.innerHTML = `<div class="stat-empty">Everyone's ${ROUND_FULL_NAME[currentRound]||currentRound} picks are decided.</div>`;
-    return;
-  }
-
-  const rows = counts.slice(0,8).map(p => `
-    <div class="sw-row">
-      <span class="sw-count">${p.pending}</span>
-      <span class="sw-name">${esc(p.name)}</span>
-      <span class="sw-detail">picks live</span>
-    </div>`).join('');
-
-  body.innerHTML = `<div class="sw-list">${rows}</div>`;
-}
-
-/* 7) ON THE BUBBLE
-   Players who just missed the perfect-bracket club — exactly 1 or
-   2 misses so far — showing how close they came. */
-function renderOnTheBubble(){
-  const body = document.getElementById('bubble-body');
-  const graded = gradeAllPlayers();
-  const bubble = graded
-    .filter(g => g.totalIncorrect >= 1 && g.totalIncorrect <= 2)
-    .sort((a,b) => a.totalIncorrect - b.totalIncorrect || b.totalPts - a.totalPts);
-
-  if (!bubble.length){ body.innerHTML = '<div class="stat-empty">Nobody is exactly 1-2 misses away right now.</div>'; return; }
-
-  const rows = bubble.slice(0,8).map(g => {
-    const dots = Array(g.totalIncorrect).fill('<span class="bb-miss-dot"></span>').join('');
-    return `<div class="bb-row">
-      <span class="bb-name">${esc(g.name)}</span>
-      <span class="bb-miss-dots">${dots}</span>
-      <span class="bb-detail">${g.totalIncorrect} miss${g.totalIncorrect>1?'es':''}</span>
-    </div>`;
-  }).join('');
-
-  body.innerHTML = `<div class="bb-list">${rows}</div>`;
-}
-
-/* 8) PICK HEAT MAP
+/* ── PICK HEAT MAP
    Every still-alive team, shaded by what % of the pool has them
    picked somewhere (groups or any knockout round they're in). */
 function renderHeatMap(){
@@ -1585,17 +1670,18 @@ const ES={
   'fw-alive-label':'Siguen en pie','fw-out-label':'Eliminados',
   'kicker-poolstats':'Datos del Grupo',
   'h2-poolstats':'Cómo Está Jugando El Grupo',
-  'p-poolstats':'Favoritos de la quiniela, brackets perfectos, y quién va contra la corriente.',
+  'p-poolstats':'Estadísticas en vivo para tu quiniela de picks por ronda — quién está en racha, con quién va la mayoría, y qué pasa si siempre gana el favorito.',
   'popular-pick-label':'El Pick Más Popular De Esta Ronda',
   'perfect-bracket-label':'Brackets Perfectos Restantes',
-  'contrarian-label':'El Bracket Más Atrevido Aún Vivo',
+  'picksplit-label':'División de Picks — Esta Ronda',
+  'roundlb-label':'Tabla de Esta Ronda',
   'kicker-more':'Más A Fondo',
   'h2-more':'Quién Sabe Jugar Esto',
-  'p-more':'Porcentajes de acierto, quién todavía puede ganar el primer lugar, y quién sufre más esta ronda.',
+  'p-more':'Precisión por ronda, quién todavía puede ganar el primer lugar, cómo se divide el grupo en juegos no decididos, y cómo quedaría la tabla si el favorito gana todo.',
   'accuracy-label':'Precisión Por Ronda',
-  'elimination-label':'Aún Con Chance Matemática Al 1er Lugar',
-  'sweating-label':'Sufriendo Esta Ronda',
-  'bubble-label':'En La Burbuja',
+  'elimination-label':'Todavía Con Chance Para El 1er Lugar',
+  'crowdvreality-label':'El Grupo vs. La Realidad',
+  'chalkwins-label':'Si Gana El Favorito Desde Aquí',
   'kicker-heatmap':'Sentimiento De La Quiniela',
   'h2-heatmap':'Mapa De Calor De Picks',
   'p-heatmap':'Cada equipo aún vivo, sombreado según qué tan popular ha sido como pick en la quiniela. Verde más oscuro significa que más del grupo va con ellos.',
@@ -1618,20 +1704,21 @@ const EN={
   'fw-alive-label':'Still in it','fw-out-label':'Eliminated',
   'kicker-poolstats':'Pool Intel',
   'h2-poolstats':'How The Room Is Playing',
-  'p-poolstats':"Crowd favorites, flawless brackets, and who's zigging while everyone else zags.",
+  'p-poolstats':"Live stats for your round-by-round pick pool — who's hot this round, who the crowd's riding with, and what happens if chalk wins out.",
   'popular-pick-label':"Most Popular Pick This Round",
   'perfect-bracket-label':'Perfect Brackets Remaining',
-  'contrarian-label':'Boldest Bracket Still Alive',
+  'picksplit-label':'Pick Split — This Round',
+  'roundlb-label':"This Round's Leaderboard",
   'kicker-more':'Deeper Cuts',
   'h2-more':"Who's Actually Good At This",
-  'p-more':"Hit rates, who's still got a shot at first, and who's sweating the next round the hardest.",
+  'p-more':"Accuracy by round, who's still alive for first, how everyone splits on undecided games, and what the scoreboard looks like if the crowd gets it right.",
   'accuracy-label':'Round-By-Round Accuracy',
-  'elimination-label':'Still Mathematically In It For 1st',
-  'sweating-label':'Sweating It Out This Round',
-  'bubble-label':'On The Bubble',
+  'elimination-label':'Still In It For 1st',
+  'crowdvreality-label':'Crowd vs. Reality',
+  'chalkwins-label':'If Chalk Wins From Here',
   'kicker-heatmap':'Pool Sentiment',
   'h2-heatmap':'Pick Heat Map',
-  'p-heatmap':'Every team still alive, shaded by how popular a pick they\'ve been across the pool. Darker green means more of the room is riding with them.',
+  'p-heatmap':"Every team still alive, shaded by how popular a pick they've been across the pool. Darker green means more of the room is riding with them.",
 };
 const langBtn=document.getElementById('lang-btn');
 function applyLang(strings){
