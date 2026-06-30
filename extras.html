@@ -125,6 +125,11 @@
     font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--chalk-dim);
   }
   .upset-card .u-pct b{color:var(--red);font-size:15px}
+  .upset-card .u-pickers{
+    margin-top:10px;padding-top:10px;border-top:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;
+    color:var(--grass);word-break:break-word;
+  }
   .upset-empty{
     text-align:center;padding:36px 24px;color:var(--chalk-faint);
     font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;
@@ -650,16 +655,21 @@ function matchCard(key, fallbackLabel, m, extraClass){
     ? `M${sched.m} · ${sched.d} · ${sched.c}`
     : fallbackLabel;
   const decided = !!(m.w && m.w.trim());
-  // Auto-resolve first — source of truth for who's actually playing.
-  // Only fall back to manually-typed sheet teams for slots that can't
-  // be auto-resolved (the 8 third-place wildcards).
+  const isR32 = key.startsWith('R32-');
+  // Auto-resolve is the only source of truth for R16+. Sheet Team1/Team2
+  // are only trusted for R32 (no other source) or unresolvable slots
+  // like the 8 third-place wildcards.
   let t1 = null, t2 = null;
   if (sched){
     t1 = resolveSlot(sched.s1);
     t2 = resolveSlot(sched.s2);
   }
-  if (!t1 || !t1.trim()) t1 = m.t1;
-  if (!t2 || !t2.trim()) t2 = m.t2;
+  if (isR32 || (sched && /3rd place|SF loser/i.test(sched.s1||''))){
+    if (!t1 || !t1.trim()) t1 = m.t1;
+  }
+  if (isR32 || (sched && /3rd place|SF loser/i.test(sched.s2||''))){
+    if (!t2 || !t2.trim()) t2 = m.t2;
+  }
   const w = canon(m.w);
   return `<div class="match ${extraClass||''}">
     <div class="m-label">${esc(label)}</div>
@@ -703,7 +713,8 @@ async function loadKnockoutUpsets(){
       try{
         const rows = await fetchCSV(cfg.url);
         if (rows.length < 2) continue;
-        const matchCounts = {}; // matchKey -> { team: count }
+        const matchCounts = {};  // matchKey -> { team: count }
+        const matchPickers = {}; // matchKey -> { team: [names] }
         let totalSubmissions = 0;
         rows.slice(1).forEach(r => {
           const name = (r[cfg.nameCol]||'').trim();
@@ -714,6 +725,9 @@ async function loadKnockoutUpsets(){
             if (!pick) return;
             if (!matchCounts[m.key]) matchCounts[m.key] = {};
             matchCounts[m.key][pick] = (matchCounts[m.key][pick]||0) + 1;
+            if (!matchPickers[m.key]) matchPickers[m.key] = {};
+            if (!matchPickers[m.key][pick]) matchPickers[m.key][pick] = [];
+            matchPickers[m.key][pick].push(name);
           });
         });
         cfg.matches.forEach(m => {
@@ -723,7 +737,8 @@ async function loadKnockoutUpsets(){
           const counts = matchCounts[m.key] || {};
           const pct = totalSubmissions ? Math.round(100 * (counts[winner]||0) / totalSubmissions) : 0;
           if (pct < 30){
-            koUpsets.push({ letter: roundKey, team: bd.w, pct, isKnockout: true, label: m.label });
+            const pickers = (matchPickers[m.key] && matchPickers[m.key][winner]) || [];
+            koUpsets.push({ letter: roundKey, team: bd.w, pct, isKnockout: true, label: m.label, pickers });
           }
         });
       }catch(e){ /* skip a failing sheet */ }
@@ -747,7 +762,10 @@ async function updateUpsetTracker(){
             const fallback = (GROUPS.find(([l]) => l === letter) || [letter,'',[]])[2] || [];
             displayName = fallback.find(t => canon(t) === canonTeam) || canonTeam;
           }
-          groupUpsets.push({ letter, team: displayName, pct });
+          const pickers = pickEntries
+            .filter(e => (e.picks[letter]||[]).includes(canonTeam))
+            .map(e => e.name);
+          groupUpsets.push({ letter, team: displayName, pct, pickers });
         }
       });
     });
@@ -765,11 +783,16 @@ async function updateUpsetTracker(){
     const subLabel = u.isKnockout
       ? `${ROUND_FULL_NAME[u.letter] || u.letter} · ${esc(u.label||'Advanced')}`
       : `Group ${u.letter} · Advanced`;
+    const pickers = u.pickers || [];
+    const pickersHtml = pickers.length
+      ? `<div class="u-pickers">🎯 ${pickers.map(esc).join(', ')}</div>`
+      : '';
     return `
     <div class="upset-card">
       <div class="u-group">${subLabel}</div>
       <div class="u-team">${flagImg(u.team)}${esc(u.team)}</div>
       <div class="u-pct">Only <b>${u.pct}%</b> of the pool picked them</div>
+      ${pickersHtml}
     </div>`;
   }).join('');
 }
