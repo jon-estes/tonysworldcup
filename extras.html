@@ -557,6 +557,47 @@ const SCHEDULE = {
   'F-1'   :{m:104,d:'Sun Jul 19', c:'New York/NJ',   s1:'Winner SF-1',  s2:'Winner SF-2'}
 };
 
+/* ══════════════════════════════════════════════════════════
+   Same knockout picks config used on the main page — needed
+   here so the Upset Tracker can flag surprise R32+ advances,
+   not just group-stage ones. Keys match the Results sheet's
+   Match # column (NOT FIFA's official numbers).
+   ══════════════════════════════════════════════════════════ */
+const ROUND_SHEET_CONFIG = {
+  R32: [
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgGhUvUeJawwDSaP-PCKzeH0UfPcFQQ_QflGzdmomfGtZl6-3Atx4YPkhGMNzAhuW0voBpJsfBl8du/pub?output=csv",
+      nameCol: 2,
+      matches: [
+        { key:"R32-1", col:4, label:"Canada vs South Africa" }
+      ]
+    },
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSkWNPFbEpNjwFdiGX0h58LCTJ7INw1agrfF-CtZ9HWONlWehcuwJnHYcG0sqI3WodELLuiyHSYxZl0/pub?output=csv",
+      nameCol: 17,
+      matches: [
+        { key:"R32-2",  col:1,  label:"Netherlands vs Morocco" },
+        { key:"R32-3",  col:2,  label:"Germany vs Paraguay" },
+        { key:"R32-4",  col:3,  label:"France vs Sweden" },
+        { key:"R32-5",  col:4,  label:"Belgium vs Senegal" },
+        { key:"R32-6",  col:5,  label:"USA vs Bosnia" },
+        { key:"R32-7",  col:6,  label:"Spain vs Austria" },
+        { key:"R32-8",  col:7,  label:"Portugal vs Croatia" },
+        { key:"R32-9",  col:8,  label:"Brazil vs Japan" },
+        { key:"R32-10", col:9,  label:"Ivory Coast vs Norway" },
+        { key:"R32-11", col:10, label:"Mexico vs Ecuador" },
+        { key:"R32-12", col:11, label:"England vs DR Congo" },
+        { key:"R32-13", col:12, label:"Switzerland vs Algeria" },
+        { key:"R32-14", col:13, label:"Colombia vs Ghana" },
+        { key:"R32-15", col:14, label:"Australia vs Egypt" },
+        { key:"R32-16", col:15, label:"Argentina vs Cape Verde" }
+      ]
+    }
+  ],
+  R16: [], QF: [], SF: [], '3P': [], F: []
+};
+const ROUND_FULL_NAME = { R32:'Round of 32', R16:'Round of 16', QF:'Quarterfinals', SF:'Semifinals', F:'Final', '3P':'Third Place' };
+
 /* ── BRACKET render ── */
 const ROUNDS = [
   { key:'R32', name:'Round of 32',  pts:'2 pts', count:16, dates:'Jun 28 – Jul 3' },
@@ -650,39 +691,82 @@ function renderBracket(){
 }
 
 /* ── UPSET TRACKER ── */
-function updateUpsetTracker(){
+async function loadKnockoutUpsets(){
+  const koUpsets = [];
+  for (const [roundKey, cfgs] of Object.entries(ROUND_SHEET_CONFIG)){
+    for (const cfg of cfgs){
+      try{
+        const rows = await fetchCSV(cfg.url);
+        if (rows.length < 2) continue;
+        const matchCounts = {}; // matchKey -> { team: count }
+        let totalSubmissions = 0;
+        rows.slice(1).forEach(r => {
+          const name = (r[cfg.nameCol]||'').trim();
+          if (!name) return;
+          totalSubmissions++;
+          cfg.matches.forEach(m => {
+            const pick = canon(r[m.col]);
+            if (!pick) return;
+            if (!matchCounts[m.key]) matchCounts[m.key] = {};
+            matchCounts[m.key][pick] = (matchCounts[m.key][pick]||0) + 1;
+          });
+        });
+        cfg.matches.forEach(m => {
+          const bd = bracketData[m.key];
+          if (!bd || !bd.w || !bd.w.trim()) return; // not decided yet
+          const winner = canon(bd.w);
+          const counts = matchCounts[m.key] || {};
+          const pct = totalSubmissions ? Math.round(100 * (counts[winner]||0) / totalSubmissions) : 0;
+          if (pct < 30){
+            koUpsets.push({ letter: roundKey, team: bd.w, pct, isKnockout: true, label: m.label });
+          }
+        });
+      }catch(e){ /* skip a failing sheet */ }
+    }
+  }
+  return koUpsets;
+}
+
+async function updateUpsetTracker(){
   const upsetGrid = document.getElementById('upset-grid');
   const total = pickEntries.length || 0;
-  if (!total || !Object.keys(groupResults).length){
-    upsetGrid.innerHTML = '<div class="upset-empty">No upsets yet — check back as groups finish.</div>';
-    return;
-  }
-  const upsets = [];
-  Object.keys(groupResults).forEach(letter => {
-    groupResults[letter].forEach(canonTeam => {
-      const pct = Math.round(100 * (pickCounts[canonTeam]||0) / total);
-      if (pct < 30){
-        const sRows = standingsData[letter] || [];
-        let displayName = (sRows.find(r => canon(r.team) === canonTeam) || {}).team;
-        if (!displayName){
-          const fallback = (GROUPS.find(([l]) => l === letter) || [letter,'',[]])[2] || [];
-          displayName = fallback.find(t => canon(t) === canonTeam) || canonTeam;
+  const groupUpsets = [];
+  if (total && Object.keys(groupResults).length){
+    Object.keys(groupResults).forEach(letter => {
+      groupResults[letter].forEach(canonTeam => {
+        const pct = Math.round(100 * (pickCounts[canonTeam]||0) / total);
+        if (pct < 30){
+          const sRows = standingsData[letter] || [];
+          let displayName = (sRows.find(r => canon(r.team) === canonTeam) || {}).team;
+          if (!displayName){
+            const fallback = (GROUPS.find(([l]) => l === letter) || [letter,'',[]])[2] || [];
+            displayName = fallback.find(t => canon(t) === canonTeam) || canonTeam;
+          }
+          groupUpsets.push({ letter, team: displayName, pct });
         }
-        upsets.push({ letter, team: displayName, pct });
-      }
+      });
     });
-  });
+  }
+
+  const koUpsets = await loadKnockoutUpsets();
+  const upsets = [...groupUpsets, ...koUpsets];
+
   if (!upsets.length){
     upsetGrid.innerHTML = '<div class="upset-empty">No upsets yet — every advancing team was a popular pick.</div>';
     return;
   }
   upsets.sort((a,b) => a.pct - b.pct);
-  upsetGrid.innerHTML = upsets.map(u => `
+  upsetGrid.innerHTML = upsets.map(u => {
+    const subLabel = u.isKnockout
+      ? `${ROUND_FULL_NAME[u.letter] || u.letter} · ${esc(u.label||'Advanced')}`
+      : `Group ${u.letter} · Advanced`;
+    return `
     <div class="upset-card">
-      <div class="u-group">Group ${u.letter} · Advanced</div>
+      <div class="u-group">${subLabel}</div>
       <div class="u-team">${flagImg(u.team)}${esc(u.team)}</div>
       <div class="u-pct">Only <b>${u.pct}%</b> of the pool picked them</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 /* ── FLAG WALL ── */
@@ -764,7 +848,7 @@ async function loadAll(){
     }
   }catch(e){ /* keep whatever loaded */ }
 
-  updateUpsetTracker();
+  await updateUpsetTracker();
 }
 loadAll();
 setInterval(loadAll, AUTO_REFRESH_MS);
