@@ -303,6 +303,59 @@
   .cb-pick-row img{width:18px;height:13px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(20,30,60,.14)}
   .cb-pick-row .cb-pick-pct{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red)}
 
+  /* wide card spans full row */
+  .stat-card.wide{grid-column:1/-1}
+
+  /* accuracy leaderboard */
+  .acc-table{width:100%;border-collapse:collapse}
+  .acc-table th{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--chalk-faint);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);
+  }
+  .acc-table th:not(:first-child){text-align:center}
+  .acc-table td{padding:8px;font-size:13px;border-bottom:1px solid rgba(20,30,60,.06)}
+  .acc-table td:not(:first-child){text-align:center;font-family:'JetBrains Mono',monospace}
+  .acc-table tr:last-child td{border-bottom:none}
+  .acc-table td.acc-name{font-weight:700}
+  .acc-table tr:nth-child(1) td.acc-name{color:var(--gold-deep)}
+  .acc-pct-high{color:var(--grass);font-weight:800}
+  .acc-pct-mid{color:var(--chalk-dim)}
+  .acc-pct-low{color:var(--red)}
+
+  /* elimination watch / sweating / bubble — shared row style */
+  .ew-list,.sw-list,.bb-list{display:flex;flex-direction:column;gap:10px}
+  .ew-row,.sw-row,.bb-row{
+    display:flex;align-items:center;gap:10px;padding:9px 0;
+    border-bottom:1px solid rgba(20,30,60,.06);font-size:13px;
+  }
+  .ew-row:last-child,.sw-row:last-child,.bb-row:last-child{border-bottom:none}
+  .ew-name,.sw-name,.bb-name{font-weight:700;flex:1;min-width:0}
+  .ew-detail,.sw-detail,.bb-detail{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--chalk-faint);text-align:right;flex:none;
+  }
+  .sw-count{
+    font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;color:var(--gold-deep);
+    flex:none;min-width:22px;text-align:center;
+  }
+  .bb-miss-dots{display:flex;gap:3px;flex:none}
+  .bb-miss-dot{width:8px;height:8px;border-radius:50%;background:var(--red);opacity:.7}
+
+  /* heat map */
+  .heatmap-grid{display:flex;flex-wrap:wrap;gap:8px}
+  .hm-cell{
+    position:relative;width:64px;height:48px;border-radius:6px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(20,30,60,.14);
+  }
+  .hm-cell img{width:100%;height:100%;object-fit:cover;display:block}
+  .hm-cell .hm-overlay{
+    position:absolute;inset:0;background:rgba(22,138,69,var(--hm-opacity,0));
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;
+  }
+  .hm-cell .hm-pct{
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;color:#fff;
+    text-shadow:0 1px 2px rgba(0,0,0,.6);
+  }
+
   footer{
     border-top:1px solid var(--line);
     padding:28px 0;text-align:center;
@@ -402,7 +455,7 @@
 
     <div class="stat-grid">
       <div class="stat-card" id="popular-pick-card">
-        <div class="stat-label" data-i18n="popular-pick-label">Pool's Pick To Win It All</div>
+        <div class="stat-label" data-i18n="popular-pick-label">Most Popular Pick This Round</div>
         <div class="stat-body" id="popular-pick-body"><div class="stat-loading">Loading…</div></div>
       </div>
 
@@ -416,6 +469,53 @@
         <div class="stat-body" id="contrarian-body"><div class="stat-loading">Loading…</div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ════════ MORE POOL INTEL ════════ -->
+<section class="poolstats-sec" id="poolstats2">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker" data-i18n="kicker-more">Deeper Cuts</div>
+      <h2 class="display" data-i18n="h2-more">Who's Actually Good At This</h2>
+      <p data-i18n="p-more">Hit rates, who's still got a shot at first, and who's sweating the next round the hardest.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card wide" id="accuracy-card">
+        <div class="stat-label" data-i18n="accuracy-label">Round-By-Round Accuracy</div>
+        <div class="stat-body" id="accuracy-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+    </div>
+
+    <div class="stat-grid" style="margin-top:18px">
+      <div class="stat-card" id="elimination-card">
+        <div class="stat-label" data-i18n="elimination-label">Still Mathematically In It For 1st</div>
+        <div class="stat-body" id="elimination-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+
+      <div class="stat-card" id="sweating-card">
+        <div class="stat-label" data-i18n="sweating-label">Sweating It Out This Round</div>
+        <div class="stat-body" id="sweating-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+
+      <div class="stat-card" id="bubble-card">
+        <div class="stat-label" data-i18n="bubble-label">On The Bubble</div>
+        <div class="stat-body" id="bubble-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ PICK HEAT MAP ════════ -->
+<section class="poolstats-sec" id="heatmap-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker" data-i18n="kicker-heatmap">Pool Sentiment</div>
+      <h2 class="display" data-i18n="h2-heatmap">Pick Heat Map</h2>
+      <p data-i18n="p-heatmap">Every team still alive, shaded by how popular a pick they've been across the pool. Darker green means more of the room is riding with them.</p>
+    </div>
+    <div class="heatmap-grid" id="heatmap-grid"></div>
   </div>
 </section>
 
@@ -971,41 +1071,92 @@ function renderFlagWall(){
    Tallies every still-alive team's total pick count across the
    group stage and every knockout round, then shows the most
    popular one as the pool's de facto championship favorite. */
+/* Finds whichever knockout round currently has the most picks
+   submitted — that's the "live" round the pool is actively voting
+   on right now. Falls back to the group stage if no knockout sheet
+   has any submissions yet. */
+function findCurrentRound(){
+  let best = null, bestCount = 0;
+  Object.keys(koTotalSubmissions).forEach(roundKey => {
+    const count = koTotalSubmissions[roundKey] || 0;
+    if (count > bestCount){ best = roundKey; bestCount = count; }
+  });
+  return best; // null means we're still in the group stage
+}
+
 function renderPopularPick(){
   const body = document.getElementById('popular-pick-body');
+  const labelEl = document.querySelector('#popular-pick-card .stat-label');
   if (!pickEntries.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
 
-  const tally = {}; // canonTeam -> count
-  pickEntries.forEach(e => {
-    Object.values(e.picks).forEach(arr => {
-      new Set(arr).forEach(t => { tally[t] = (tally[t]||0) + 1; });
+  const currentRound = findCurrentRound();
+
+  if (!currentRound){
+    // still in group stage — show the most popular pick to advance, group by group is too noisy,
+    // so just surface the single most-picked team overall among teams not yet eliminated
+    if (labelEl) labelEl.textContent = lang==='es' ? 'El Pick Más Popular De Grupos' : "Group Stage's Most Popular Pick";
+    const alive = Object.keys(pickCounts).filter(c => !isEliminatedAnywhere(c));
+    if (!alive.length){ body.innerHTML = '<div class="stat-empty">No group picks yet.</div>'; return; }
+    const ranked = alive.sort((a,b) => (pickCounts[b]||0)-(pickCounts[a]||0));
+    const top = ranked[0];
+    const totalPicks = pickEntries.length || 1;
+    const topPct = Math.round(100 * (pickCounts[top]||0) / totalPicks);
+    const displayName = displayNameFor(top);
+    const runners = ranked.slice(1,4).map(c => {
+      const pct = Math.round(100 * (pickCounts[c]||0) / totalPicks);
+      return `<div class="pp-runner-row">${flagImg(displayNameFor(c))}${esc(displayNameFor(c))}<span class="pp-runner-pct">${pct}%</span></div>`;
+    }).join('');
+    body.innerHTML = `
+      <div class="pp-team">${flagImg(displayName).replace('<img ', '<img style="width:42px;height:30px" ')}<div class="pp-team-name">${esc(displayName)}</div></div>
+      <div class="pp-bar-track"><div class="pp-bar-fill" style="width:${Math.min(topPct,100)}%"></div></div>
+      <div class="pp-pct"><b>${topPct}%</b> of the pool picked them to advance</div>
+      ${runners ? `<div class="pp-runners">${runners}</div>` : ''}
+    `;
+    return;
+  }
+
+  if (labelEl) labelEl.textContent = lang==='es'
+    ? `Pick Más Popular · ${ROUND_FULL_NAME[currentRound] || currentRound}`
+    : `Most Popular Pick · ${ROUND_FULL_NAME[currentRound] || currentRound}`;
+
+  // tally picks for the current round only, restricted to matches
+  // that haven't been decided yet (so this reflects live voting,
+  // not stuff that's already been settled)
+  const tally = {};
+  const cfgs = ROUND_SHEET_CONFIG[currentRound] || [];
+  const undecidedKeys = new Set();
+  cfgs.forEach(cfg => cfg.matches.forEach(m => {
+    const bd = bracketData[m.key];
+    if (!bd || !bd.w || !bd.w.trim()) undecidedKeys.add(m.key);
+  }));
+
+  Object.values(koPlayerPicks).forEach(picks => {
+    Object.entries(picks).forEach(([matchKey, p]) => {
+      if (p.roundKey !== currentRound) return;
+      if (!undecidedKeys.has(matchKey)) return;
+      tally[p.team] = (tally[p.team]||0) + 1;
     });
   });
-  Object.keys(koPlayerPicks).forEach(nameLower => {
-    const seen = new Set();
-    Object.values(koPlayerPicks[nameLower]).forEach(p => seen.add(p.team));
-    seen.forEach(t => { tally[t] = (tally[t]||0) + 1; });
-  });
 
-  // only count teams still alive
-  const alive = Object.keys(tally).filter(c => !isEliminatedAnywhere(c));
-  if (!alive.length){ body.innerHTML = '<div class="stat-empty">Every team has been eliminated.</div>'; return; }
-
-  const ranked = alive.sort((a,b) => tally[b]-tally[a]);
+  const ranked = Object.keys(tally).sort((a,b) => tally[b]-tally[a]);
+  if (!ranked.length){
+    body.innerHTML = '<div class="stat-empty">All matches in this round are decided, or no picks yet.</div>';
+    return;
+  }
   const top = ranked[0];
-  const totalPicks = pickEntries.length || 1;
-  const topPct = Math.round(100 * tally[top] / totalPicks);
+  const roundTotal = koTotalSubmissions[currentRound] || 1;
+  const topPct = Math.round(100 * tally[top] / roundTotal);
   const displayName = displayNameFor(top);
 
   const runners = ranked.slice(1,4).map(c => {
-    const pct = Math.round(100 * tally[c] / totalPicks);
+    const pct = Math.round(100 * tally[c] / roundTotal);
     return `<div class="pp-runner-row">${flagImg(displayNameFor(c))}${esc(displayNameFor(c))}<span class="pp-runner-pct">${pct}%</span></div>`;
   }).join('');
 
   body.innerHTML = `
     <div class="pp-team">${flagImg(displayName).replace('<img ', '<img style="width:42px;height:30px" ')}<div class="pp-team-name">${esc(displayName)}</div></div>
     <div class="pp-bar-track"><div class="pp-bar-fill" style="width:${Math.min(topPct,100)}%"></div></div>
-    <div class="pp-pct"><b>${topPct}%</b> of the pool has them alive in a pick</div>
+    <div class="pp-pct"><b>${topPct}%</b> of submitted picks have them winning</div>
     ${runners ? `<div class="pp-runners">${runners}</div>` : ''}
   `;
 }
@@ -1139,6 +1290,233 @@ function renderPoolStats(){
   renderPopularPick();
   renderPerfectBrackets();
   renderContrarianBracket();
+  renderAccuracyLeaderboard();
+  renderEliminationWatch();
+  renderSweatingItOut();
+  renderOnTheBubble();
+  renderHeatMap();
+}
+
+/* ══════════════════════════════════════════════════════════
+   SHARED PLAYER GRADING — computes per-round hit/miss/pending
+   and points for every player, reused by accuracy leaderboard,
+   elimination watch, sweating-it-out, and on-the-bubble.
+   ══════════════════════════════════════════════════════════ */
+const GROUP_PTS = 1;
+const ROUND_POINTS = { R32:2, R16:3, QF:4, SF:5, F:6, '3P':1, GROUPS:1 };
+function gradeAllPlayers(){
+  return pickEntries.map(e => {
+    const rounds = {}; // roundKey -> { correct, incorrect, pending, pts }
+    const addResult = (roundKey, correct, pending, pts) => {
+      if (!rounds[roundKey]) rounds[roundKey] = { correct:0, incorrect:0, pending:0, pts:0 };
+      if (pending) rounds[roundKey].pending++;
+      else if (correct){ rounds[roundKey].correct++; rounds[roundKey].pts += pts; }
+      else rounds[roundKey].incorrect++;
+    };
+
+    // group stage
+    Object.keys(e.picks).forEach(letter => {
+      const result = groupResults[letter];
+      e.picks[letter].forEach(c => {
+        if (!result) addResult('GROUPS', false, true, GROUP_PTS);
+        else addResult('GROUPS', result.has(c), false, GROUP_PTS);
+      });
+    });
+
+    // knockout rounds
+    const koPicks = koPlayerPicks[e.name.toLowerCase()] || {};
+    Object.entries(koPicks).forEach(([matchKey, p]) => {
+      const bd = bracketData[matchKey];
+      const pts = ROUND_POINTS[p.roundKey] || 0;
+      if (!bd || !bd.w || !bd.w.trim()) addResult(p.roundKey, false, true, pts);
+      else addResult(p.roundKey, canon(bd.w) === p.team, false, pts);
+    });
+
+    const totalPts = Object.values(rounds).reduce((s,r) => s+r.pts, 0);
+    const totalCorrect = Object.values(rounds).reduce((s,r) => s+r.correct, 0);
+    const totalIncorrect = Object.values(rounds).reduce((s,r) => s+r.incorrect, 0);
+    const totalPending = Object.values(rounds).reduce((s,r) => s+r.pending, 0);
+    const totalDecided = totalCorrect + totalIncorrect;
+
+    return { name: e.name, rounds, totalPts, totalCorrect, totalIncorrect, totalPending, totalDecided };
+  });
+}
+
+/* 4) ROUND-BY-ROUND ACCURACY LEADERBOARD
+   Hit rate per round, separate from raw points — shows who's
+   actually been the sharpest picker, not just who has the most
+   points (which rewards surviving deep more than being accurate). */
+function renderAccuracyLeaderboard(){
+  const body = document.getElementById('accuracy-body');
+  const graded = gradeAllPlayers();
+  if (!graded.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
+
+  const activeRounds = ['GROUPS','R32','R16','QF','SF','3P','F'].filter(r =>
+    graded.some(g => g.rounds[r] && (g.rounds[r].correct + g.rounds[r].incorrect) > 0)
+  );
+  if (!activeRounds.length){ body.innerHTML = '<div class="stat-empty">No decided picks yet.</div>'; return; }
+
+  const ROUND_SHORT = { GROUPS:'GRP', R32:'R32', R16:'R16', QF:'QF', SF:'SF', '3P':'3RD', F:'F' };
+
+  const rows = graded
+    .map(g => {
+      const overallPct = g.totalDecided ? Math.round(100*g.totalCorrect/g.totalDecided) : null;
+      return { ...g, overallPct };
+    })
+    .filter(g => g.overallPct !== null)
+    .sort((a,b) => b.overallPct - a.overallPct || b.totalCorrect - a.totalCorrect);
+
+  const pctClass = pct => pct >= 70 ? 'acc-pct-high' : pct >= 40 ? 'acc-pct-mid' : 'acc-pct-low';
+
+  const headerCells = activeRounds.map(r => `<th>${ROUND_SHORT[r]}</th>`).join('');
+  const bodyRows = rows.map(g => {
+    const cells = activeRounds.map(r => {
+      const rd = g.rounds[r];
+      if (!rd || (rd.correct+rd.incorrect) === 0) return '<td>·</td>';
+      const pct = Math.round(100*rd.correct/(rd.correct+rd.incorrect));
+      return `<td class="${pctClass(pct)}">${pct}%</td>`;
+    }).join('');
+    return `<tr>
+      <td class="acc-name">${esc(g.name)}</td>
+      ${cells}
+      <td class="${pctClass(g.overallPct)}"><b>${g.overallPct}%</b></td>
+    </tr>`;
+  }).join('');
+
+  body.innerHTML = `<table class="acc-table">
+    <thead><tr><th>Player</th>${headerCells}<th>Overall</th></tr></thead>
+    <tbody>${bodyRows}</tbody>
+  </table>`;
+}
+
+/* 5) STILL MATHEMATICALLY IN IT FOR 1ST
+   A player is eliminated from 1st place if even a perfect run on
+   every remaining pending pick couldn't catch the current leader's
+   points. Remaining max points = pending picks valued at their
+   round's per-pick worth. */
+function renderEliminationWatch(){
+  const body = document.getElementById('elimination-body');
+  const graded = gradeAllPlayers();
+  if (!graded.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
+
+  const withMax = graded.map(g => {
+    const maxRemaining = Object.entries(g.rounds).reduce((s,[roundKey,r]) => {
+      const pts = ROUND_POINTS[roundKey] || 0;
+      return s + r.pending * pts;
+    }, 0);
+    return { name: g.name, totalPts: g.totalPts, ceiling: g.totalPts + maxRemaining };
+  });
+
+  const leaderPts = Math.max(...withMax.map(g => g.totalPts), 0);
+  const stillIn = withMax.filter(g => g.ceiling >= leaderPts).sort((a,b) => b.totalPts - a.totalPts);
+
+  if (!stillIn.length){ body.innerHTML = '<div class="stat-empty">No standings yet.</div>'; return; }
+
+  const rows = stillIn.slice(0,10).map(g => `
+    <div class="ew-row">
+      <span class="ew-name">${esc(g.name)}</span>
+      <span class="ew-detail">${g.totalPts} pts · ceiling ${g.ceiling}</span>
+    </div>`).join('');
+
+  body.innerHTML = `
+    <div class="pb-sub" style="margin-bottom:14px"><b style="color:var(--grass)">${stillIn.length}</b> of ${withMax.length} players can still mathematically finish 1st</div>
+    <div class="ew-list">${rows}</div>`;
+}
+
+/* 6) SWEATING IT OUT THIS ROUND
+   Players ranked by how many pending picks they currently have in
+   the most active live round — the most "at stake right now". */
+function renderSweatingItOut(){
+  const body = document.getElementById('sweating-body');
+  const currentRound = findCurrentRound();
+  if (!currentRound){ body.innerHTML = '<div class="stat-empty">No live knockout round yet.</div>'; return; }
+
+  const counts = pickEntries.map(e => {
+    const picks = koPlayerPicks[e.name.toLowerCase()] || {};
+    let pending = 0;
+    Object.entries(picks).forEach(([matchKey, p]) => {
+      if (p.roundKey !== currentRound) return;
+      const bd = bracketData[matchKey];
+      if (!bd || !bd.w || !bd.w.trim()) pending++;
+    });
+    return { name: e.name, pending };
+  }).filter(p => p.pending > 0).sort((a,b) => b.pending - a.pending);
+
+  if (!counts.length){
+    body.innerHTML = `<div class="stat-empty">Everyone's ${ROUND_FULL_NAME[currentRound]||currentRound} picks are decided.</div>`;
+    return;
+  }
+
+  const rows = counts.slice(0,8).map(p => `
+    <div class="sw-row">
+      <span class="sw-count">${p.pending}</span>
+      <span class="sw-name">${esc(p.name)}</span>
+      <span class="sw-detail">picks live</span>
+    </div>`).join('');
+
+  body.innerHTML = `<div class="sw-list">${rows}</div>`;
+}
+
+/* 7) ON THE BUBBLE
+   Players who just missed the perfect-bracket club — exactly 1 or
+   2 misses so far — showing how close they came. */
+function renderOnTheBubble(){
+  const body = document.getElementById('bubble-body');
+  const graded = gradeAllPlayers();
+  const bubble = graded
+    .filter(g => g.totalIncorrect >= 1 && g.totalIncorrect <= 2)
+    .sort((a,b) => a.totalIncorrect - b.totalIncorrect || b.totalPts - a.totalPts);
+
+  if (!bubble.length){ body.innerHTML = '<div class="stat-empty">Nobody is exactly 1-2 misses away right now.</div>'; return; }
+
+  const rows = bubble.slice(0,8).map(g => {
+    const dots = Array(g.totalIncorrect).fill('<span class="bb-miss-dot"></span>').join('');
+    return `<div class="bb-row">
+      <span class="bb-name">${esc(g.name)}</span>
+      <span class="bb-miss-dots">${dots}</span>
+      <span class="bb-detail">${g.totalIncorrect} miss${g.totalIncorrect>1?'es':''}</span>
+    </div>`;
+  }).join('');
+
+  body.innerHTML = `<div class="bb-list">${rows}</div>`;
+}
+
+/* 8) PICK HEAT MAP
+   Every still-alive team, shaded by what % of the pool has them
+   picked somewhere (groups or any knockout round they're in). */
+function renderHeatMap(){
+  const grid = document.getElementById('heatmap-grid');
+  if (!grid) return;
+
+  const tally = {}; // canonTeam -> count of unique pickers
+  pickEntries.forEach(e => {
+    Object.values(e.picks).forEach(arr => {
+      new Set(arr).forEach(t => { tally[t] = (tally[t]||0) + 1; });
+    });
+  });
+  Object.keys(koPlayerPicks).forEach(nameLower => {
+    const seen = new Set();
+    Object.values(koPlayerPicks[nameLower]).forEach(p => seen.add(p.team));
+    seen.forEach(t => { tally[t] = (tally[t]||0) + 1; });
+  });
+
+  const totalPicks = pickEntries.length || 1;
+  const allTeams = GROUPS.flatMap(([,,teams]) => teams);
+  const alive = allTeams.filter(t => !isEliminatedAnywhere(canon(t)));
+
+  if (!alive.length){ grid.innerHTML = '<div class="stat-empty">No teams left.</div>'; return; }
+
+  grid.innerHTML = alive.map(t => {
+    const c = canon(t);
+    const pct = Math.round(100 * (tally[c]||0) / totalPicks);
+    const opacity = Math.min(pct / 100, 0.85);
+    const code = FLAG_CODES[c];
+    const img = code ? `<img src="https://flagcdn.com/w80/${code}.png" alt="${esc(t)}">` : '';
+    return `<div class="hm-cell" title="${esc(t)} — ${pct}% of pool">
+      ${img}
+      <div class="hm-overlay" style="--hm-opacity:${opacity}"><span class="hm-pct">${pct}%</span></div>
+    </div>`;
+  }).join('');
 }
 
 /* ── BOOT ── */
@@ -1208,9 +1586,19 @@ const ES={
   'kicker-poolstats':'Datos del Grupo',
   'h2-poolstats':'Cómo Está Jugando El Grupo',
   'p-poolstats':'Favoritos de la quiniela, brackets perfectos, y quién va contra la corriente.',
-  'popular-pick-label':'El Favorito Del Grupo Para Ganarlo Todo',
+  'popular-pick-label':'El Pick Más Popular De Esta Ronda',
   'perfect-bracket-label':'Brackets Perfectos Restantes',
   'contrarian-label':'El Bracket Más Atrevido Aún Vivo',
+  'kicker-more':'Más A Fondo',
+  'h2-more':'Quién Sabe Jugar Esto',
+  'p-more':'Porcentajes de acierto, quién todavía puede ganar el primer lugar, y quién sufre más esta ronda.',
+  'accuracy-label':'Precisión Por Ronda',
+  'elimination-label':'Aún Con Chance Matemática Al 1er Lugar',
+  'sweating-label':'Sufriendo Esta Ronda',
+  'bubble-label':'En La Burbuja',
+  'kicker-heatmap':'Sentimiento De La Quiniela',
+  'h2-heatmap':'Mapa De Calor De Picks',
+  'p-heatmap':'Cada equipo aún vivo, sombreado según qué tan popular ha sido como pick en la quiniela. Verde más oscuro significa que más del grupo va con ellos.',
 };
 const EN={
   'eyebrow':'Bonus Coverage',
@@ -1231,9 +1619,19 @@ const EN={
   'kicker-poolstats':'Pool Intel',
   'h2-poolstats':'How The Room Is Playing',
   'p-poolstats':"Crowd favorites, flawless brackets, and who's zigging while everyone else zags.",
-  'popular-pick-label':"Pool's Pick To Win It All",
+  'popular-pick-label':"Most Popular Pick This Round",
   'perfect-bracket-label':'Perfect Brackets Remaining',
   'contrarian-label':'Boldest Bracket Still Alive',
+  'kicker-more':'Deeper Cuts',
+  'h2-more':"Who's Actually Good At This",
+  'p-more':"Hit rates, who's still got a shot at first, and who's sweating the next round the hardest.",
+  'accuracy-label':'Round-By-Round Accuracy',
+  'elimination-label':'Still Mathematically In It For 1st',
+  'sweating-label':'Sweating It Out This Round',
+  'bubble-label':'On The Bubble',
+  'kicker-heatmap':'Pool Sentiment',
+  'h2-heatmap':'Pick Heat Map',
+  'p-heatmap':'Every team still alive, shaded by how popular a pick they\'ve been across the pool. Darker green means more of the room is riding with them.',
 };
 const langBtn=document.getElementById('lang-btn');
 function applyLang(strings){
@@ -1247,6 +1645,7 @@ langBtn.addEventListener('click',()=>{
   lang = lang==='en' ? 'es' : 'en';
   applyLang(lang==='es' ? ES : EN);
   renderFlagWall();
+  renderPopularPick();
 });
 </script>
 
