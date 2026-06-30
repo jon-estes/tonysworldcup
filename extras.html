@@ -341,6 +341,33 @@
   .cvr-result img{width:20px;height:14px;object-fit:cover;border-radius:2px}
   .cvr-bar-track{height:8px;border-radius:99px;background:rgba(20,30,60,.08);overflow:hidden;margin-bottom:4px}
   .cvr-bar-fill{height:100%;border-radius:99px}
+  /* accuracy leaderboard table */
+  .acc-table{width:100%;border-collapse:collapse;font-size:13px}
+  .acc-table thead th{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--chalk-faint);padding:6px 12px 10px;text-align:center;border-bottom:2px solid var(--line);
+  }
+  .acc-table thead th:first-child{text-align:left}
+  .acc-table tbody td{padding:9px 12px;border-bottom:1px solid rgba(20,30,60,.05);text-align:center}
+  .acc-table tbody td:first-child{text-align:left}
+  .acc-table tbody tr:last-child td{border-bottom:none}
+  .acc-table tbody tr:hover{background:rgba(20,30,60,.02)}
+  .acc-name{font-weight:700;white-space:nowrap}
+  .acc-table tbody tr:first-child .acc-name{color:var(--gold-deep)}
+  .acc-pct-pill{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
+    border-radius:999px;padding:3px 10px;
+  }
+  .acc-pct-high .acc-pct-pill{background:rgba(22,138,69,.12);color:var(--grass);border:1px solid rgba(22,138,69,.3)}
+  .acc-pct-mid .acc-pct-pill{background:rgba(200,144,31,.1);color:var(--gold-deep);border:1px solid rgba(200,144,31,.3)}
+  .acc-pct-low .acc-pct-pill{background:rgba(201,38,44,.08);color:var(--red);border:1px solid rgba(201,38,44,.2)}
+  .acc-dot{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint)}
+
+  /* shared pct color classes used by cvr too */
+  .acc-pct-high{color:var(--grass)}
+  .acc-pct-mid{color:var(--gold-deep)}
+  .acc-pct-low{color:var(--red)}
+
   .cvr-bar-fill.acc-pct-high{background:var(--grass)}
   .cvr-bar-fill.acc-pct-mid{background:var(--gold)}
   .cvr-bar-fill.acc-pct-low{background:var(--red)}
@@ -1507,19 +1534,20 @@ function renderAccuracyLeaderboard(){
     .sort((a,b) => b.overallPct - a.overallPct || b.totalCorrect - a.totalCorrect);
 
   const pctClass = pct => pct >= 70 ? 'acc-pct-high' : pct >= 40 ? 'acc-pct-mid' : 'acc-pct-low';
+  const pctCell = (pct) => `<td class="${pctClass(pct)}"><span class="acc-pct-pill">${pct}%</span></td>`;
 
   const headerCells = activeRounds.map(r => `<th>${ROUND_SHORT[r]}</th>`).join('');
   const bodyRows = rows.map(g => {
     const cells = activeRounds.map(r => {
       const rd = g.rounds[r];
-      if (!rd || (rd.correct+rd.incorrect) === 0) return '<td>·</td>';
+      if (!rd || (rd.correct+rd.incorrect) === 0) return '<td><span class="acc-dot">·</span></td>';
       const pct = Math.round(100*rd.correct/(rd.correct+rd.incorrect));
-      return `<td class="${pctClass(pct)}">${pct}%</td>`;
+      return pctCell(pct);
     }).join('');
     return `<tr>
       <td class="acc-name">${esc(g.name)}</td>
       ${cells}
-      <td class="${pctClass(g.overallPct)}"><b>${g.overallPct}%</b></td>
+      ${pctCell(g.overallPct)}
     </tr>`;
   }).join('');
 
