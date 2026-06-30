@@ -650,11 +650,16 @@ function matchCard(key, fallbackLabel, m, extraClass){
     ? `M${sched.m} · ${sched.d} · ${sched.c}`
     : fallbackLabel;
   const decided = !!(m.w && m.w.trim());
-  let t1 = m.t1, t2 = m.t2;
+  // Auto-resolve first — source of truth for who's actually playing.
+  // Only fall back to manually-typed sheet teams for slots that can't
+  // be auto-resolved (the 8 third-place wildcards).
+  let t1 = null, t2 = null;
   if (sched){
-    if (!t1 || !t1.trim()) t1 = resolveSlot(sched.s1);
-    if (!t2 || !t2.trim()) t2 = resolveSlot(sched.s2);
+    t1 = resolveSlot(sched.s1);
+    t2 = resolveSlot(sched.s2);
   }
+  if (!t1 || !t1.trim()) t1 = m.t1;
+  if (!t2 || !t2.trim()) t2 = m.t2;
   const w = canon(m.w);
   return `<div class="match ${extraClass||''}">
     <div class="m-label">${esc(label)}</div>

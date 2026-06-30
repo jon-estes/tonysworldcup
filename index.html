@@ -1204,13 +1204,18 @@ function matchCard(key, fallbackLabel, m, extraClass){
     : fallbackLabel;
   const decided = !!(m.w && m.w.trim());
 
-  // if the Results sheet hasn't given us real teams yet, try to
-  // auto-resolve from live group standings
-  let t1 = m.t1, t2 = m.t2;
+  // Auto-resolve from the bracket logic FIRST — this is the source of
+  // truth for who's actually playing. Only fall back to whatever team
+  // names are manually typed in the Results sheet for slots we can't
+  // auto-resolve (like the 8 third-place wildcards, which follow FIFA's
+  // official formula and aren't something to guess at here).
+  let t1 = null, t2 = null;
   if (sched){
-    if (!t1 || !t1.trim()) t1 = resolveSlot(sched.s1);
-    if (!t2 || !t2.trim()) t2 = resolveSlot(sched.s2);
+    t1 = resolveSlot(sched.s1);
+    t2 = resolveSlot(sched.s2);
   }
+  if (!t1 || !t1.trim()) t1 = m.t1;
+  if (!t2 || !t2.trim()) t2 = m.t2;
 
   const w = canon(m.w);
   return `<div class="match ${extraClass||''}">
