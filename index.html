@@ -457,7 +457,32 @@
   .rung .name{font-weight:700;font-size:15px}
   .rung .detail{font-size:13px;color:var(--chalk-dim);line-height:1.45}
   .rung .max{position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--chalk-faint);text-transform:uppercase}
+  .rung .done-badge{
+    display:none;position:absolute;top:38px;right:14px;
+    align-items:center;gap:5px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;color:#fff;
+    background:var(--grass);border-radius:999px;padding:4px 10px 4px 8px;
+    z-index:2;
+  }
+  .rung .done-badge.show{display:inline-flex}
+  .rung .current-badge{
+    display:none;position:absolute;top:38px;right:14px;
+    align-items:center;gap:5px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;color:#fff;
+    background:var(--gold-deep);border-radius:999px;padding:4px 10px 4px 8px;
+    z-index:2;
+    animation:pulse-badge 2s ease-in-out infinite;
+  }
+  .rung .current-badge.show{display:inline-flex}
+  @keyframes pulse-badge{
+    0%,100%{box-shadow:0 0 0 0 rgba(156,110,18,.5)}
+    50%{box-shadow:0 0 0 6px rgba(156,110,18,0)}
+  }
   .rung[data-h="1"]{min-height:196px}
+  .rung.is-done{border-color:rgba(22,138,69,.45);box-shadow:inset 3px 0 0 var(--grass)}
+  .rung.is-current{border-color:rgba(156,110,18,.5);box-shadow:inset 3px 0 0 var(--gold-deep)}
   .rung[data-h="2"]{min-height:222px}
   .rung[data-h="3"]{min-height:248px}
   .rung[data-h="4"]{min-height:274px}
@@ -750,12 +775,14 @@
     <div class="ladder">
       <div class="rung" data-h="1">
         <span class="max">max 24</span>
+        <span class="done-badge" id="groups-done-badge">✓ <span data-i18n="groups-done">Done</span></span>
         <div class="pts">1<small data-i18n="pt-each">pt each</small></div>
         <div class="name" data-i18n="rung1-name">Round of 48 — Groups</div>
         <div class="detail" data-i18n="rung1-detail">Pick the top 2 finishers in all 12 groups. 24 picks total.</div>
       </div>
       <div class="rung" data-h="2">
         <span class="max">max 32</span>
+        <span class="current-badge" id="r32-current-badge">⚡ <span data-i18n="round-current">In Progress</span></span>
         <div class="pts">2<small data-i18n="pts-each">pts each</small></div>
         <div class="name" data-i18n="rung2-name">Round of 32</div>
         <div class="detail" data-i18n="rung2-detail">Single elimination begins. Pick all 16 winners.</div>
@@ -892,7 +919,7 @@
 </section>
 
 <footer>
-  <div class="wrap">Thank you for playing in Tony's World Cup! · <span style="color:var(--gold)">v9</span></div>
+  <div class="wrap">Thank you for playing in Tony's World Cup! · <span style="color:var(--gold)">v14</span></div>
 </footer>
 
 <canvas id="confetti-canvas"></canvas>
@@ -1099,11 +1126,35 @@ async function loadResults(){
     });
     renderBracket();
     renderFlagWall();
+    updateGroupsDoneBadge();
     if (note) note.textContent = 'Results synced ' + new Date().toLocaleTimeString() + ' — updates automatically.';
   }catch(e){
     renderBracket();
     renderFlagWall();
+    updateGroupsDoneBadge();
     if (note) note.textContent = 'Results sync failed — showing last known state.';
+  }
+}
+
+function updateGroupsDoneBadge(){
+  const badge = document.getElementById('groups-done-badge');
+  const r32Badge = document.getElementById('r32-current-badge');
+  const groupsRung = document.querySelector('.rung[data-h="1"]');
+  const r32Rung = document.querySelector('.rung[data-h="2"]');
+
+  const allGroupsDecided = ['A','B','C','D','E','F','G','H','I','J','K','L'].every(g => groupResults[g]);
+  if (badge) badge.classList.toggle('show', allGroupsDecided);
+  if (groupsRung) groupsRung.classList.toggle('is-done', allGroupsDecided);
+
+  // R32 counts as "in progress" once at least one R32 match has a winner
+  // but not all 16 are decided yet; "done" once all 16 are in.
+  const r32WinnerCount = (roundWinners['R32'] || new Set()).size;
+  const r32InProgress = r32WinnerCount > 0 && r32WinnerCount < 16;
+  const r32Done = r32WinnerCount >= 16;
+  if (r32Badge) r32Badge.classList.toggle('show', r32InProgress);
+  if (r32Rung){
+    r32Rung.classList.toggle('is-current', r32InProgress);
+    r32Rung.classList.toggle('is-done', r32Done);
   }
 }
 
@@ -1539,6 +1590,8 @@ const ES={
   'p-scoring':'Un pick correcto en la fase de grupos vale un punto. Ese mismo acierto en la final vale seis. Avanza lejos y la escalera te recompensa.',
   'pt-each':'pt c/u','pts-each':'pts c/u','pts-only':'pts',
   'rung1-name':'Ronda de 48 — Grupos','rung1-detail':'Elige los 2 clasificados de cada uno de los 12 grupos. 24 picks en total.',
+  'groups-done':'Completo',
+  'round-current':'En Curso',
   'rung2-name':'Ronda de 32','rung2-detail':'Comienza la eliminación directa. Elige a los 16 ganadores.',
   'rung3-name':'Ronda de 16','rung3-detail':'8 partidos. Ganas o te vas a casa.',
   'rung4-name':'Cuartos de Final','rung4-detail':'4 partidos. Los contendientes se separan.',
@@ -1576,6 +1629,8 @@ const EN={
   'p-scoring':'One correct pick in the group stage earns a single point. That same instinct in the final is worth six. Survive deep and the ladder pays.',
   'pt-each':'pt each','pts-each':'pts each','pts-only':'pts',
   'rung1-name':'Round of 48 — Groups','rung1-detail':'Pick the top 2 finishers in all 12 groups. 24 picks total.',
+  'groups-done':'Done',
+  'round-current':'In Progress',
   'rung2-name':'Round of 32','rung2-detail':'Single elimination begins. Pick all 16 winners.',
   'rung3-name':'Round of 16','rung3-detail':'8 matches. Win or go home.',
   'rung4-name':'Quarterfinals','rung4-detail':'4 matches. The contenders separate.',
