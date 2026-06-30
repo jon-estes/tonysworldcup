@@ -246,6 +246,63 @@
   }
   .fw-divider::after{content:"";flex:1;height:1px;background:var(--line)}
 
+  /* ── POOL STATS ── */
+  .poolstats-sec{padding-top:8px;padding-bottom:80px}
+  .stat-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px;
+  }
+  .stat-card{
+    border:1px solid var(--line);border-radius:var(--radius);background:var(--card);
+    padding:22px 22px 24px;position:relative;overflow:hidden;
+  }
+  .stat-label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-faint);
+    margin-bottom:16px;
+  }
+  .stat-loading{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint);
+    padding:20px 0;text-align:center;
+  }
+  .stat-empty{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint);
+    padding:8px 0;
+  }
+
+  /* popular pick card */
+  .pp-team{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .pp-team img{width:42px;height:30px;object-fit:cover;border-radius:5px;box-shadow:0 0 0 1px rgba(20,30,60,.16)}
+  .pp-team-name{font-family:'Anton',sans-serif;font-size:26px;text-transform:uppercase;line-height:1}
+  .pp-bar-track{height:8px;border-radius:99px;background:rgba(20,30,60,.08);overflow:hidden;margin-bottom:8px}
+  .pp-bar-fill{height:100%;background:var(--gold);border-radius:99px}
+  .pp-pct{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--chalk-dim)}
+  .pp-pct b{color:var(--gold-deep);font-size:15px}
+  .pp-runners{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+  .pp-runner-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--chalk-dim)}
+  .pp-runner-row img{width:20px;height:14px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(20,30,60,.14)}
+  .pp-runner-row .pp-runner-pct{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px}
+
+  /* perfect bracket card */
+  .pb-big-num{font-family:'Anton',sans-serif;font-size:56px;line-height:1;color:var(--grass);margin-bottom:6px}
+  .pb-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-faint);margin-bottom:16px}
+  .pb-names{display:flex;flex-wrap:wrap;gap:8px}
+  .pb-name-chip{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    background:rgba(22,138,69,.1);border:1px solid rgba(22,138,69,.3);color:var(--grass);
+    border-radius:999px;padding:5px 12px;
+  }
+
+  /* contrarian card */
+  .cb-player-name{font-family:'Anton',sans-serif;font-size:24px;text-transform:uppercase;line-height:1;margin-bottom:10px}
+  .cb-score-row{display:flex;align-items:baseline;gap:8px;margin-bottom:14px}
+  .cb-score-num{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;color:var(--gold-deep)}
+  .cb-score-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--chalk-faint);text-transform:uppercase}
+  .cb-pick-list{display:flex;flex-direction:column;gap:6px;padding-top:12px;border-top:1px solid var(--line)}
+  .cb-pick-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--chalk-dim)}
+  .cb-pick-row img{width:18px;height:13px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(20,30,60,.14)}
+  .cb-pick-row .cb-pick-pct{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red)}
+
   footer{
     border-top:1px solid var(--line);
     padding:28px 0;text-align:center;
@@ -331,6 +388,34 @@
       <span><span class="fw-dot out"></span> <span data-i18n="fw-out-label">Eliminated</span> — <b id="fw-out-count">0</b></span>
     </div>
     <div class="flagwall" id="flagwall"></div>
+  </div>
+</section>
+
+<!-- ════════ POOL STATS ════════ -->
+<section class="poolstats-sec" id="poolstats">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker" data-i18n="kicker-poolstats">Pool Intel</div>
+      <h2 class="display" data-i18n="h2-poolstats">How The Room Is Playing</h2>
+      <p data-i18n="p-poolstats">Crowd favorites, flawless brackets, and who's zigging while everyone else zags.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card" id="popular-pick-card">
+        <div class="stat-label" data-i18n="popular-pick-label">Pool's Pick To Win It All</div>
+        <div class="stat-body" id="popular-pick-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+
+      <div class="stat-card" id="perfect-bracket-card">
+        <div class="stat-label" data-i18n="perfect-bracket-label">Perfect Brackets Remaining</div>
+        <div class="stat-body" id="perfect-bracket-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+
+      <div class="stat-card" id="contrarian-card">
+        <div class="stat-label" data-i18n="contrarian-label">Boldest Bracket Still Alive</div>
+        <div class="stat-body" id="contrarian-body"><div class="stat-loading">Loading…</div></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -706,46 +791,69 @@ function renderBracket(){
 }
 
 /* ── UPSET TRACKER ── */
-async function loadKnockoutUpsets(){
-  const koUpsets = [];
+/* ══════════════════════════════════════════════════════════
+   Shared knockout picks loader — fetches every configured round
+   sheet once and returns both a per-player picks map and global
+   per-match counts, reused by the upset tracker and the three
+   pool-stats features below instead of re-fetching per feature.
+   ══════════════════════════════════════════════════════════ */
+let koPlayerPicks = {};   // nameLower -> { matchKey: { team, label, roundKey } }
+let koMatchCounts = {};   // matchKey -> { team: count }
+let koTotalSubmissions = {}; // roundKey -> max submissions seen for that round's sheets
+
+async function loadAllKnockoutPicks(){
+  koPlayerPicks = {};
+  koMatchCounts = {};
+  koTotalSubmissions = {};
   for (const [roundKey, cfgs] of Object.entries(ROUND_SHEET_CONFIG)){
     for (const cfg of cfgs){
       try{
         const rows = await fetchCSV(cfg.url);
         if (rows.length < 2) continue;
-        const matchCounts = {};  // matchKey -> { team: count }
-        const matchPickers = {}; // matchKey -> { team: [names] }
-        let totalSubmissions = 0;
+        let submissions = 0;
         rows.slice(1).forEach(r => {
           const name = (r[cfg.nameCol]||'').trim();
           if (!name) return;
-          totalSubmissions++;
+          submissions++;
+          const key = name.toLowerCase();
           cfg.matches.forEach(m => {
             const pick = canon(r[m.col]);
             if (!pick) return;
-            if (!matchCounts[m.key]) matchCounts[m.key] = {};
-            matchCounts[m.key][pick] = (matchCounts[m.key][pick]||0) + 1;
-            if (!matchPickers[m.key]) matchPickers[m.key] = {};
-            if (!matchPickers[m.key][pick]) matchPickers[m.key][pick] = [];
-            matchPickers[m.key][pick].push(name);
+            if (!koPlayerPicks[key]) koPlayerPicks[key] = {};
+            koPlayerPicks[key][m.key] = { team: pick, label: m.label, roundKey };
+            if (!koMatchCounts[m.key]) koMatchCounts[m.key] = {};
+            koMatchCounts[m.key][pick] = (koMatchCounts[m.key][pick]||0) + 1;
           });
         });
-        cfg.matches.forEach(m => {
-          const bd = bracketData[m.key];
-          if (!bd || !bd.w || !bd.w.trim()) return; // not decided yet
-          const winner = canon(bd.w);
-          const counts = matchCounts[m.key] || {};
-          const pct = totalSubmissions ? Math.round(100 * (counts[winner]||0) / totalSubmissions) : 0;
-          if (pct < 30){
-            const pickers = (matchPickers[m.key] && matchPickers[m.key][winner]) || [];
-            koUpsets.push({ letter: roundKey, team: bd.w, pct, isKnockout: true, label: m.label, pickers });
-          }
-        });
+        koTotalSubmissions[roundKey] = Math.max(koTotalSubmissions[roundKey]||0, submissions);
       }catch(e){ /* skip a failing sheet */ }
+    }
+  }
+}
+
+async function loadKnockoutUpsets(){
+  const koUpsets = [];
+  for (const [roundKey, cfgs] of Object.entries(ROUND_SHEET_CONFIG)){
+    for (const cfg of cfgs){
+      cfg.matches.forEach(m => {
+        const bd = bracketData[m.key];
+        if (!bd || !bd.w || !bd.w.trim()) return; // not decided yet
+        const winner = canon(bd.w);
+        const counts = koMatchCounts[m.key] || {};
+        const total = koTotalSubmissions[roundKey] || 0;
+        const pct = total ? Math.round(100 * (counts[winner]||0) / total) : 0;
+        if (pct < 30){
+          const pickerNames = Object.keys(koPlayerPicks)
+            .filter(nameLower => koPlayerPicks[nameLower][m.key] && koPlayerPicks[nameLower][m.key].team === winner)
+            .map(nameLower => (pickEntries.find(e => e.name.toLowerCase() === nameLower) || {}).name || nameLower);
+          koUpsets.push({ letter: roundKey, team: bd.w, pct, isKnockout: true, label: m.label, pickers: pickerNames });
+        }
+      });
     }
   }
   return koUpsets;
 }
+
 
 async function updateUpsetTracker(){
   const upsetGrid = document.getElementById('upset-grid');
@@ -798,6 +906,23 @@ async function updateUpsetTracker(){
 }
 
 /* ── FLAG WALL ── */
+/* A team is eliminated if it didn't advance from its group, OR it lost
+   any decided knockout match (appeared as a team in that match but
+   isn't the winner). This makes the flag wall track all the way
+   through the bracket, not just the group stage. */
+function isEliminatedFromKnockouts(canonTeam){
+  for (const key of Object.keys(bracketData)){
+    const bd = bracketData[key];
+    if (!bd || !bd.w || !bd.w.trim()) continue; // match not decided yet
+    const t1 = canon(bd.t1), t2 = canon(bd.t2);
+    const winner = canon(bd.w);
+    if ((t1 === canonTeam || t2 === canonTeam) && winner !== canonTeam){
+      return true;
+    }
+  }
+  return false;
+}
+
 function renderFlagWall(){
   const wall = document.getElementById('flagwall');
   const aliveCards = [];
@@ -807,7 +932,8 @@ function renderFlagWall(){
     const result = groupResults[letter];
     teams.forEach(t => {
       const c = canon(t);
-      const eliminated = !!(result && !result.has(c));
+      const outOfGroup = !!(result && !result.has(c));
+      const eliminated = outOfGroup || isEliminatedFromKnockouts(c);
       const code = FLAG_CODES[c];
       const img = code ? `<img src="https://flagcdn.com/w80/${code}.png" alt="${esc(t)}" loading="lazy">` : '';
       const badge = eliminated ? (lang==='es'?'Fuera':'Out') : (lang==='es'?'Vivo':'Alive');
@@ -834,6 +960,185 @@ function renderFlagWall(){
     html += `<div class="fw-divider">${outLabel}</div>` + outCards.join('');
   }
   wall.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════════════
+   POOL STATS — three features built on top of the same picks
+   data already loaded for the upset tracker.
+   ══════════════════════════════════════════════════════════ */
+
+/* 1) MOST POPULAR PICK STILL ALIVE
+   Tallies every still-alive team's total pick count across the
+   group stage and every knockout round, then shows the most
+   popular one as the pool's de facto championship favorite. */
+function renderPopularPick(){
+  const body = document.getElementById('popular-pick-body');
+  if (!pickEntries.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
+
+  const tally = {}; // canonTeam -> count
+  pickEntries.forEach(e => {
+    Object.values(e.picks).forEach(arr => {
+      new Set(arr).forEach(t => { tally[t] = (tally[t]||0) + 1; });
+    });
+  });
+  Object.keys(koPlayerPicks).forEach(nameLower => {
+    const seen = new Set();
+    Object.values(koPlayerPicks[nameLower]).forEach(p => seen.add(p.team));
+    seen.forEach(t => { tally[t] = (tally[t]||0) + 1; });
+  });
+
+  // only count teams still alive
+  const alive = Object.keys(tally).filter(c => !isEliminatedAnywhere(c));
+  if (!alive.length){ body.innerHTML = '<div class="stat-empty">Every team has been eliminated.</div>'; return; }
+
+  const ranked = alive.sort((a,b) => tally[b]-tally[a]);
+  const top = ranked[0];
+  const totalPicks = pickEntries.length || 1;
+  const topPct = Math.round(100 * tally[top] / totalPicks);
+  const displayName = displayNameFor(top);
+
+  const runners = ranked.slice(1,4).map(c => {
+    const pct = Math.round(100 * tally[c] / totalPicks);
+    return `<div class="pp-runner-row">${flagImg(displayNameFor(c))}${esc(displayNameFor(c))}<span class="pp-runner-pct">${pct}%</span></div>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="pp-team">${flagImg(displayName).replace('<img ', '<img style="width:42px;height:30px" ')}<div class="pp-team-name">${esc(displayName)}</div></div>
+    <div class="pp-bar-track"><div class="pp-bar-fill" style="width:${Math.min(topPct,100)}%"></div></div>
+    <div class="pp-pct"><b>${topPct}%</b> of the pool has them alive in a pick</div>
+    ${runners ? `<div class="pp-runners">${runners}</div>` : ''}
+  `;
+}
+
+function isEliminatedAnywhere(canonTeam){
+  const groupLetter = GROUPS.find(([,,teams]) => teams.some(t => canon(t) === canonTeam));
+  if (groupLetter){
+    const result = groupResults[groupLetter[0]];
+    if (result && !result.has(canonTeam)) return true;
+  }
+  return isEliminatedFromKnockouts(canonTeam);
+}
+
+function displayNameFor(canonTeam){
+  for (const [,,teams] of GROUPS){
+    const found = teams.find(t => canon(t) === canonTeam);
+    if (found) return found;
+  }
+  return canonTeam;
+}
+
+/* 2) PERFECT BRACKETS REMAINING
+   A player is "perfect" if every pick they've made so far — across
+   groups and every knockout round — that has actually been decided
+   was correct. One wrong pick anywhere removes them from this list. */
+function renderPerfectBrackets(){
+  const body = document.getElementById('perfect-bracket-body');
+  if (!pickEntries.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
+
+  const perfect = [];
+  pickEntries.forEach(e => {
+    let hasMiss = false;
+    let hasAnyDecided = false;
+
+    // check group picks
+    Object.keys(e.picks).forEach(letter => {
+      const result = groupResults[letter];
+      if (!result) return;
+      hasAnyDecided = true;
+      e.picks[letter].forEach(c => {
+        if (!result.has(c)) hasMiss = true;
+      });
+    });
+
+    // check knockout picks
+    const koPicks = koPlayerPicks[e.name.toLowerCase()] || {};
+    Object.entries(koPicks).forEach(([matchKey, p]) => {
+      const bd = bracketData[matchKey];
+      if (!bd || !bd.w || !bd.w.trim()) return;
+      hasAnyDecided = true;
+      if (canon(bd.w) !== p.team) hasMiss = true;
+    });
+
+    if (hasAnyDecided && !hasMiss) perfect.push(e.name);
+  });
+
+  const total = pickEntries.length;
+  if (!perfect.length){
+    body.innerHTML = `<div class="pb-big-num">0</div><div class="pb-sub">Nobody's flawless anymore — every player has missed at least one pick.</div>`;
+    return;
+  }
+
+  body.innerHTML = `
+    <div class="pb-big-num">${perfect.length}</div>
+    <div class="pb-sub">out of ${total} players haven't missed a single decided pick</div>
+    <div class="pb-names">${perfect.map(n => `<span class="pb-name-chip">${esc(n)}</span>`).join('')}</div>
+  `;
+}
+
+/* 3) BOLDEST BRACKET STILL ALIVE
+   Among players who are still "perfect" (see above), finds the one
+   whose surviving picks are, on average, the least popular with the
+   rest of the pool — i.e. the most contrarian flawless bracket. */
+function renderContrarianBracket(){
+  const body = document.getElementById('contrarian-body');
+  if (!pickEntries.length){ body.innerHTML = '<div class="stat-empty">No picks loaded yet.</div>'; return; }
+
+  const totalPicks = pickEntries.length || 1;
+
+  const candidates = pickEntries.map(e => {
+    let hasMiss = false;
+    const alivePicks = []; // { team, pct, displayName }
+
+    Object.keys(e.picks).forEach(letter => {
+      const result = groupResults[letter];
+      e.picks[letter].forEach(c => {
+        if (result){
+          if (!result.has(c)){ hasMiss = true; return; }
+        }
+        const count = pickCounts[c] || 0;
+        alivePicks.push({ team: c, pct: Math.round(100*count/totalPicks), displayName: displayNameFor(c) });
+      });
+    });
+
+    const koPicks = koPlayerPicks[e.name.toLowerCase()] || {};
+    Object.entries(koPicks).forEach(([matchKey, p]) => {
+      const bd = bracketData[matchKey];
+      if (bd && bd.w && bd.w.trim()){
+        if (canon(bd.w) !== p.team){ hasMiss = true; return; }
+      }
+      const counts = koMatchCounts[matchKey] || {};
+      const roundTotal = koTotalSubmissions[p.roundKey] || totalPicks;
+      const pct = roundTotal ? Math.round(100*(counts[p.team]||0)/roundTotal) : 0;
+      alivePicks.push({ team: p.team, pct, displayName: displayNameFor(p.team) });
+    });
+
+    if (hasMiss || !alivePicks.length) return null;
+    const avgPct = alivePicks.reduce((s,p) => s+p.pct, 0) / alivePicks.length;
+    return { name: e.name, avgPct, picks: alivePicks.sort((a,b) => a.pct-b.pct) };
+  }).filter(Boolean);
+
+  if (!candidates.length){
+    body.innerHTML = '<div class="stat-empty">No flawless brackets to compare yet.</div>';
+    return;
+  }
+
+  candidates.sort((a,b) => a.avgPct - b.avgPct);
+  const boldest = candidates[0];
+  const longshots = boldest.picks.slice(0,4).map(p =>
+    `<div class="cb-pick-row">${flagImg(p.displayName)}${esc(p.displayName)}<span class="cb-pick-pct">${p.pct}% of pool</span></div>`
+  ).join('');
+
+  body.innerHTML = `
+    <div class="cb-player-name">${esc(boldest.name)}</div>
+    <div class="cb-score-row"><span class="cb-score-num">${Math.round(boldest.avgPct)}%</span><span class="cb-score-label">avg pick popularity</span></div>
+    <div class="cb-pick-list">${longshots}</div>
+  `;
+}
+
+function renderPoolStats(){
+  renderPopularPick();
+  renderPerfectBrackets();
+  renderContrarianBracket();
 }
 
 /* ── BOOT ── */
@@ -876,7 +1181,9 @@ async function loadAll(){
     }
   }catch(e){ /* keep whatever loaded */ }
 
+  await loadAllKnockoutPicks();
   await updateUpsetTracker();
+  renderPoolStats();
 }
 loadAll();
 setInterval(loadAll, AUTO_REFRESH_MS);
@@ -898,6 +1205,12 @@ const ES={
   'h2-flagwall':'Cada Equipo Aún Vivo',
   'p-flagwall':'Los 48 equipos, ordenados por grupo. Los eliminados bajan y se tachan.',
   'fw-alive-label':'Siguen en pie','fw-out-label':'Eliminados',
+  'kicker-poolstats':'Datos del Grupo',
+  'h2-poolstats':'Cómo Está Jugando El Grupo',
+  'p-poolstats':'Favoritos de la quiniela, brackets perfectos, y quién va contra la corriente.',
+  'popular-pick-label':'El Favorito Del Grupo Para Ganarlo Todo',
+  'perfect-bracket-label':'Brackets Perfectos Restantes',
+  'contrarian-label':'El Bracket Más Atrevido Aún Vivo',
 };
 const EN={
   'eyebrow':'Bonus Coverage',
@@ -915,6 +1228,12 @@ const EN={
   'h2-flagwall':'Every Team Still Alive',
   'p-flagwall':'All 48 teams, sorted by group. Eliminated teams move to the bottom and get crossed out.',
   'fw-alive-label':'Still in it','fw-out-label':'Eliminated',
+  'kicker-poolstats':'Pool Intel',
+  'h2-poolstats':'How The Room Is Playing',
+  'p-poolstats':"Crowd favorites, flawless brackets, and who's zigging while everyone else zags.",
+  'popular-pick-label':"Pool's Pick To Win It All",
+  'perfect-bracket-label':'Perfect Brackets Remaining',
+  'contrarian-label':'Boldest Bracket Still Alive',
 };
 const langBtn=document.getElementById('lang-btn');
 function applyLang(strings){
