@@ -1331,21 +1331,33 @@ async function loadLeaderboard(){
     }
     const entries = parseGroupEntries(rows);
 
-    // knockout forms (only ones with URLs) — a round may have multiple sheets
-    const koScores = {};   // round → Map(name → pts)
-    for (const f of KNOCKOUT_FORMS){
-      const urls = f.urls || (f.url ? [f.url] : []);
-      for (const url of urls){
+    // knockout scoring — uses ROUND_SHEET_CONFIG so it's always in sync
+    // with the picks display (exact column positions, no header guessing)
+    const koScores = {};   // round → Map(nameLower → pts)
+    const ROUND_PTS_MAP = { R32:2, R16:3, QF:4, SF:5, '3P':1, F:6 };
+    for (const [roundKey, cfgs] of Object.entries(ROUND_SHEET_CONFIG)){
+      const pts = ROUND_PTS_MAP[roundKey] || 0;
+      for (const cfg of cfgs){
         try{
-          const koRows = await fetchCSV(url);
-          if (koRows.length > 1){
-            const partial = scoreKnockoutRows(koRows, f.round, f.pts);
-            if (!koScores[f.round]) koScores[f.round] = new Map();
-            partial.forEach((pts, name) => {
-              koScores[f.round].set(name, (koScores[f.round].get(name)||0) + pts);
+          const koRows = await fetchCSV(cfg.url);
+          if (koRows.length < 2) continue;
+          koRows.slice(1).forEach(r => {
+            const name = (r[cfg.nameCol]||'').trim().toLowerCase();
+            if (!name) return;
+            let earned = 0;
+            cfg.matches.forEach(m => {
+              const pick = canon(r[m.col]);
+              if (!pick) return;
+              // the match key tells us which round's roundWinners to check
+              // e.g. "R32-2" → check roundWinners['R32']
+              const mRound = m.key.split('-')[0];
+              const mPts = ROUND_PTS_MAP[mRound] || pts;
+              if (roundWinners[mRound] && roundWinners[mRound].has(pick)) earned += mPts;
             });
-          }
-        }catch(e){ /* skip a failing sheet, keep the rest */ }
+            if (!koScores[roundKey]) koScores[roundKey] = new Map();
+            koScores[roundKey].set(name, (koScores[roundKey].get(name)||0) + earned);
+          });
+        }catch(e){ /* skip a failing sheet */ }
       }
     }
 
