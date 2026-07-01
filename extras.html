@@ -1648,7 +1648,13 @@ function renderAccuracyLeaderboard(){
   const bodyRows = rows.map(g => {
     const cells = activeRounds.map(r => {
       const rd = g.rounds[r];
-      if (!rd || (rd.correct+rd.incorrect) === 0) return noPickCell();
+      // if the round has decided picks (for others) but this player
+      // has zero picks in it, show 0% in red rather than a dash
+      const roundHasResults = graded.some(x => x.rounds[r] && (x.rounds[r].correct + x.rounds[r].incorrect) > 0);
+      const playerHasNoPicks = !rd || (rd.correct + rd.incorrect) === 0;
+      if (playerHasNoPicks){
+        return roundHasResults ? pctCell(0) : noPickCell();
+      }
       const pct = Math.round(100*rd.correct/(rd.correct+rd.incorrect));
       return pctCell(pct);
     }).join('');
