@@ -308,19 +308,22 @@
 
   /* pick split chart */
   .ps-list{display:flex;flex-direction:column;gap:10px}
-  .ps-row{display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(20,30,60,.06)}
+  .ps-row{display:grid;grid-template-columns:1fr auto 3fr auto 1fr;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(20,30,60,.06)}
   .ps-row:last-child{border-bottom:none}
   .ps-label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;overflow:hidden}
   .ps-label img{width:20px;height:14px;object-fit:cover;border-radius:2px;flex:none}
-  .ps-label-right{flex-direction:row-reverse;text-align:right}
+  .ps-label-right{flex-direction:row-reverse;text-align:right;justify-content:flex-start}
   .ps-winner{color:var(--grass);font-weight:800}
   .ps-loser{color:var(--chalk-faint)}
-  .ps-bar-wrap{position:relative;display:flex;height:20px;align-items:center;border-radius:4px;overflow:hidden;background:rgba(20,30,60,.06)}
-  .ps-bar{height:100%;border-radius:0;transition:width .4s}
+  .ps-bar-wrap{position:relative;display:flex;height:18px;border-radius:4px;overflow:hidden;background:rgba(20,30,60,.06)}
+  .ps-bar{height:100%;transition:width .4s}
   .ps-bar-right{position:absolute;right:0;top:0}
-  .ps-pct{position:absolute;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-  .ps-pct-left{left:6px}
-  .ps-pct-right{right:6px}
+  .ps-pct-num{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
+    color:var(--chalk-dim);white-space:nowrap;min-width:34px;text-align:center;
+  }
+  .ps-pct-num.ps-pct-left-num{text-align:right}
+  .ps-pct-num.ps-pct-right-num{text-align:left}
 
   /* round leaderboard */
   .rl-round-name{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:14px}
@@ -403,6 +406,90 @@
   .hm-cell .hm-pct{
     font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;color:#fff;
     text-shadow:0 1px 2px rgba(0,0,0,.6);
+  }
+
+  /* ── WAR ROOM ── */
+  .warroom-sec{padding-top:8px;padding-bottom:80px}
+  .warroom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+
+  .wr-card{
+    border-radius:var(--radius);overflow:hidden;
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:0 4px 20px rgba(20,30,60,.06);
+    display:flex;flex-direction:column;
+  }
+
+  /* match header */
+  .wr-header{
+    padding:14px 18px 12px;
+    background:linear-gradient(135deg, rgba(20,30,60,.05) 0%, rgba(20,30,60,.02) 100%);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+  }
+  .wr-match-label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-faint);
+  }
+  .wr-badge-won{
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;
+    background:var(--grass);color:#fff;border-radius:999px;padding:3px 9px;
+  }
+
+  /* team matchup */
+  .wr-matchup{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 18px 14px;gap:12px;
+  }
+  .wr-team{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+  .wr-flag{width:56px;height:40px;object-fit:cover;border-radius:6px;box-shadow:0 2px 10px rgba(20,30,60,.18)}
+  .wr-team-name{font-family:'Anton',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.03em;text-align:center;line-height:1.1}
+  .wr-score{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:.02em;line-height:1}
+  .wr-score-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;flex:none}
+  .wr-score-vs{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-faint)}
+  .wr-team.winner .wr-team-name{color:var(--gold-deep)}
+  .wr-team.winner .wr-score{color:var(--gold-deep)}
+  .wr-team.loser .wr-team-name{color:var(--chalk-faint)}
+  .wr-team.loser .wr-score{color:var(--chalk-faint)}
+  .wr-team.loser .wr-flag{filter:grayscale(.4);opacity:.7}
+  .wr-crown{font-size:18px;margin-bottom:2px}
+
+  /* who called it */
+  .wr-divider{height:1px;background:var(--line);margin:0 18px}
+  .wr-section{padding:14px 18px}
+  .wr-section-label{
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;
+  }
+  .wr-section-label.hit{color:var(--grass)}
+  .wr-section-label.miss{color:var(--red)}
+  .wr-names{display:flex;flex-wrap:wrap;gap:6px}
+  .wr-chip{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    border-radius:999px;padding:4px 10px;white-space:nowrap;
+  }
+  .wr-chip.hit{
+    background:rgba(22,138,69,.1);color:var(--grass);border:1px solid rgba(22,138,69,.25);
+  }
+  .wr-chip.miss{
+    background:rgba(201,38,44,.07);color:var(--red);border:1px solid rgba(201,38,44,.2);
+  }
+  .wr-no-picks{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--chalk-faint);
+  }
+
+  /* pending match card */
+  .wr-card.pending{
+    border-style:dashed;border-color:rgba(20,30,60,.15);
+    background:rgba(20,30,60,.015);
+    box-shadow:none;
+  }
+  .wr-card.pending .wr-team-name{color:var(--chalk-faint)}
+  .wr-pending-label{
+    text-align:center;padding:12px 18px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--chalk-faint);
+    letter-spacing:.06em;border-top:1px solid var(--line);
   }
 
   footer{
@@ -565,6 +652,20 @@
       <p data-i18n="p-heatmap">Every team still alive, shaded by how popular a pick they've been across the pool. Darker green means more of the room is riding with them.</p>
     </div>
     <div class="heatmap-grid" id="heatmap-grid"></div>
+  </div>
+</section>
+
+<!-- ════════ THE WAR ROOM ════════ -->
+<section class="warroom-sec" id="warroom">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker" data-i18n="kicker-warroom">Match By Match</div>
+      <h2 class="display" data-i18n="h2-warroom">The War Room</h2>
+      <p data-i18n="p-warroom">Every decided match this round — who won, who called it, and who's eating the L. Updates live as results come in.</p>
+    </div>
+    <div class="warroom-grid" id="warroom-grid">
+      <div class="stat-loading">Loading…</div>
+    </div>
   </div>
 </section>
 
@@ -1291,6 +1392,7 @@ function renderPoolStats(){
   renderCrowdVsReality();
   renderChalkWins();
   renderHeatMap();
+  renderWarRoom();
 }
 
 /* ── PICK SPLIT CHART
@@ -1327,12 +1429,12 @@ function renderPickSplit(){
 
       rows.push(`<div class="ps-row">
         <div class="ps-label">${flagImg(t1)}<span class="${hi1}">${esc(t1)}</span></div>
+        <span class="ps-pct-num ps-pct-left-num">${pct1}%</span>
         <div class="ps-bar-wrap">
           <div class="ps-bar" style="width:${pct1}%;background:${hi1==='ps-winner'?'var(--grass)':hi1==='ps-loser'?'rgba(20,30,60,.18)':'var(--gold)'}"></div>
-          <span class="ps-pct ps-pct-left">${pct1}%</span>
-          <span class="ps-pct ps-pct-right">${pct2}%</span>
           <div class="ps-bar ps-bar-right" style="width:${pct2}%;background:${hi2==='ps-winner'?'var(--grass)':hi2==='ps-loser'?'rgba(20,30,60,.18)':'var(--gold)'}"></div>
         </div>
+        <span class="ps-pct-num ps-pct-right-num">${pct2}%</span>
         <div class="ps-label ps-label-right">${flagImg(t2)}<span class="${hi2}">${esc(t2)}</span></div>
       </div>`);
     });
@@ -1530,24 +1632,30 @@ function renderAccuracyLeaderboard(){
       const overallPct = g.totalDecided ? Math.round(100*g.totalCorrect/g.totalDecided) : null;
       return { ...g, overallPct };
     })
-    .filter(g => g.overallPct !== null)
-    .sort((a,b) => b.overallPct - a.overallPct || b.totalCorrect - a.totalCorrect);
+    .sort((a,b) => {
+      // sort by overall pct (nulls last), then by total correct
+      if (a.overallPct === null && b.overallPct === null) return a.name.localeCompare(b.name);
+      if (a.overallPct === null) return 1;
+      if (b.overallPct === null) return -1;
+      return b.overallPct - a.overallPct || b.totalCorrect - a.totalCorrect;
+    });
 
   const pctClass = pct => pct >= 70 ? 'acc-pct-high' : pct >= 40 ? 'acc-pct-mid' : 'acc-pct-low';
   const pctCell = (pct) => `<td class="${pctClass(pct)}"><span class="acc-pct-pill">${pct}%</span></td>`;
+  const noPickCell = () => `<td><span class="acc-dot">—</span></td>`;
 
   const headerCells = activeRounds.map(r => `<th>${ROUND_SHORT[r]}</th>`).join('');
   const bodyRows = rows.map(g => {
     const cells = activeRounds.map(r => {
       const rd = g.rounds[r];
-      if (!rd || (rd.correct+rd.incorrect) === 0) return '<td><span class="acc-dot">·</span></td>';
+      if (!rd || (rd.correct+rd.incorrect) === 0) return noPickCell();
       const pct = Math.round(100*rd.correct/(rd.correct+rd.incorrect));
       return pctCell(pct);
     }).join('');
     return `<tr>
       <td class="acc-name">${esc(g.name)}</td>
       ${cells}
-      ${pctCell(g.overallPct)}
+      ${g.overallPct !== null ? pctCell(g.overallPct) : noPickCell()}
     </tr>`;
   }).join('');
 
@@ -1632,7 +1740,132 @@ function renderHeatMap(){
   }).join('');
 }
 
-/* ── BOOT ── */
+/* ── THE WAR ROOM
+   Cinematic match-by-match breakdown of the current round —
+   who won, with what score, who in the pool called it right
+   (green chips), and who ate the L (red chips). */
+function renderWarRoom(){
+  const grid = document.getElementById('warroom-grid');
+  if (!grid) return;
+
+  const currentRound = findCurrentRound();
+  if (!currentRound){
+    grid.innerHTML = '<div class="stat-empty">No knockout picks open yet — check back once the Round of 32 picks are in.</div>';
+    return;
+  }
+
+  const cfgs = ROUND_SHEET_CONFIG[currentRound] || [];
+  const roundLabel = ROUND_FULL_NAME[currentRound] || currentRound;
+  const cards = [];
+
+  cfgs.forEach(cfg => {
+    cfg.matches.forEach(m => {
+      const bd = bracketData[m.key];
+      const parts = m.label.split(/\s+vs\.?\s+/i);
+      const t1raw = parts[0] || '', t2raw = parts[1] || '';
+      const c1 = canon(t1raw), c2 = canon(t2raw);
+
+      // display names with proper casing
+      const t1 = displayNameFor(c1) || t1raw;
+      const t2 = displayNameFor(c2) || t2raw;
+
+      const decided = bd && bd.w && bd.w.trim();
+      const winner = decided ? canon(bd.w) : null;
+      const score1 = bd?.s1 || '', score2 = bd?.s2 || '';
+
+      // build caller lists from koPlayerPicks
+      const calledWinner = [], calledLoser = [], noSubmission = [];
+      pickEntries.forEach(e => {
+        const kp = koPlayerPicks[e.name.toLowerCase()] || {};
+        const pick = kp[m.key];
+        if (!pick){ noSubmission.push(e.name); return; }
+        if (decided){
+          if (pick.team === winner) calledWinner.push(e.name);
+          else calledLoser.push(e.name);
+        }
+      });
+
+      const flagSrc1 = FLAG_CODES[c1] ? `https://flagcdn.com/w80/${FLAG_CODES[c1]}.png` : '';
+      const flagSrc2 = FLAG_CODES[c2] ? `https://flagcdn.com/w80/${FLAG_CODES[c2]}.png` : '';
+
+      if (!decided){
+        // pending match — show teams in a lighter style
+        cards.push(`<div class="wr-card pending">
+          <div class="wr-header">
+            <span class="wr-match-label">${esc(roundLabel)} · ${esc(m.label)}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk-faint)">Pending</span>
+          </div>
+          <div class="wr-matchup">
+            <div class="wr-team">
+              ${flagSrc1 ? `<img class="wr-flag" src="${flagSrc1}" alt="${esc(t1)}">` : ''}
+              <div class="wr-team-name">${esc(t1)}</div>
+            </div>
+            <div class="wr-score-wrap">
+              <div class="wr-score-vs">vs</div>
+            </div>
+            <div class="wr-team">
+              ${flagSrc2 ? `<img class="wr-flag" src="${flagSrc2}" alt="${esc(t2)}">` : ''}
+              <div class="wr-team-name">${esc(t2)}</div>
+            </div>
+          </div>
+          <div class="wr-pending-label">⏳ Waiting on result</div>
+        </div>`);
+        return;
+      }
+
+      // decided match
+      const isW1 = winner === c1, isW2 = winner === c2;
+      const winnerName = isW1 ? t1 : t2;
+      const winnerFlag = isW1 ? flagSrc1 : flagSrc2;
+
+      const hitsHtml = calledWinner.length
+        ? calledWinner.map(n => `<span class="wr-chip hit">✓ ${esc(n)}</span>`).join('')
+        : '<span class="wr-no-picks">Nobody called this one 😬</span>';
+
+      const missesHtml = calledLoser.length
+        ? calledLoser.map(n => `<span class="wr-chip miss">✗ ${esc(n)}</span>`).join('')
+        : '<span class="wr-no-picks">—</span>';
+
+      cards.push(`<div class="wr-card">
+        <div class="wr-header">
+          <span class="wr-match-label">${esc(roundLabel)} · ${esc(m.label)}</span>
+          <span class="wr-badge-won">Result In</span>
+        </div>
+        <div class="wr-matchup">
+          <div class="wr-team ${isW1?'winner':'loser'}">
+            ${flagSrc1 ? `<img class="wr-flag" src="${flagSrc1}" alt="${esc(t1)}">` : ''}
+            <div class="wr-team-name">${esc(t1)}</div>
+            ${score1 ? `<div class="wr-score">${esc(score1)}</div>` : ''}
+          </div>
+          <div class="wr-score-wrap">
+            ${isW1 ? '<div class="wr-crown">👑</div>' : ''}
+            <div class="wr-score-vs">${score1 && score2 ? 'FT' : 'vs'}</div>
+            ${isW2 ? '<div class="wr-crown">👑</div>' : ''}
+          </div>
+          <div class="wr-team ${isW2?'winner':'loser'}">
+            ${flagSrc2 ? `<img class="wr-flag" src="${flagSrc2}" alt="${esc(t2)}">` : ''}
+            <div class="wr-team-name">${esc(t2)}</div>
+            ${score2 ? `<div class="wr-score">${esc(score2)}</div>` : ''}
+          </div>
+        </div>
+        <div class="wr-divider"></div>
+        <div class="wr-section">
+          <div class="wr-section-label hit">✓ Called It — ${calledWinner.length} player${calledWinner.length!==1?'s':''}</div>
+          <div class="wr-names">${hitsHtml}</div>
+        </div>
+        <div class="wr-divider"></div>
+        <div class="wr-section">
+          <div class="wr-section-label miss">✗ Ate The L — ${calledLoser.length} player${calledLoser.length!==1?'s':''}</div>
+          <div class="wr-names">${missesHtml}</div>
+        </div>
+      </div>`);
+    });
+  });
+
+  grid.innerHTML = cards.join('') || '<div class="stat-empty">No matches configured for this round yet.</div>';
+}
+
+
 async function loadAll(){
   await loadResults(); // populates groupResults + bracketData, renders bracket + flag wall
 
@@ -1711,6 +1944,9 @@ const ES={
   'crowdvreality-label':'El Grupo vs. La Realidad',
   'chalkwins-label':'Si Gana El Favorito Desde Aquí',
   'kicker-heatmap':'Sentimiento De La Quiniela',
+  'kicker-warroom':'Partido Por Partido',
+  'h2-warroom':'La Sala De Guerra',
+  'p-warroom':'Cada partido decidido esta ronda — quién ganó, quién lo predijo, y quién se quedó con el L. Se actualiza en vivo.',
   'h2-heatmap':'Mapa De Calor De Picks',
   'p-heatmap':'Cada equipo aún vivo, sombreado según qué tan popular ha sido como pick en la quiniela. Verde más oscuro significa que más del grupo va con ellos.',
 };
@@ -1745,6 +1981,9 @@ const EN={
   'crowdvreality-label':'Crowd vs. Reality',
   'chalkwins-label':'If Chalk Wins From Here',
   'kicker-heatmap':'Pool Sentiment',
+  'kicker-warroom':'Match By Match',
+  'h2-warroom':'The War Room',
+  'p-warroom':"Every decided match this round — who won, who called it, and who's eating the L. Updates live as results come in.",
   'h2-heatmap':'Pick Heat Map',
   'p-heatmap':"Every team still alive, shaded by how popular a pick they've been across the pool. Darker green means more of the room is riding with them.",
 };
