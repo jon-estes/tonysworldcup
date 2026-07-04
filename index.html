@@ -782,13 +782,15 @@
       </div>
       <div class="rung" data-h="2">
         <span class="max">max 32</span>
-        <span class="current-badge" id="r32-current-badge">⚡ <span data-i18n="round-current">In Progress</span></span>
+        <span class="done-badge" id="r32-done-badge2">✓ <span data-i18n="groups-done">Done</span></span>
         <div class="pts">2<small data-i18n="pts-each">pts each</small></div>
         <div class="name" data-i18n="rung2-name">Round of 32</div>
         <div class="detail" data-i18n="rung2-detail">Single elimination begins. Pick all 16 winners.</div>
       </div>
       <div class="rung" data-h="3">
         <span class="max">max 24</span>
+        <span class="done-badge" id="r32-done-badge">✓ <span data-i18n="groups-done">Done</span></span>
+        <span class="current-badge" id="r16-current-badge">⚡ <span data-i18n="round-current">In Progress</span></span>
         <div class="pts">3<small data-i18n="pts-each">pts each</small></div>
         <div class="name" data-i18n="rung3-name">Round of 16</div>
         <div class="detail" data-i18n="rung3-detail">8 matches. Win or go home.</div>
@@ -1137,24 +1139,39 @@ async function loadResults(){
 }
 
 function updateGroupsDoneBadge(){
-  const badge = document.getElementById('groups-done-badge');
-  const r32Badge = document.getElementById('r32-current-badge');
-  const groupsRung = document.querySelector('.rung[data-h="1"]');
-  const r32Rung = document.querySelector('.rung[data-h="2"]');
+  const groupsBadge   = document.getElementById('groups-done-badge');
+  const r32DoneBadge2 = document.getElementById('r32-done-badge2');
+  const r32DoneBadge  = document.getElementById('r32-done-badge');
+  const r16CurBadge   = document.getElementById('r16-current-badge');
+  const groupsRung    = document.querySelector('.rung[data-h="1"]');
+  const r32Rung       = document.querySelector('.rung[data-h="2"]');
+  const r16Rung       = document.querySelector('.rung[data-h="3"]');
 
+  // Groups
   const allGroupsDecided = ['A','B','C','D','E','F','G','H','I','J','K','L'].every(g => groupResults[g]);
-  if (badge) badge.classList.toggle('show', allGroupsDecided);
-  if (groupsRung) groupsRung.classList.toggle('is-done', allGroupsDecided);
+  if (groupsBadge) groupsBadge.classList.toggle('show', allGroupsDecided);
+  if (groupsRung)  groupsRung.classList.toggle('is-done', allGroupsDecided);
 
-  // R32 counts as "in progress" once at least one R32 match has a winner
-  // but not all 16 are decided yet; "done" once all 16 are in.
-  const r32WinnerCount = (roundWinners['R32'] || new Set()).size;
-  const r32InProgress = r32WinnerCount > 0 && r32WinnerCount < 16;
-  const r32Done = r32WinnerCount >= 16;
-  if (r32Badge) r32Badge.classList.toggle('show', r32InProgress);
+  // R32
+  const r32Count = (roundWinners['R32'] || new Set()).size;
+  const r32Done  = r32Count >= 16;
+  const r32Live  = r32Count > 0 && !r32Done;
+  if (r32DoneBadge2) r32DoneBadge2.classList.toggle('show', r32Done);
   if (r32Rung){
-    r32Rung.classList.toggle('is-current', r32InProgress);
+    r32Rung.classList.toggle('is-current', r32Live);
     r32Rung.classList.toggle('is-done', r32Done);
+  }
+
+  // R16 — in progress once ≥1 R16 result in but not all 8 done
+  const r16Count = (roundWinners['R16'] || new Set()).size;
+  const r16Done  = r16Count >= 8;
+  const r16Live  = r32Done && r16Count > 0 && !r16Done;
+  const r16Open  = r32Done && r16Count === 0; // R32 done, R16 not started yet
+  if (r32DoneBadge) r32DoneBadge.classList.toggle('show', r32Done);
+  if (r16CurBadge)  r16CurBadge.classList.toggle('show', r16Live || r16Open);
+  if (r16Rung){
+    r16Rung.classList.toggle('is-current', r16Live || r16Open);
+    r16Rung.classList.toggle('is-done', r16Done);
   }
 }
 

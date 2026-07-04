@@ -1249,12 +1249,14 @@ function renderFlagWall(){
    on right now. Falls back to the group stage if no knockout sheet
    has any submissions yet. */
 function findCurrentRound(){
-  let best = null, bestCount = 0;
-  Object.keys(koTotalSubmissions).forEach(roundKey => {
-    const count = koTotalSubmissions[roundKey] || 0;
-    if (count > bestCount){ best = roundKey; bestCount = count; }
-  });
-  return best; // null means we're still in the group stage
+  // Return the latest round (in bracket order) that has any submissions.
+  // This ensures once R16 picks start coming in, it switches automatically
+  // instead of staying stuck on R32 which has more total submissions.
+  const order = ['F','3P','SF','QF','R16','R32'];
+  for (const r of order){
+    if (koTotalSubmissions[r] && koTotalSubmissions[r] > 0) return r;
+  }
+  return null; // still in group stage
 }
 
 function renderPopularPick(){
