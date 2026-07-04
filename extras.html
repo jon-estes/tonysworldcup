@@ -880,14 +880,14 @@ const SCHEDULE = {
   'R32-14':{m:83, d:'Fri Jul 3',  c:'Kansas City',   s1:'Runner-up K',  s2:'Runner-up L'},
   'R32-15':{m:85, d:'Fri Jul 3',  c:'Dallas',        s1:'Runner-up D',  s2:'Runner-up G'},
   'R32-16':{m:86, d:'Fri Jul 3',  c:'Miami',         s1:'Winner J',     s2:'Runner-up H'},
-  'R16-1' :{m:89, d:'Sat Jul 4',  c:'Philadelphia',  s1:'Winner R32-3', s2:'Winner R32-4'},
-  'R16-2' :{m:90, d:'Sat Jul 4',  c:'Houston',       s1:'Winner R32-1', s2:'Winner R32-2'},
-  'R16-3' :{m:91, d:'Sun Jul 5',  c:'New York/NJ',   s1:'Winner R32-9', s2:'Winner R32-10'},
-  'R16-4' :{m:92, d:'Sun Jul 5',  c:'Mexico City',   s1:'Winner R32-11',s2:'Winner R32-12'},
-  'R16-5' :{m:93, d:'Mon Jul 6',  c:'Dallas',        s1:'Winner R32-14',s2:'Winner R32-7'},
-  'R16-6' :{m:94, d:'Mon Jul 6',  c:'Seattle',       s1:'Winner R32-6', s2:'Winner R32-5'},
-  'R16-7' :{m:95, d:'Tue Jul 7',  c:'Atlanta',       s1:'Winner R32-16',s2:'Winner R32-13'},
-  'R16-8' :{m:96, d:'Tue Jul 7',  c:'Vancouver',     s1:'Winner R32-15',s2:'Winner R32-8'},
+  'R16-1' :{m:89, d:'Sat Jul 4',  c:'Philadelphia',  s1:'Canada',          s2:'Morocco'},
+  'R16-2' :{m:90, d:'Sat Jul 4',  c:'Houston',       s1:'Paraguay',        s2:'France'},
+  'R16-3' :{m:91, d:'Sun Jul 5',  c:'New York/NJ',   s1:'Brazil',          s2:'Norway'},
+  'R16-4' :{m:92, d:'Sun Jul 5',  c:'Mexico City',   s1:'USA',             s2:'Belgium'},
+  'R16-5' :{m:93, d:'Mon Jul 6',  c:'Dallas',        s1:'Mexico',          s2:'England'},
+  'R16-6' :{m:94, d:'Mon Jul 6',  c:'Seattle',       s1:'Spain',           s2:'Portugal'},
+  'R16-7' :{m:95, d:'Tue Jul 7',  c:'Atlanta',       s1:'Switzerland',     s2:'Colombia'},
+  'R16-8' :{m:96, d:'Tue Jul 7',  c:'Vancouver',     s1:'Argentina',       s2:'Egypt'},
   'QF-1'  :{m:97, d:'Thu Jul 9',  c:'Boston',        s1:'Winner R16-1', s2:'Winner R16-2'},
   'QF-2'  :{m:98, d:'Fri Jul 10', c:'Los Angeles',   s1:'Winner R16-5', s2:'Winner R16-6'},
   'QF-3'  :{m:99, d:'Sat Jul 11', c:'Miami',         s1:'Winner R16-3', s2:'Winner R16-4'},
@@ -935,7 +935,23 @@ const ROUND_SHEET_CONFIG = {
       ]
     }
   ],
-  R16: [], QF: [], SF: [], '3P': [], F: []
+  R16: [
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRxLIY4R4HLmr35yO_7QHHdN2f37wy0SMBYjgLXGacFJo-B5dvo-17urXTHTGfaP6DmbPVia22ahmWb/pub?output=csv",
+      nameCol: 2,
+      matches: [
+        { key:"R16-1", col:3,  label:"Canada vs Morocco" },
+        { key:"R16-2", col:4,  label:"France vs Paraguay" },
+        { key:"R16-3", col:7,  label:"Brazil vs Norway" },
+        { key:"R16-4", col:5,  label:"USA vs Belgium" },
+        { key:"R16-5", col:8,  label:"Mexico vs England" },
+        { key:"R16-6", col:6,  label:"Spain vs Portugal" },
+        { key:"R16-7", col:9,  label:"Switzerland vs Colombia" },
+        { key:"R16-8", col:10, label:"Argentina vs Egypt" }
+      ]
+    }
+  ],
+  QF: [], SF: [], '3P': [], F: []
 };
 const ROUND_FULL_NAME = { R32:'Round of 32', R16:'Round of 16', QF:'Quarterfinals', SF:'Semifinals', F:'Final', '3P':'Third Place' };
 
@@ -968,7 +984,13 @@ function resolveSlot(label){
 
   // "Winner A" / "Runner-up C" — pull from live group standings
   const mGroup = /^(Winner|Runner-up)\s+([A-L])$/i.exec(label);
-  if (!mGroup) return null;
+  if (!mGroup){
+    // plain team name (e.g. "Canada") — return directly
+    if (!/\s+(vs|v|or)\s+/i.test(label) && !/^(3rd|SF|winner|runner)/i.test(label)){
+      return label;
+    }
+    return null;
+  }
   const letter = mGroup[2].toUpperCase();
   const pos = /winner/i.test(mGroup[1]) ? 0 : 1;
   const rows = standingsData[letter];
