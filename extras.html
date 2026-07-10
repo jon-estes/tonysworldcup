@@ -951,7 +951,19 @@ const ROUND_SHEET_CONFIG = {
       ]
     }
   ],
-  QF: [], SF: [], '3P': [], F: []
+  QF: [
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUxkzryt5uQMs64BE-5Rb8QSWVi2NbeoeAk2FD2bbdYk8OoQIvb2JlCKkOh1TsL2EliajRRtmxK-04/pub?output=csv",
+      nameCol: 2,
+      matches: [
+        { key:"QF-1", col:3, label:"France vs Morocco" },
+        { key:"QF-2", col:4, label:"Spain vs Belgium" },
+        { key:"QF-3", col:5, label:"England vs Norway" },
+        { key:"QF-4", col:6, label:"Argentina vs Switzerland" }
+      ]
+    }
+  ],
+  SF: [], '3P': [], F: []
 };
 const ROUND_FULL_NAME = { R32:'Round of 32', R16:'Round of 16', QF:'Quarterfinals', SF:'Semifinals', F:'Final', '3P':'Third Place' };
 

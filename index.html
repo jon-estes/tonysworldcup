@@ -797,6 +797,8 @@
       </div>
       <div class="rung" data-h="4">
         <span class="max">max 16</span>
+        <span class="done-badge" id="r16-done-badge">✓ <span data-i18n="groups-done">Done</span></span>
+        <span class="current-badge" id="qf-current-badge">⚡ <span data-i18n="round-current">In Progress</span></span>
         <div class="pts">4<small data-i18n="pts-each">pts each</small></div>
         <div class="name" data-i18n="rung4-name">Quarterfinals</div>
         <div class="detail" data-i18n="rung4-detail">4 matches. The contenders separate.</div>
@@ -1162,16 +1164,31 @@ function updateGroupsDoneBadge(){
     r32Rung.classList.toggle('is-done', r32Done);
   }
 
-  // R16 — in progress once ≥1 R16 result in but not all 8 done
+  // R16 — done once all 8 in; QF in-progress once ≥1 QF result and R16 complete
   const r16Count = (roundWinners['R16'] || new Set()).size;
   const r16Done  = r16Count >= 8;
   const r16Live  = r32Done && r16Count > 0 && !r16Done;
-  const r16Open  = r32Done && r16Count === 0; // R32 done, R16 not started yet
+  const r16Open  = r32Done && r16Count === 0;
   if (r32DoneBadge) r32DoneBadge.classList.toggle('show', r32Done);
   if (r16CurBadge)  r16CurBadge.classList.toggle('show', r16Live || r16Open);
   if (r16Rung){
     r16Rung.classList.toggle('is-current', r16Live || r16Open);
     r16Rung.classList.toggle('is-done', r16Done);
+  }
+
+  // QF
+  const r16DoneBadge = document.getElementById('r16-done-badge');
+  const qfCurBadge   = document.getElementById('qf-current-badge');
+  const qfRung       = document.querySelector('.rung[data-h="4"]');
+  const qfCount = (roundWinners['QF'] || new Set()).size;
+  const qfDone  = qfCount >= 4;
+  const qfLive  = r16Done && qfCount > 0 && !qfDone;
+  const qfOpen  = r16Done && qfCount === 0;
+  if (r16DoneBadge) r16DoneBadge.classList.toggle('show', r16Done);
+  if (qfCurBadge)   qfCurBadge.classList.toggle('show', qfLive || qfOpen);
+  if (qfRung){
+    qfRung.classList.toggle('is-current', qfLive || qfOpen);
+    qfRung.classList.toggle('is-done', qfDone);
   }
 }
 
@@ -1837,7 +1854,18 @@ const ROUND_SHEET_CONFIG = {
       ]
     }
   ],
-  QF:  [],
+  QF: [
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUxkzryt5uQMs64BE-5Rb8QSWVi2NbeoeAk2FD2bbdYk8OoQIvb2JlCKkOh1TsL2EliajRRtmxK-04/pub?output=csv",
+      nameCol: 2,
+      matches: [
+        { key:"QF-1", col:3, label:"France vs Morocco" },
+        { key:"QF-2", col:4, label:"Spain vs Belgium" },
+        { key:"QF-3", col:5, label:"England vs Norway" },
+        { key:"QF-4", col:6, label:"Argentina vs Switzerland" }
+      ]
+    }
+  ],
   SF:  [],
   '3P':[],
   F:   []
