@@ -805,6 +805,8 @@
       </div>
       <div class="rung" data-h="5">
         <span class="max">max 10</span>
+        <span class="done-badge" id="qf-done-badge">✓ <span data-i18n="groups-done">Done</span></span>
+        <span class="current-badge" id="sf-current-badge">⚡ <span data-i18n="round-current">In Progress</span></span>
         <div class="pts">5<small data-i18n="pts-each">pts each</small></div>
         <div class="name" data-i18n="rung5-name">Semifinals</div>
         <div class="detail" data-i18n="rung5-detail">2 matches. One step from glory.</div>
@@ -1189,6 +1191,21 @@ function updateGroupsDoneBadge(){
   if (qfRung){
     qfRung.classList.toggle('is-current', qfLive || qfOpen);
     qfRung.classList.toggle('is-done', qfDone);
+  }
+
+  // SF
+  const qfDoneBadge = document.getElementById('qf-done-badge');
+  const sfCurBadge  = document.getElementById('sf-current-badge');
+  const sfRung      = document.querySelector('.rung[data-h="5"]');
+  const sfCount = (roundWinners['SF'] || new Set()).size;
+  const sfDone  = sfCount >= 2;
+  const sfLive  = qfDone && sfCount > 0 && !sfDone;
+  const sfOpen  = qfDone && sfCount === 0;
+  if (qfDoneBadge) qfDoneBadge.classList.toggle('show', qfDone);
+  if (sfCurBadge)  sfCurBadge.classList.toggle('show', sfLive || sfOpen);
+  if (sfRung){
+    sfRung.classList.toggle('is-current', sfLive || sfOpen);
+    sfRung.classList.toggle('is-done', sfDone);
   }
 }
 
@@ -1866,7 +1883,16 @@ const ROUND_SHEET_CONFIG = {
       ]
     }
   ],
-  SF:  [],
+  SF: [
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQfv6vXASBsaaFn1E_vQ33Awnxq3yNQlQ7Z-23JQV6e1dR5O80uSCq4shRp3m4c41cktoE8mPluYyLk/pub?output=csv",
+      nameCol: 2,
+      matches: [
+        { key:"SF-1", col:3, label:"France vs Spain" },
+        { key:"SF-2", col:4, label:"England vs Argentina" }
+      ]
+    }
+  ],
   '3P':[],
   F:   []
 };
