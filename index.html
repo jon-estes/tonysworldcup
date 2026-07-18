@@ -813,6 +813,8 @@
       </div>
       <div class="rung" data-h="6">
         <span class="max">max 6</span>
+        <span class="done-badge" id="sf-done-badge">✓ <span data-i18n="groups-done">Done</span></span>
+        <span class="current-badge" id="f-current-badge">⚡ <span data-i18n="round-current">In Progress</span></span>
         <div class="pts">6<small data-i18n="pts-only">pts</small></div>
         <div class="name" data-i18n="rung6-name">The Final</div>
         <div class="detail" data-i18n="rung6-detail">July 19 · MetLife Stadium. Call the champion.</div>
@@ -1207,6 +1209,19 @@ function updateGroupsDoneBadge(){
     sfRung.classList.toggle('is-current', sfLive || sfOpen);
     sfRung.classList.toggle('is-done', sfDone);
   }
+
+  // Final
+  const sfDoneBadge = document.getElementById('sf-done-badge');
+  const fCurBadge   = document.getElementById('f-current-badge');
+  const fRung       = document.querySelector('.rung[data-h="6"]');
+  const fWinner = roundWinners['F'] && roundWinners['F'].size > 0;
+  const fOpen   = sfDone && !fWinner;
+  if (sfDoneBadge) sfDoneBadge.classList.toggle('show', sfDone);
+  if (fCurBadge)   fCurBadge.classList.toggle('show', fOpen);
+  if (fRung){
+    fRung.classList.toggle('is-current', fOpen);
+    fRung.classList.toggle('is-done', !!fWinner);
+  }
 }
 
 /* ── official knockout schedule: FIFA match #, date, city, slot paths ── */
@@ -1241,8 +1256,8 @@ const SCHEDULE = {
   'QF-4'  :{m:100,d:'Sat Jul 11', c:'Kansas City',   s1:'Winner R16-7', s2:'Winner R16-8'},
   'SF-1'  :{m:101,d:'Tue Jul 14', c:'Dallas',        s1:'Winner QF-1',  s2:'Winner QF-2'},
   'SF-2'  :{m:102,d:'Wed Jul 15', c:'Atlanta',       s1:'Winner QF-3',  s2:'Winner QF-4'},
-  '3P-1'  :{m:103,d:'Sat Jul 18', c:'Miami',         s1:'SF loser',     s2:'SF loser'},
-  'F-1'   :{m:104,d:'Sun Jul 19', c:'New York/NJ',   s1:'Winner SF-1',  s2:'Winner SF-2'}
+  '3P-1'  :{m:103,d:'Sat Jul 18', c:'Miami',         s1:'France',            s2:'England'},
+  'F-1'   :{m:104,d:'Sun Jul 19', c:'New York/NJ',   s1:'Spain',             s2:'Argentina'}
 };
 
 /* ── BRACKET render ── */
@@ -1893,8 +1908,24 @@ const ROUND_SHEET_CONFIG = {
       ]
     }
   ],
-  '3P':[],
-  F:   []
+  '3P':[
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTh5rx6Kr6wQ2ytcKpCFBlDUZK-I8nFz8KcJrKfypKJQ0JYOgO4EcK8fcxIXWIccrNGh0FLC0Rag9_l/pub?output=csv",
+      nameCol: 2,
+      matches: [
+        { key:"3P-1", col:3, label:"France vs England" }
+      ]
+    }
+  ],
+  F:   [
+    {
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTh5rx6Kr6wQ2ytcKpCFBlDUZK-I8nFz8KcJrKfypKJQ0JYOgO4EcK8fcxIXWIccrNGh0FLC0Rag9_l/pub?output=csv",
+      nameCol: 2,
+      matches: [
+        { key:"F-1", col:4, label:"Spain vs Argentina" }
+      ]
+    }
+  ]
 };
 const ROUND_POINTS = { R32:2, R16:3, QF:4, SF:5, F:6, '3P':1 };
 const ROUND_FULL_NAME = { R32:'Round of 32', R16:'Round of 16', QF:'Quarterfinals', SF:'Semifinals', F:'Final', '3P':'Third Place' };
