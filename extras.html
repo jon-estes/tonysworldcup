@@ -356,6 +356,13 @@
   .acc-table tbody tr:last-child td{border-bottom:none}
   .acc-table tbody tr:hover{background:rgba(20,30,60,.02)}
   .acc-name{font-weight:700;white-space:nowrap}
+  .acc-table tbody td.acc-name{text-align:left}
+  .acc-table tbody td.acc-rank{text-align:center;width:32px;font-size:13px}
+  .acc-table tbody td.acc-pts{
+    font-family:'JetBrains Mono',monospace;font-weight:800;font-size:13px;
+    color:var(--grass);white-space:nowrap;text-align:right;
+  }
+  .acc-table thead th:nth-child(3){text-align:right}
   .acc-table tbody tr:first-child .acc-name{color:var(--gold-deep)}
   .acc-pct-pill{
     display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;
@@ -1695,24 +1702,16 @@ function renderAccuracyLeaderboard(){
       const overallPct = g.totalDecided ? Math.round(100*g.totalCorrect/g.totalDecided) : null;
       return { ...g, overallPct };
     })
-    .sort((a,b) => {
-      // sort by overall pct (nulls last), then by total correct
-      if (a.overallPct === null && b.overallPct === null) return a.name.localeCompare(b.name);
-      if (a.overallPct === null) return 1;
-      if (b.overallPct === null) return -1;
-      return b.overallPct - a.overallPct || b.totalCorrect - a.totalCorrect;
-    });
+    .sort((a,b) => b.totalPts - a.totalPts || b.totalCorrect - a.totalCorrect || a.name.localeCompare(b.name));
 
   const pctClass = pct => pct >= 70 ? 'acc-pct-high' : pct >= 40 ? 'acc-pct-mid' : 'acc-pct-low';
   const pctCell = (pct) => `<td class="${pctClass(pct)}"><span class="acc-pct-pill">${pct}%</span></td>`;
   const noPickCell = () => `<td><span class="acc-dot">—</span></td>`;
 
   const headerCells = activeRounds.map(r => `<th>${ROUND_SHORT[r]}</th>`).join('');
-  const bodyRows = rows.map(g => {
+  const bodyRows = rows.map((g,i) => {
     const cells = activeRounds.map(r => {
       const rd = g.rounds[r];
-      // if the round has decided picks (for others) but this player
-      // has zero picks in it, show 0% in red rather than a dash
       const roundHasResults = graded.some(x => x.rounds[r] && (x.rounds[r].correct + x.rounds[r].incorrect) > 0);
       const playerHasNoPicks = !rd || (rd.correct + rd.incorrect) === 0;
       if (playerHasNoPicks){
@@ -1721,15 +1720,19 @@ function renderAccuracyLeaderboard(){
       const pct = Math.round(100*rd.correct/(rd.correct+rd.incorrect));
       return pctCell(pct);
     }).join('');
+    const medals = ['🥇','🥈','🥉'];
+    const rank = i < 3 ? medals[i] : `${i+1}.`;
     return `<tr>
+      <td class="acc-rank">${rank}</td>
       <td class="acc-name">${esc(g.name)}</td>
+      <td class="acc-pts">${g.totalPts}pts</td>
       ${cells}
       ${g.overallPct !== null ? pctCell(g.overallPct) : noPickCell()}
     </tr>`;
   }).join('');
 
   body.innerHTML = `<table class="acc-table">
-    <thead><tr><th>Player</th>${headerCells}<th>Overall</th></tr></thead>
+    <thead><tr><th>#</th><th>Player</th><th>Pts</th>${headerCells}<th>Accuracy</th></tr></thead>
     <tbody>${bodyRows}</tbody>
   </table>`;
 }
